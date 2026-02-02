@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitor Health - Cascade Inference Engine</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-bg { background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%); }
+        .card { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        .input-field { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); }
+        .input-field:focus { border-color: #3b82f6; outline: none; }
+        .risk-low { background: #10b981; }
+        .risk-moderate { background: #f59e0b; }
+        .risk-high { background: #ef4444; }
+        .risk-elevated { background: #f97316; }
+        .confidence-bar { background: linear-gradient(90deg, #3b82f6, #8b5cf6); }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .loading { animation: pulse 1.5s infinite; }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen text-white">
+    <div class="container mx-auto px-4 py-8 max-w-7xl">
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">
+                <span class="text-blue-400">Monitor</span> Health Engine
+            </h1>
+            <p class="text-xl text-gray-300 mb-2">CASCADE INFERENCE: Transform partial data into comprehensive insights</p>
+            <p class="text-sm text-gray-400">Every formula backed by peer-reviewed PMID citations</p>
+            <div class="mt-4 flex justify-center gap-4 text-sm">
+                <span class="bg-blue-900/50 px-3 py-1 rounded-full">94 Formulas</span>
+                <span class="bg-purple-900/50 px-3 py-1 rounded-full">28 Citations</span>
+                <span class="bg-green-900/50 px-3 py-1 rounded-full">93 Outputs</span>
+            </div>
+        </header>
+
+        <div class="grid lg:grid-cols-2 gap-8">
+            <!-- Input Panel -->
+            <div class="card rounded-2xl p-6">
+                <h2 class="text-2xl font-semibold mb-6 flex items-center gap-2">
+                    <span>📊</span> Enter Your Biomarkers
+                </h2>
+                
+                <!-- Category Tabs -->
+                <div class="flex flex-wrap gap-2 mb-6" id="categoryTabs">
+                    <button onclick="showCategory('lipid')" class="tab-btn active px-4 py-2 rounded-lg bg-blue-600 text-sm">Lipid Panel</button>
+                    <button onclick="showCategory('glycemic')" class="tab-btn px-4 py-2 rounded-lg bg-gray-700 text-sm">Glycemic</button>
+                    <button onclick="showCategory('kidney')" class="tab-btn px-4 py-2 rounded-lg bg-gray-700 text-sm">Kidney</button>
+                    <button onclick="showCategory('liver')" class="tab-btn px-4 py-2 rounded-lg bg-gray-700 text-sm">Liver</button>
+                    <button onclick="showCategory('inflammatory')" class="tab-btn px-4 py-2 rounded-lg bg-gray-700 text-sm">Inflammatory</button>
+                    <button onclick="showCategory('vitals')" class="tab-btn px-4 py-2 rounded-lg bg-gray-700 text-sm">Vitals</button>
+                    <button onclick="showCategory('body')" class="tab-btn px-4 py-2 rounded-lg bg-gray-700 text-sm">Body</button>
+                    <button onclick="showCategory('thyroid')" class="tab-btn px-4 py-2 rounded-lg bg-gray-700 text-sm">Thyroid</button>
+                </div>
+
+                <form id="biomarkerForm" class="space-y-4">
+                    <!-- Lipid Panel -->
+                    <div id="cat-lipid" class="category-panel grid grid-cols-2 gap-4">
+                        <div><label class="block text-sm text-gray-300 mb-1">Total Cholesterol (mg/dL)</label><input type="number" name="total_cholesterol" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="200"></div>
+                        <div><label class="block text-sm text-gray-300 mb-1">HDL (mg/dL)</label><input type="number" name="hdl" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="50"></div>
+                        <div><label class="block text-sm text-gray-300 mb-1">LDL (mg/dL) <span class="text-xs text-gray-500">(or we calculate)</span></label><input type="number" name="ldl" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="Auto"></div>
+                        <div><label class="block text-sm text-gray-300 mb-1">Triglycerides (mg/dL)</label><input type="number" name="triglycerides" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="150"></div>
+                    </div>
+
+                    <!-- Glycemic -->
+                    <div id="cat-glycemic" class="category-panel hidden grid grid-cols-2 gap-4">
+                        <div><label class="block text-sm text-gray-300 mb-1">Fasting Glucose (mg/dL)</label><input type="number" name="fasting_glucose" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="100"></div>
+                        <div><label class="block text-sm text-gray-300 mb-1">Fasting Insulin (µU/mL)</label><input type="number" name="fasting_insulin" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="10"></div>
+                        <div><label class="block text-sm text-gray-300 mb-1">HbA1c (%)</label><input type="number" step="0.1" name="hba1c" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="5.7"></div>
+                        <div><label class="block text-sm text-gray-300 mb-1">Mean Glucose (mg/dL)</label><input type="number" name="mean_glucose" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="CGM avg"></div>
+                    </div>
+
+                    <!-- Kidney -->
+                    <div id="cat-kidney" class="category-panel hidden grid grid-cols-2 gap-4">
+                        <div><label class="block text-sm text-gray-300 mb-1">Creatinine (mg/dL)</label><input type="number" step="0.1" name="creatinine" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="1.0"></div>
+                        <div><label class="block text-sm text-gray-300 mb-1">BUN (mg/dL)</label><input type="number" name="bun" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="15"></div>
+                        <div><label class="block text-sm text-gray-300 mb-1">Cystatin C (mg/L)</label><input type="number" step="0.1" name="cystatin_c" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="0.9"></div>
+                        <div><label class="block text-sm text-gray-300 mb-1">Age (years)</label><input type="number" name="age" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="45"></div>
+                    </div>
+
+                    <!-- Liver -->
+                    <div id="cat-liver" class="category-panel hidden grid grid-cols-2 gap-4">
+                        <div><label class="block text-sm text-gray-300 mb-1">AST (U/L)</label><input type="number" name="ast" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="25"></div>
+                        <div><label class="block text-sm text-gray-300 mb-1">ALT (U/L)</label><input type="number" name="alt" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="30"></div>
+                        <div><label class="block text-sm text-gray-300 mb-1">GGT (U/L)</label><input type="number" name="ggt" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="30"></div>
+                        <div><label class="block text-sm text-gray-300 mb-1">Bilirubin (mg/dL)</label><input type="number" step="0.1" name="bilirubin" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="1.0"></div>
+                        <div><label class="block text-sm text-gray-300 mb-1">Albumin (g/dL)</label><input type="number" step="0.1" name="albumin" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="4.0"></div>
+                        <div><label class="block text-sm text-gray-300 mb-1">Platelets (×10³/µL)</label><input type="number" name="platelets" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="250"></div>
+                    </div>
+
+                    <!-- Inflammatory -->
+                    <div id="cat-inflammatory" class="category-panel hidden grid grid-cols-2 gap-4">
+                        <div><label class="block text-sm text-gray-300 mb-1">Neutrophils (×10³/µL)</label><input type="number" step="0.1" name="neutrophils" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="4.5"></div>
+                        <div><label class="block text-sm text-gray-300 mb-1">Lymphocytes (×10³/µL)</label><input type="number" step="0.1" name="lymphocytes" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="2.0"></div>
+                        <div><label class="block text-sm text-gray-300 mb-1">Monocytes (×10³/µL)</label><input type="number" step="0.1" name="monocytes" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="0.5"></div>
+                        <div><label class="block text-sm text-gray-300 mb-1">hs-CRP (mg/L)</label><input type="number" step="0.1" name="hscrp" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="1.0"></div>
+                        <div><label class="block text-sm text-gray-300 mb-1">WBC (×10³/µL)</label><input type="number" step="0.1" name="wbc" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="7.0"></div>
+                    </div>
+
+                    <!-- Vitals -->
+                    <div id="cat-vitals" class="category-panel hidden grid grid-cols-2 gap-4">
+                        <div><label class="block text-sm text-gray-300 mb-1">Systolic BP (mmHg)</label><input type="number" name="sbp" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="120"></div>
+                        <div><label class="block text-sm text-gray-300 mb-1">Diastolic BP (mmHg)</label><input type="number" name="dbp" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="80"></div>
+                        <div><label class="block text-sm text-gray-300 mb-1">Heart Rate (bpm)</label><input type="number" name="heart_rate" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="72"></div>
+                    </div>
+
+                    <!-- Body Measurements -->
+                    <div id="cat-body" class="category-panel hidden grid grid-cols-2 gap-4">
+                        <div><label class="block text-sm text-gray-300 mb-1">Weight (kg)</label><input type="number" step="0.1" name="weight_kg" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="70"></div>
+                        <div><label class="block text-sm text-gray-300 mb-1">Height (cm)</label><input type="number" name="height_cm" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="170"></div>
+                        <div><label class="block text-sm text-gray-300 mb-1">Waist (cm)</label><input type="number" name="waist_cm" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="85"></div>
+                        <div><label class="block text-sm text-gray-300 mb-1">Hip (cm)</label><input type="number" name="hip_cm" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="95"></div>
+                        <div class="col-span-2"><label class="flex items-center gap-2 text-sm text-gray-300"><input type="checkbox" name="is_female" class="rounded"> Female (affects some calculations)</label></div>
+                    </div>
+
+                    <!-- Thyroid -->
+                    <div id="cat-thyroid" class="category-panel hidden grid grid-cols-2 gap-4">
+                        <div><label class="block text-sm text-gray-300 mb-1">TSH (mIU/L)</label><input type="number" step="0.01" name="tsh" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="2.0"></div>
+                        <div><label class="block text-sm text-gray-300 mb-1">Free T4 (ng/dL)</label><input type="number" step="0.1" name="ft4" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="1.2"></div>
+                        <div><label class="block text-sm text-gray-300 mb-1">Free T3 (pg/mL)</label><input type="number" step="0.1" name="ft3" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="3.0"></div>
+                    </div>
+
+                    <button type="submit" id="analyzeBtn" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-xl transition-all text-lg mt-6">
+                        🔬 Analyze & Cascade
+                    </button>
+                </form>
+
+                <!-- Quick Demo -->
+                <button onclick="loadDemo()" class="w-full mt-4 bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded-lg text-sm transition-all">
+                    📋 Load Demo Data (12 inputs → 53 outputs)
+                </button>
+            </div>
+
+            <!-- Results Panel -->
+            <div class="card rounded-2xl p-6">
+                <h2 class="text-2xl font-semibold mb-6 flex items-center gap-2">
+                    <span>🧬</span> Cascade Results
+                </h2>
+                
+                <div id="resultsPanel" class="space-y-4">
+                    <div class="text-center text-gray-400 py-12">
+                        <p class="text-6xl mb-4">🔬</p>
+                        <p>Enter your biomarkers and click Analyze</p>
+                        <p class="text-sm mt-2">Or load demo data to see the cascade in action</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Suggestions Panel -->
+        <div id="suggestionsPanel" class="hidden card rounded-2xl p-6 mt-8">
+            <h2 class="text-2xl font-semibold mb-4 flex items-center gap-2">
+                <span>💡</span> Suggested Next Tests
+            </h2>
+            <div id="suggestionsList" class="grid md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="text-center mt-12 text-gray-400 text-sm">
+            <p>All calculations backed by peer-reviewed literature with PMID citations</p>
+            <p class="mt-2">API: <a href="https://monitor-api.abedelhamdan.workers.dev" class="text-blue-400 hover:underline">monitor-api.abedelhamdan.workers.dev</a></p>
+        </footer>
+    </div>
+
+    <script>
+        const API_URL = 'https://monitor-api.abedelhamdan.workers.dev';
+        
+        function showCategory(cat) {
+            document.querySelectorAll('.category-panel').forEach(p => p.classList.add('hidden'));
+            document.getElementById('cat-' + cat).classList.remove('hidden');
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('bg-blue-600');
+                b.classList.add('bg-gray-700');
+            });
+            event.target.classList.remove('bg-gray-700');
+            event.target.classList.add('bg-blue-600');
+        }
+
+        function loadDemo() {
+            const demoData = {
+                total_cholesterol: 220, hdl: 42, triglycerides: 185,
+                fasting_glucose: 108, fasting_insulin: 15,
+                age: 45, creatinine: 1.1,
+                weight_kg: 85, height_cm: 175, waist_cm: 98,
+                sbp: 138, dbp: 88
+            };
+            
+            for (const [key, value] of Object.entries(demoData)) {
+                const input = document.querySelector(`[name="${key}"]`);
+                if (input) input.value = value;
+            }
+            
+            document.getElementById('biomarkerForm').dispatchEvent(new Event('submit'));
+        }
+
+        document.getElementById('biomarkerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const btn = document.getElementById('analyzeBtn');
+            btn.innerHTML = '<span class="loading">Analyzing...</span>';
+            btn.disabled = true;
+            
+            const formData = new FormData(e.target);
+            const data = {};
+            
+            for (const [key, value] of formData.entries()) {
+                if (value && value !== '' && key !== 'is_female') {
+                    data[key] = parseFloat(value);
+                }
+                if (key === 'is_female' && formData.get('is_female')) {
+                    data.is_female = true;
+                }
+            }
+            
+            try {
+                const response = await fetch(`${API_URL}/analyze`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                displayResults(result);
+            } catch (error) {
+                document.getElementById('resultsPanel').innerHTML = `
+                    <div class="bg-red-900/50 p-4 rounded-lg">
+                        <p class="text-red-400">Error: ${error.message}</p>
+                    </div>
+                `;
+            }
+            
+            btn.innerHTML = '🔬 Analyze & Cascade';
+            btn.disabled = false;
+        });
+
+        function displayResults(result) {
+            const panel = document.getElementById('resultsPanel');
+            
+            // Summary stats
+            let html = `
+                <div class="bg-gradient-to-r from-blue-900/50 to-purple-900/50 p-4 rounded-xl mb-6">
+                    <div class="grid grid-cols-3 gap-4 text-center">
+                        <div>
+                            <div class="text-3xl font-bold text-blue-400">${result.inputs}</div>
+                            <div class="text-sm text-gray-400">Inputs</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-bold text-purple-400">${result.calculated}</div>
+                            <div class="text-sm text-gray-400">Calculated</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-bold text-green-400">${result.total}</div>
+                            <div class="text-sm text-gray-400">Total</div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-4 text-sm text-gray-300">
+                        Cascade completed in ${result.cascade_iterations} iteration${result.cascade_iterations !== 1 ? 's' : ''}
+                    </div>
+                </div>
+            `;
+            
+            // Derived values
+            html += '<div class="space-y-3">';
+            
+            for (const item of result.derived) {
+                const riskClass = item.interpretation ? `risk-${item.interpretation.risk}` : 'bg-gray-700';
+                const confidenceWidth = Math.round(item.confidence * 100);
+                
+                html += `
+                    <div class="bg-gray-800/50 p-4 rounded-xl">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <span class="font-semibold text-white">${formatName(item.name)}</span>
+                                <span class="text-2xl font-bold ml-2 ${typeof item.value === 'number' ? 'text-blue-400' : 'text-purple-400'}">
+                                    ${typeof item.value === 'number' ? item.value.toFixed(2) : JSON.stringify(item.value)}
+                                </span>
+                            </div>
+                            ${item.interpretation ? `<span class="px-2 py-1 rounded text-xs font-semibold ${riskClass}">${item.interpretation.risk.toUpperCase()}</span>` : ''}
+                        </div>
+                        
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="flex-1 bg-gray-700 rounded-full h-2">
+                                <div class="confidence-bar h-2 rounded-full" style="width: ${confidenceWidth}%"></div>
+                            </div>
+                            <span class="text-xs text-gray-400">${confidenceWidth}% conf</span>
+                        </div>
+                        
+                        ${item.interpretation?.note ? `<p class="text-sm text-gray-400">${item.interpretation.note}</p>` : ''}
+                        
+                        ${item.citation ? `
+                            <div class="mt-2 text-xs text-gray-500">
+                                📚 <a href="https://pubmed.ncbi.nlm.nih.gov/${item.citation.pmid}" target="_blank" class="text-blue-400 hover:underline">PMID: ${item.citation.pmid}</a>
+                                - ${item.citation.source}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }
+            
+            html += '</div>';
+            panel.innerHTML = html;
+            
+            // Suggestions
+            if (result.suggestions && result.suggestions.length > 0) {
+                const sugPanel = document.getElementById('suggestionsPanel');
+                sugPanel.classList.remove('hidden');
+                
+                let sugHtml = '';
+                for (const sug of result.suggestions) {
+                    sugHtml += `
+                        <div class="bg-gray-800/50 p-4 rounded-xl">
+                            <div class="font-semibold text-yellow-400">Add: ${formatName(sug.missing)}</div>
+                            <div class="text-sm text-gray-400 mt-1">Enables: ${formatName(sug.target)}</div>
+                            <div class="text-xs text-gray-500 mt-2">${sug.confidence * 100}% confidence</div>
+                        </div>
+                    `;
+                }
+                document.getElementById('suggestionsList').innerHTML = sugHtml;
+            }
+        }
+
+        function formatName(name) {
+            return name.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        }
+    </script>
+</body>
+</html>
