@@ -1,0 +1,351 @@
+{
+  "schema_version": "1.0.0",
+  "last_updated": "2026-02-02",
+  "categories": ["diet", "exercise", "sleep", "stress", "alcohol", "smoking", "fasting", "hydration"],
+  "effects": {
+    "diet": {
+      "ketogenic_diet": {
+        "description": "Very low carb, high fat diet (<50g carbs/day)",
+        "biomarker_effects": [
+          {"biomarker": "glucose_fasting", "effect": "decrease", "magnitude": "significant", "onset": "days"},
+          {"biomarker": "insulin_fasting", "effect": "decrease", "magnitude": "significant"},
+          {"biomarker": "hba1c", "effect": "decrease", "magnitude": "0.5-1%", "onset": "months"},
+          {"biomarker": "triglycerides", "effect": "decrease", "magnitude": "20-40%"},
+          {"biomarker": "hdl_cholesterol", "effect": "increase", "magnitude": "10-20%"},
+          {"biomarker": "ldl_cholesterol", "effect": "increase_often", "magnitude": "variable", "note": "LDL-P may improve despite LDL-C increase"},
+          {"biomarker": "total_cholesterol", "effect": "increase_often"},
+          {"biomarker": "bun", "effect": "increase", "note": "protein metabolism"},
+          {"biomarker": "uric_acid", "effect": "increase_initially", "note": "transient"},
+          {"biomarker": "ketones", "effect": "increase", "note": "expected and desired"}
+        ],
+        "notes": ["Initial LDL rise often normalizes", "Monitor lipids at 3-6 months"]
+      },
+      "mediterranean_diet": {
+        "description": "High in vegetables, olive oil, fish, whole grains, moderate wine",
+        "biomarker_effects": [
+          {"biomarker": "ldl_cholesterol", "effect": "decrease", "magnitude": "10-15%"},
+          {"biomarker": "triglycerides", "effect": "decrease", "magnitude": "10-20%"},
+          {"biomarker": "hs_crp", "effect": "decrease"},
+          {"biomarker": "glucose_fasting", "effect": "decrease", "magnitude": "slight"},
+          {"biomarker": "hba1c", "effect": "decrease", "magnitude": "slight"},
+          {"biomarker": "homocysteine", "effect": "decrease"}
+        ]
+      },
+      "plant_based_vegan": {
+        "description": "No animal products",
+        "biomarker_effects": [
+          {"biomarker": "total_cholesterol", "effect": "decrease", "magnitude": "10-20%"},
+          {"biomarker": "ldl_cholesterol", "effect": "decrease", "magnitude": "15-25%"},
+          {"biomarker": "vitamin_b12", "effect": "decrease", "note": "supplementation required"},
+          {"biomarker": "iron", "effect": "decrease_risk", "note": "non-heme iron less absorbed"},
+          {"biomarker": "ferritin", "effect": "decrease_risk"},
+          {"biomarker": "vitamin_d_25oh", "effect": "decrease_risk", "note": "if no fortified foods"},
+          {"biomarker": "omega_3_index", "effect": "decrease", "note": "without algae supplement"},
+          {"biomarker": "zinc", "effect": "decrease_risk"},
+          {"biomarker": "hs_crp", "effect": "decrease"}
+        ],
+        "monitoring_recommendations": ["B12", "iron studies", "vitamin D", "zinc", "omega-3 index"]
+      },
+      "high_sodium_diet": {
+        "biomarker_effects": [
+          {"biomarker": "sodium", "effect": "usually_normal", "note": "kidneys compensate"},
+          {"biomarker": "potassium", "effect": "may_decrease", "note": "relative to sodium"},
+          {"biomarker": "blood_pressure", "effect": "increase"}
+        ]
+      },
+      "high_protein_diet": {
+        "biomarker_effects": [
+          {"biomarker": "bun", "effect": "increase", "note": "protein metabolism - not kidney damage"},
+          {"biomarker": "creatinine", "effect": "slight_increase"},
+          {"biomarker": "uric_acid", "effect": "increase", "note": "especially with red meat"},
+          {"biomarker": "calcium_urine", "effect": "increase"}
+        ]
+      },
+      "high_fiber_diet": {
+        "biomarker_effects": [
+          {"biomarker": "ldl_cholesterol", "effect": "decrease", "magnitude": "5-10%"},
+          {"biomarker": "glucose_fasting", "effect": "decrease", "magnitude": "slight"},
+          {"biomarker": "hba1c", "effect": "decrease", "magnitude": "slight"},
+          {"biomarker": "hs_crp", "effect": "decrease"}
+        ]
+      },
+      "refined_sugar_high": {
+        "biomarker_effects": [
+          {"biomarker": "triglycerides", "effect": "increase"},
+          {"biomarker": "hdl_cholesterol", "effect": "decrease"},
+          {"biomarker": "glucose_fasting", "effect": "increase"},
+          {"biomarker": "insulin_fasting", "effect": "increase"},
+          {"biomarker": "uric_acid", "effect": "increase", "note": "fructose specifically"},
+          {"biomarker": "alt", "effect": "increase", "note": "NAFLD risk"}
+        ]
+      }
+    },
+    "exercise": {
+      "acute_intense_exercise": {
+        "description": "Effects immediately after strenuous exercise",
+        "biomarker_effects": [
+          {"biomarker": "ck", "effect": "increase", "magnitude": "2-10x", "duration": "24-72h"},
+          {"biomarker": "ast", "effect": "increase", "note": "muscle origin, not liver"},
+          {"biomarker": "alt", "effect": "slight_increase"},
+          {"biomarker": "ldh", "effect": "increase"},
+          {"biomarker": "creatinine", "effect": "transient_increase"},
+          {"biomarker": "wbc", "effect": "increase", "note": "exercise leukocytosis"},
+          {"biomarker": "potassium", "effect": "increase", "note": "cellular release"},
+          {"biomarker": "glucose_fasting", "effect": "variable", "note": "may increase acutely"},
+          {"biomarker": "troponin_i", "effect": "slight_increase", "note": "after marathon/ultramarathon - not MI"}
+        ],
+        "recommendation": "Wait 24-48h after intense exercise before blood draw"
+      },
+      "regular_aerobic_exercise": {
+        "description": "Chronic effects of regular cardio",
+        "biomarker_effects": [
+          {"biomarker": "hdl_cholesterol", "effect": "increase", "magnitude": "5-15%"},
+          {"biomarker": "triglycerides", "effect": "decrease", "magnitude": "10-20%"},
+          {"biomarker": "glucose_fasting", "effect": "decrease"},
+          {"biomarker": "hba1c", "effect": "decrease", "magnitude": "0.5-0.7%"},
+          {"biomarker": "insulin_fasting", "effect": "decrease"},
+          {"biomarker": "hs_crp", "effect": "decrease"},
+          {"biomarker": "blood_pressure", "effect": "decrease"},
+          {"biomarker": "resting_heart_rate", "effect": "decrease"}
+        ]
+      },
+      "resistance_training": {
+        "description": "Chronic effects of weight training",
+        "biomarker_effects": [
+          {"biomarker": "glucose_fasting", "effect": "decrease"},
+          {"biomarker": "hba1c", "effect": "decrease"},
+          {"biomarker": "testosterone_total_male", "effect": "increase", "magnitude": "modest"},
+          {"biomarker": "igf1", "effect": "increase"},
+          {"biomarker": "creatinine", "effect": "increase", "note": "increased muscle mass - not kidney damage"}
+        ]
+      }
+    },
+    "sleep": {
+      "sleep_deprivation": {
+        "description": "Acute or chronic insufficient sleep (<6h)",
+        "biomarker_effects": [
+          {"biomarker": "glucose_fasting", "effect": "increase"},
+          {"biomarker": "insulin_fasting", "effect": "increase"},
+          {"biomarker": "cortisol_am", "effect": "elevated_or_disrupted"},
+          {"biomarker": "hs_crp", "effect": "increase"},
+          {"biomarker": "il6", "effect": "increase"},
+          {"biomarker": "testosterone_total_male", "effect": "decrease"},
+          {"biomarker": "leptin", "effect": "decrease"},
+          {"biomarker": "ghrelin", "effect": "increase"},
+          {"biomarker": "tsh", "effect": "elevated"}
+        ]
+      },
+      "quality_sleep": {
+        "description": "7-9 hours of good sleep",
+        "biomarker_effects": [
+          {"biomarker": "cortisol_am", "effect": "normal_rhythm"},
+          {"biomarker": "testosterone_total_male", "effect": "optimized"},
+          {"biomarker": "growth_hormone", "effect": "optimized"},
+          {"biomarker": "hs_crp", "effect": "lower"}
+        ]
+      }
+    },
+    "stress": {
+      "chronic_stress": {
+        "biomarker_effects": [
+          {"biomarker": "cortisol_am", "effect": "elevated_or_dysregulated"},
+          {"biomarker": "dhea_s", "effect": "decrease"},
+          {"biomarker": "glucose_fasting", "effect": "increase"},
+          {"biomarker": "hs_crp", "effect": "increase"},
+          {"biomarker": "il6", "effect": "increase"},
+          {"biomarker": "testosterone_total_male", "effect": "decrease"},
+          {"biomarker": "tsh", "effect": "may_increase"},
+          {"biomarker": "wbc", "effect": "elevated"},
+          {"biomarker": "blood_pressure", "effect": "increase"}
+        ]
+      },
+      "acute_stress": {
+        "description": "Temporary stressor (exam, procedure)",
+        "biomarker_effects": [
+          {"biomarker": "glucose_fasting", "effect": "increase", "note": "stress hyperglycemia"},
+          {"biomarker": "wbc", "effect": "increase"},
+          {"biomarker": "cortisol", "effect": "increase"}
+        ],
+        "recommendation": "Reschedule labs if acutely stressed"
+      }
+    },
+    "alcohol": {
+      "moderate_consumption": {
+        "description": "1-2 drinks/day",
+        "biomarker_effects": [
+          {"biomarker": "hdl_cholesterol", "effect": "increase", "magnitude": "5-10%"},
+          {"biomarker": "ggt", "effect": "mildly_elevated"},
+          {"biomarker": "mcv", "effect": "mildly_elevated"},
+          {"biomarker": "uric_acid", "effect": "increase"}
+        ]
+      },
+      "heavy_consumption": {
+        "description": ">3 drinks/day regularly",
+        "biomarker_effects": [
+          {"biomarker": "ggt", "effect": "significantly_elevated"},
+          {"biomarker": "ast", "effect": "elevated"},
+          {"biomarker": "alt", "effect": "elevated", "note": "AST/ALT >2 classic for alcohol"},
+          {"biomarker": "mcv", "effect": "elevated", "note": "macrocytosis"},
+          {"biomarker": "triglycerides", "effect": "elevated"},
+          {"biomarker": "uric_acid", "effect": "elevated"},
+          {"biomarker": "platelets", "effect": "decreased"},
+          {"biomarker": "magnesium", "effect": "decreased"},
+          {"biomarker": "folate", "effect": "decreased"},
+          {"biomarker": "vitamin_b12", "effect": "may_decrease"},
+          {"biomarker": "glucose_fasting", "effect": "variable"}
+        ]
+      },
+      "acute_binge": {
+        "biomarker_effects": [
+          {"biomarker": "glucose_fasting", "effect": "decrease", "note": "hypoglycemia risk"},
+          {"biomarker": "triglycerides", "effect": "elevated", "note": "transient spike"},
+          {"biomarker": "ggt", "effect": "elevated"}
+        ],
+        "recommendation": "Wait 48-72h after heavy drinking for labs"
+      }
+    },
+    "smoking": {
+      "active_smoking": {
+        "biomarker_effects": [
+          {"biomarker": "wbc", "effect": "elevated", "magnitude": "chronic elevation"},
+          {"biomarker": "hemoglobin", "effect": "elevated", "note": "compensatory"},
+          {"biomarker": "hematocrit", "effect": "elevated"},
+          {"biomarker": "ldl_cholesterol", "effect": "elevated"},
+          {"biomarker": "hdl_cholesterol", "effect": "decreased"},
+          {"biomarker": "hs_crp", "effect": "elevated"},
+          {"biomarker": "fibrinogen", "effect": "elevated"},
+          {"biomarker": "cea", "effect": "elevated", "note": "up to 5 in smokers"},
+          {"biomarker": "vitamin_c", "effect": "decreased"}
+        ]
+      },
+      "smoking_cessation": {
+        "biomarker_effects": [
+          {"biomarker": "wbc", "effect": "normalize", "onset": "weeks"},
+          {"biomarker": "hdl_cholesterol", "effect": "improve", "onset": "weeks-months"},
+          {"biomarker": "hs_crp", "effect": "decrease", "onset": "weeks"}
+        ]
+      }
+    },
+    "fasting": {
+      "overnight_fast_12h": {
+        "description": "Standard pre-lab fasting",
+        "biomarker_effects": [
+          {"biomarker": "glucose_fasting", "effect": "baseline"},
+          {"biomarker": "triglycerides", "effect": "baseline", "note": "fasting required for accuracy"},
+          {"biomarker": "insulin_fasting", "effect": "baseline"}
+        ]
+      },
+      "prolonged_fast_24h_plus": {
+        "biomarker_effects": [
+          {"biomarker": "glucose_fasting", "effect": "decrease"},
+          {"biomarker": "insulin_fasting", "effect": "decrease"},
+          {"biomarker": "bun", "effect": "increase", "note": "protein catabolism"},
+          {"biomarker": "uric_acid", "effect": "increase"},
+          {"biomarker": "ketones", "effect": "increase"},
+          {"biomarker": "triglycerides", "effect": "decrease"}
+        ]
+      },
+      "intermittent_fasting": {
+        "description": "16:8, 18:6, or similar patterns",
+        "biomarker_effects": [
+          {"biomarker": "glucose_fasting", "effect": "decrease"},
+          {"biomarker": "insulin_fasting", "effect": "decrease"},
+          {"biomarker": "hba1c", "effect": "decrease", "magnitude": "variable"},
+          {"biomarker": "triglycerides", "effect": "decrease"},
+          {"biomarker": "hs_crp", "effect": "decrease"},
+          {"biomarker": "ldl_cholesterol", "effect": "variable"}
+        ]
+      }
+    },
+    "hydration": {
+      "dehydration": {
+        "biomarker_effects": [
+          {"biomarker": "hematocrit", "effect": "falsely_elevated", "note": "hemoconcentration"},
+          {"biomarker": "hemoglobin", "effect": "falsely_elevated"},
+          {"biomarker": "albumin", "effect": "falsely_elevated"},
+          {"biomarker": "sodium", "effect": "may_elevate"},
+          {"biomarker": "bun", "effect": "elevated"},
+          {"biomarker": "creatinine", "effect": "elevated"},
+          {"biomarker": "uric_acid", "effect": "elevated"}
+        ],
+        "recommendation": "Hydrate normally (not excessively) before labs"
+      },
+      "overhydration": {
+        "biomarker_effects": [
+          {"biomarker": "hematocrit", "effect": "falsely_low", "note": "hemodilution"},
+          {"biomarker": "hemoglobin", "effect": "falsely_low"},
+          {"biomarker": "sodium", "effect": "decreased"}
+        ]
+      }
+    },
+    "menstrual_cycle": {
+      "follicular_phase": {
+        "days": "1-14",
+        "biomarker_effects": [
+          {"biomarker": "estradiol", "pattern": "rising"},
+          {"biomarker": "fsh", "pattern": "elevated_early_then_falls"},
+          {"biomarker": "lh", "pattern": "low_then_surge"},
+          {"biomarker": "progesterone", "pattern": "low"},
+          {"biomarker": "iron", "pattern": "lower_after_menstruation"}
+        ]
+      },
+      "ovulation": {
+        "days": "~14",
+        "biomarker_effects": [
+          {"biomarker": "lh", "pattern": "surge"},
+          {"biomarker": "estradiol", "pattern": "peak_then_drop"}
+        ]
+      },
+      "luteal_phase": {
+        "days": "15-28",
+        "biomarker_effects": [
+          {"biomarker": "progesterone", "pattern": "elevated"},
+          {"biomarker": "estradiol", "pattern": "secondary_rise"},
+          {"biomarker": "body_temperature", "pattern": "elevated"}
+        ]
+      }
+    },
+    "altitude": {
+      "high_altitude_exposure": {
+        "biomarker_effects": [
+          {"biomarker": "hemoglobin", "effect": "increase"},
+          {"biomarker": "hematocrit", "effect": "increase"},
+          {"biomarker": "rbc", "effect": "increase"},
+          {"biomarker": "epo", "effect": "increase"}
+        ],
+        "note": "Residents at altitude have higher normal ranges"
+      }
+    },
+    "circadian_timing": {
+      "morning_vs_evening": {
+        "biomarkers_with_diurnal_variation": [
+          {"biomarker": "cortisol", "pattern": "highest 6-8 AM, lowest midnight"},
+          {"biomarker": "testosterone", "pattern": "highest morning, 30% lower evening"},
+          {"biomarker": "tsh", "pattern": "highest late evening/early morning"},
+          {"biomarker": "iron", "pattern": "highest morning, can vary 30%"},
+          {"biomarker": "potassium", "pattern": "varies throughout day"},
+          {"biomarker": "wbc", "pattern": "lowest morning, highest evening"}
+        ],
+        "recommendation": "Draw labs at consistent time, preferably morning"
+      }
+    }
+  },
+  "pre_lab_instructions": {
+    "general": [
+      "Fast 10-12 hours for lipid panel and glucose",
+      "Drink water normally (not excessively)",
+      "Avoid intense exercise 24-48h before",
+      "Avoid alcohol 48-72h before",
+      "Take medications as usual unless instructed otherwise",
+      "Note any recent illness, stress, or sleep disruption"
+    ],
+    "specific_tests": {
+      "lipid_panel": "Fast 10-12 hours; water okay",
+      "glucose_fasting": "Fast 8-12 hours",
+      "cortisol_am": "Draw at 8 AM ± 1 hour",
+      "testosterone": "Draw before 10 AM",
+      "iron_studies": "Draw in morning; fasting preferred",
+      "psa": "No ejaculation 48h before; no prostate exam recently"
+    }
+  }
+}

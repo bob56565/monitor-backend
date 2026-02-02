@@ -1,0 +1,554 @@
+{
+  "schema_version": "1.0.0",
+  "last_updated": "2026-02-02",
+  "total_conditions": 65,
+  "disclaimer": "For educational and monitoring purposes only. Not for diagnosis.",
+  "conditions": {
+    "metabolic": {
+      "type_2_diabetes": {
+        "icd10": "E11",
+        "diagnostic_criteria": {
+          "hba1c": {"threshold": ">=6.5%", "source": "ADA"},
+          "glucose_fasting": {"threshold": ">=126 mg/dL"},
+          "glucose_2h_ogtt": {"threshold": ">=200 mg/dL"},
+          "glucose_random": {"threshold": ">=200 mg/dL with symptoms"}
+        },
+        "typical_biomarker_pattern": [
+          {"biomarker": "glucose_fasting", "pattern": "elevated", "typical_range": "126-250"},
+          {"biomarker": "hba1c", "pattern": "elevated", "typical_range": "6.5-12%"},
+          {"biomarker": "insulin_fasting", "pattern": "elevated_early_normal_late", "note": "high early, then decreases as beta cells fail"},
+          {"biomarker": "c_peptide", "pattern": "elevated_early_normal_late"},
+          {"biomarker": "triglycerides", "pattern": "elevated"},
+          {"biomarker": "hdl_cholesterol", "pattern": "low"},
+          {"biomarker": "alt", "pattern": "mildly_elevated", "note": "NAFLD association"},
+          {"biomarker": "uric_acid", "pattern": "elevated"},
+          {"biomarker": "hs_crp", "pattern": "elevated"}
+        ],
+        "monitoring_panel": ["glucose_fasting", "hba1c", "lipid_panel", "creatinine", "egfr", "uacr", "alt"],
+        "monitoring_frequency": "HbA1c every 3-6 months; annual comprehensive"
+      },
+      "prediabetes": {
+        "icd10": "R73.03",
+        "diagnostic_criteria": {
+          "hba1c": {"range": "5.7-6.4%"},
+          "glucose_fasting": {"range": "100-125 mg/dL"},
+          "glucose_2h_ogtt": {"range": "140-199 mg/dL"}
+        },
+        "typical_biomarker_pattern": [
+          {"biomarker": "glucose_fasting", "pattern": "borderline_elevated", "typical_range": "100-125"},
+          {"biomarker": "hba1c", "pattern": "borderline_elevated", "typical_range": "5.7-6.4%"},
+          {"biomarker": "insulin_fasting", "pattern": "elevated", "note": "insulin resistance"},
+          {"biomarker": "triglycerides", "pattern": "elevated_borderline"},
+          {"biomarker": "hdl_cholesterol", "pattern": "low_borderline"}
+        ],
+        "reversibility": "Often reversible with lifestyle modification"
+      },
+      "metabolic_syndrome": {
+        "icd10": "E88.81",
+        "diagnostic_criteria": {
+          "requires_3_of_5": [
+            "waist_circumference: M>40in, F>35in",
+            "triglycerides: >=150 mg/dL",
+            "hdl: M<40, F<50 mg/dL",
+            "blood_pressure: >=130/85",
+            "fasting_glucose: >=100 mg/dL"
+          ]
+        },
+        "typical_biomarker_pattern": [
+          {"biomarker": "triglycerides", "pattern": "elevated", "typical_range": "150-500"},
+          {"biomarker": "hdl_cholesterol", "pattern": "low"},
+          {"biomarker": "glucose_fasting", "pattern": "elevated_borderline"},
+          {"biomarker": "insulin_fasting", "pattern": "elevated"},
+          {"biomarker": "uric_acid", "pattern": "elevated"},
+          {"biomarker": "alt", "pattern": "mildly_elevated"},
+          {"biomarker": "hs_crp", "pattern": "elevated"}
+        ]
+      },
+      "insulin_resistance": {
+        "typical_biomarker_pattern": [
+          {"biomarker": "insulin_fasting", "pattern": "elevated", "typical_range": ">15 µIU/mL"},
+          {"biomarker": "glucose_fasting", "pattern": "normal_to_elevated"},
+          {"biomarker": "homa_ir", "pattern": "elevated", "threshold": ">2.5"},
+          {"biomarker": "triglycerides", "pattern": "elevated"},
+          {"biomarker": "hdl_cholesterol", "pattern": "low"}
+        ],
+        "calculated_indices": {
+          "homa_ir": "(fasting glucose × fasting insulin) / 405",
+          "tg_hdl_ratio": "triglycerides / HDL (elevated >3 suggests IR)"
+        }
+      }
+    },
+    "thyroid": {
+      "hypothyroidism": {
+        "icd10": "E03",
+        "diagnostic_criteria": {
+          "primary": "elevated TSH with low free T4",
+          "subclinical": "elevated TSH with normal free T4"
+        },
+        "typical_biomarker_pattern": [
+          {"biomarker": "tsh", "pattern": "elevated", "typical_range": "5-100+"},
+          {"biomarker": "free_t4", "pattern": "low_or_low_normal"},
+          {"biomarker": "free_t3", "pattern": "low_or_low_normal"},
+          {"biomarker": "total_cholesterol", "pattern": "elevated"},
+          {"biomarker": "ldl_cholesterol", "pattern": "elevated"},
+          {"biomarker": "triglycerides", "pattern": "elevated"},
+          {"biomarker": "creatinine", "pattern": "mildly_elevated", "note": "reduced clearance"},
+          {"biomarker": "sodium", "pattern": "low", "note": "dilutional"},
+          {"biomarker": "alt", "pattern": "mildly_elevated"},
+          {"biomarker": "ck", "pattern": "elevated", "note": "muscle involvement"}
+        ],
+        "hashimotos_pattern": [
+          {"biomarker": "tpo_antibodies", "pattern": "positive"},
+          {"biomarker": "thyroglobulin_antibodies", "pattern": "often_positive"}
+        ],
+        "monitoring_panel": ["tsh", "free_t4"],
+        "monitoring_frequency": "every 6-8 weeks during titration; then every 6-12 months"
+      },
+      "hyperthyroidism": {
+        "icd10": "E05",
+        "diagnostic_criteria": {
+          "primary": "suppressed TSH with elevated free T4 and/or free T3"
+        },
+        "typical_biomarker_pattern": [
+          {"biomarker": "tsh", "pattern": "suppressed", "typical_range": "<0.1"},
+          {"biomarker": "free_t4", "pattern": "elevated"},
+          {"biomarker": "free_t3", "pattern": "elevated"},
+          {"biomarker": "total_cholesterol", "pattern": "low"},
+          {"biomarker": "ldl_cholesterol", "pattern": "low"},
+          {"biomarker": "alp", "pattern": "elevated", "note": "bone turnover"},
+          {"biomarker": "calcium", "pattern": "mildly_elevated"},
+          {"biomarker": "glucose_fasting", "pattern": "elevated"},
+          {"biomarker": "alt", "pattern": "mildly_elevated"}
+        ],
+        "graves_pattern": [
+          {"biomarker": "tsi_antibodies", "pattern": "positive"},
+          {"biomarker": "trab", "pattern": "positive"}
+        ]
+      },
+      "subclinical_hypothyroidism": {
+        "diagnostic_criteria": {
+          "tsh": "4.5-10 mIU/L",
+          "free_t4": "normal"
+        },
+        "management": "Treat if TSH >10 or symptoms; monitor if TSH 4.5-10"
+      }
+    },
+    "cardiovascular": {
+      "dyslipidemia": {
+        "icd10": "E78",
+        "subtypes": {
+          "hypercholesterolemia": {
+            "pattern": [
+              {"biomarker": "total_cholesterol", "pattern": "elevated"},
+              {"biomarker": "ldl_cholesterol", "pattern": "elevated"}
+            ]
+          },
+          "hypertriglyceridemia": {
+            "pattern": [
+              {"biomarker": "triglycerides", "pattern": "elevated", "typical_range": "150-500+"},
+              {"biomarker": "hdl_cholesterol", "pattern": "often_low"}
+            ]
+          },
+          "mixed_hyperlipidemia": {
+            "pattern": [
+              {"biomarker": "total_cholesterol", "pattern": "elevated"},
+              {"biomarker": "ldl_cholesterol", "pattern": "elevated"},
+              {"biomarker": "triglycerides", "pattern": "elevated"}
+            ]
+          },
+          "low_hdl": {
+            "pattern": [
+              {"biomarker": "hdl_cholesterol", "pattern": "low", "threshold": "M<40, F<50"}
+            ]
+          }
+        }
+      },
+      "familial_hypercholesterolemia": {
+        "icd10": "E78.01",
+        "typical_biomarker_pattern": [
+          {"biomarker": "ldl_cholesterol", "pattern": "severely_elevated", "typical_range": ">190 (hetero), >400 (homo)"},
+          {"biomarker": "total_cholesterol", "pattern": "severely_elevated"},
+          {"biomarker": "lpa", "pattern": "often_elevated"}
+        ],
+        "diagnostic_clues": ["LDL >190 without secondary cause", "family history of premature CVD", "tendon xanthomas"]
+      },
+      "heart_failure": {
+        "icd10": "I50",
+        "typical_biomarker_pattern": [
+          {"biomarker": "bnp", "pattern": "elevated", "typical_range": ">100 pg/mL"},
+          {"biomarker": "nt_probnp", "pattern": "elevated", "typical_range": ">300 pg/mL (age-adjusted)"},
+          {"biomarker": "sodium", "pattern": "low", "note": "dilutional hyponatremia"},
+          {"biomarker": "creatinine", "pattern": "elevated", "note": "cardiorenal syndrome"},
+          {"biomarker": "egfr", "pattern": "decreased"},
+          {"biomarker": "alt", "pattern": "elevated", "note": "hepatic congestion"},
+          {"biomarker": "albumin", "pattern": "low"}
+        ],
+        "severity_correlation": {
+          "bnp_mild": "100-300",
+          "bnp_moderate": "300-600",
+          "bnp_severe": ">600"
+        }
+      },
+      "acute_coronary_syndrome": {
+        "icd10": "I21",
+        "typical_biomarker_pattern": [
+          {"biomarker": "troponin_i", "pattern": "elevated", "timing": "rises 3-6h, peaks 12-24h"},
+          {"biomarker": "troponin_t_hs", "pattern": "elevated"},
+          {"biomarker": "ck_mb", "pattern": "elevated", "timing": "rises 4-8h, peaks 12-24h"},
+          {"biomarker": "bnp", "pattern": "elevated"},
+          {"biomarker": "wbc", "pattern": "elevated", "note": "stress response"},
+          {"biomarker": "glucose_fasting", "pattern": "elevated", "note": "stress hyperglycemia"}
+        ]
+      },
+      "atrial_fibrillation": {
+        "icd10": "I48",
+        "typical_biomarker_pattern": [
+          {"biomarker": "bnp", "pattern": "elevated"},
+          {"biomarker": "nt_probnp", "pattern": "elevated"},
+          {"biomarker": "tsh", "pattern": "check_for_hyperthyroid", "note": "rule out thyroid as cause"},
+          {"biomarker": "potassium", "pattern": "monitor_closely"},
+          {"biomarker": "magnesium", "pattern": "monitor_closely"}
+        ],
+        "anticoagulation_monitoring": ["inr", "creatinine", "egfr", "hemoglobin"]
+      }
+    },
+    "liver": {
+      "nafld_nash": {
+        "icd10": "K76.0",
+        "typical_biomarker_pattern": [
+          {"biomarker": "alt", "pattern": "elevated", "typical_range": "1.5-5x ULN"},
+          {"biomarker": "ast", "pattern": "elevated_less_than_alt", "note": "AST/ALT ratio <1 in NAFLD"},
+          {"biomarker": "ggt", "pattern": "elevated"},
+          {"biomarker": "triglycerides", "pattern": "elevated"},
+          {"biomarker": "hdl_cholesterol", "pattern": "low"},
+          {"biomarker": "glucose_fasting", "pattern": "elevated"},
+          {"biomarker": "hba1c", "pattern": "elevated"},
+          {"biomarker": "ferritin", "pattern": "elevated", "note": "hepatic iron accumulation"},
+          {"biomarker": "insulin_fasting", "pattern": "elevated"}
+        ],
+        "fibrosis_assessment": {
+          "fib4_score": "(age × AST) / (platelets × √ALT)",
+          "nafld_fibrosis_score": "complex formula including age, BMI, diabetes, AST, ALT, platelets, albumin"
+        }
+      },
+      "alcoholic_liver_disease": {
+        "icd10": "K70",
+        "typical_biomarker_pattern": [
+          {"biomarker": "ast", "pattern": "elevated_more_than_alt", "note": "AST/ALT ratio >2 classic"},
+          {"biomarker": "alt", "pattern": "elevated"},
+          {"biomarker": "ggt", "pattern": "significantly_elevated", "note": "very sensitive for alcohol"},
+          {"biomarker": "mcv", "pattern": "elevated", "note": "macrocytosis from alcohol"},
+          {"biomarker": "total_bilirubin", "pattern": "elevated_if_severe"},
+          {"biomarker": "albumin", "pattern": "low_if_advanced"},
+          {"biomarker": "inr", "pattern": "elevated_if_advanced"}
+        ]
+      },
+      "cirrhosis": {
+        "icd10": "K74",
+        "typical_biomarker_pattern": [
+          {"biomarker": "albumin", "pattern": "low", "typical_range": "<3.5 g/dL"},
+          {"biomarker": "total_bilirubin", "pattern": "elevated"},
+          {"biomarker": "inr", "pattern": "elevated"},
+          {"biomarker": "platelets", "pattern": "low", "note": "portal hypertension, splenic sequestration"},
+          {"biomarker": "ast", "pattern": "elevated"},
+          {"biomarker": "alt", "pattern": "elevated_but_may_normalize", "note": "burned out cirrhosis"},
+          {"biomarker": "sodium", "pattern": "low", "note": "hepatorenal syndrome risk"},
+          {"biomarker": "creatinine", "pattern": "elevated_if_decompensated"}
+        ],
+        "severity_scores": {
+          "meld_score": "formula using bilirubin, INR, creatinine",
+          "child_pugh": "bilirubin, albumin, INR, ascites, encephalopathy"
+        }
+      },
+      "hemochromatosis": {
+        "icd10": "E83.11",
+        "typical_biomarker_pattern": [
+          {"biomarker": "ferritin", "pattern": "elevated", "typical_range": ">300 (M), >200 (F)"},
+          {"biomarker": "transferrin_saturation", "pattern": "elevated", "typical_range": ">45%"},
+          {"biomarker": "iron", "pattern": "elevated"},
+          {"biomarker": "alt", "pattern": "mildly_elevated"},
+          {"biomarker": "glucose_fasting", "pattern": "elevated", "note": "bronze diabetes"}
+        ],
+        "screening": "Ferritin + transferrin saturation; HFE gene testing if elevated"
+      }
+    },
+    "kidney": {
+      "chronic_kidney_disease": {
+        "icd10": "N18",
+        "staging": {
+          "g1": {"egfr": ">=90", "description": "normal or high"},
+          "g2": {"egfr": "60-89", "description": "mildly decreased"},
+          "g3a": {"egfr": "45-59", "description": "mild-moderate decrease"},
+          "g3b": {"egfr": "30-44", "description": "moderate-severe decrease"},
+          "g4": {"egfr": "15-29", "description": "severely decreased"},
+          "g5": {"egfr": "<15", "description": "kidney failure"}
+        },
+        "typical_biomarker_pattern": [
+          {"biomarker": "creatinine", "pattern": "elevated"},
+          {"biomarker": "egfr", "pattern": "decreased"},
+          {"biomarker": "bun", "pattern": "elevated"},
+          {"biomarker": "uacr", "pattern": "elevated", "note": "albuminuria staging A1-A3"},
+          {"biomarker": "potassium", "pattern": "elevated", "note": "especially late stage"},
+          {"biomarker": "phosphorus", "pattern": "elevated", "note": "late stage"},
+          {"biomarker": "calcium", "pattern": "low", "note": "late stage"},
+          {"biomarker": "hemoglobin", "pattern": "low", "note": "renal anemia"},
+          {"biomarker": "vitamin_d_25oh", "pattern": "low"},
+          {"biomarker": "pth", "pattern": "elevated", "note": "secondary hyperparathyroidism"},
+          {"biomarker": "co2", "pattern": "low", "note": "metabolic acidosis"}
+        ],
+        "monitoring_panel": ["creatinine", "egfr", "uacr", "potassium", "phosphorus", "calcium", "hemoglobin", "pth"]
+      },
+      "acute_kidney_injury": {
+        "icd10": "N17",
+        "diagnostic_criteria": {
+          "kdigo_stage_1": "creatinine rise ≥0.3 mg/dL in 48h OR 1.5-1.9x baseline",
+          "kdigo_stage_2": "creatinine 2-2.9x baseline",
+          "kdigo_stage_3": "creatinine ≥3x baseline OR ≥4.0 mg/dL OR dialysis needed"
+        },
+        "typical_biomarker_pattern": [
+          {"biomarker": "creatinine", "pattern": "acutely_elevated"},
+          {"biomarker": "bun", "pattern": "elevated"},
+          {"biomarker": "potassium", "pattern": "elevated"},
+          {"biomarker": "phosphorus", "pattern": "elevated"},
+          {"biomarker": "co2", "pattern": "low"}
+        ],
+        "bun_creatinine_ratio": {
+          "prerenal": ">20:1 (elevated BUN more than creatinine)",
+          "intrinsic": "10-20:1",
+          "postrenal": "variable"
+        }
+      },
+      "nephrotic_syndrome": {
+        "icd10": "N04",
+        "diagnostic_criteria": {
+          "proteinuria": ">3.5 g/day",
+          "hypoalbuminemia": "<3 g/dL",
+          "edema": "present",
+          "hyperlipidemia": "present"
+        },
+        "typical_biomarker_pattern": [
+          {"biomarker": "albumin", "pattern": "low", "typical_range": "<3 g/dL"},
+          {"biomarker": "total_protein", "pattern": "low"},
+          {"biomarker": "uacr", "pattern": "severely_elevated"},
+          {"biomarker": "total_cholesterol", "pattern": "elevated"},
+          {"biomarker": "ldl_cholesterol", "pattern": "elevated"},
+          {"biomarker": "triglycerides", "pattern": "elevated"}
+        ]
+      }
+    },
+    "hematologic": {
+      "iron_deficiency_anemia": {
+        "icd10": "D50",
+        "typical_biomarker_pattern": [
+          {"biomarker": "hemoglobin", "pattern": "low"},
+          {"biomarker": "hematocrit", "pattern": "low"},
+          {"biomarker": "mcv", "pattern": "low", "note": "microcytic"},
+          {"biomarker": "mch", "pattern": "low"},
+          {"biomarker": "mchc", "pattern": "low"},
+          {"biomarker": "rdw", "pattern": "elevated"},
+          {"biomarker": "ferritin", "pattern": "low", "typical_range": "<30 ng/mL"},
+          {"biomarker": "iron", "pattern": "low"},
+          {"biomarker": "tibc", "pattern": "elevated"},
+          {"biomarker": "transferrin_saturation", "pattern": "low", "typical_range": "<20%"},
+          {"biomarker": "reticulocyte_count", "pattern": "low_or_normal"}
+        ]
+      },
+      "anemia_of_chronic_disease": {
+        "icd10": "D63",
+        "typical_biomarker_pattern": [
+          {"biomarker": "hemoglobin", "pattern": "low"},
+          {"biomarker": "mcv", "pattern": "normal_or_low", "note": "normocytic or mildly microcytic"},
+          {"biomarker": "ferritin", "pattern": "normal_or_elevated", "note": "key differentiator from IDA"},
+          {"biomarker": "iron", "pattern": "low"},
+          {"biomarker": "tibc", "pattern": "low_or_normal"},
+          {"biomarker": "transferrin_saturation", "pattern": "low"},
+          {"biomarker": "hs_crp", "pattern": "elevated", "note": "inflammation present"}
+        ],
+        "differentiator": "Ferritin normal/high distinguishes from iron deficiency"
+      },
+      "b12_deficiency": {
+        "icd10": "D51",
+        "typical_biomarker_pattern": [
+          {"biomarker": "hemoglobin", "pattern": "low"},
+          {"biomarker": "mcv", "pattern": "elevated", "note": "macrocytic"},
+          {"biomarker": "vitamin_b12", "pattern": "low", "typical_range": "<200 pg/mL"},
+          {"biomarker": "homocysteine", "pattern": "elevated"},
+          {"biomarker": "methylmalonic_acid", "pattern": "elevated", "note": "specific for B12"},
+          {"biomarker": "ldh", "pattern": "elevated", "note": "intramedullary hemolysis"},
+          {"biomarker": "reticulocyte_count", "pattern": "low"}
+        ]
+      },
+      "folate_deficiency": {
+        "icd10": "D52",
+        "typical_biomarker_pattern": [
+          {"biomarker": "hemoglobin", "pattern": "low"},
+          {"biomarker": "mcv", "pattern": "elevated"},
+          {"biomarker": "folate", "pattern": "low"},
+          {"biomarker": "homocysteine", "pattern": "elevated"},
+          {"biomarker": "methylmalonic_acid", "pattern": "normal", "note": "distinguishes from B12 deficiency"}
+        ]
+      },
+      "polycythemia": {
+        "icd10": "D45",
+        "typical_biomarker_pattern": [
+          {"biomarker": "hemoglobin", "pattern": "elevated", "typical_range": "M>18.5, F>16.5 g/dL"},
+          {"biomarker": "hematocrit", "pattern": "elevated", "typical_range": "M>52%, F>48%"},
+          {"biomarker": "rbc", "pattern": "elevated"},
+          {"biomarker": "wbc", "pattern": "elevated", "note": "in polycythemia vera"},
+          {"biomarker": "platelets", "pattern": "elevated_or_normal"},
+          {"biomarker": "epo", "pattern": "low_in_pv", "note": "low in vera, high in secondary"}
+        ]
+      }
+    },
+    "inflammatory_autoimmune": {
+      "rheumatoid_arthritis": {
+        "icd10": "M05-M06",
+        "typical_biomarker_pattern": [
+          {"biomarker": "esr", "pattern": "elevated"},
+          {"biomarker": "hs_crp", "pattern": "elevated"},
+          {"biomarker": "rf", "pattern": "positive", "note": "positive in ~70%"},
+          {"biomarker": "anti_ccp", "pattern": "positive", "note": "more specific than RF"},
+          {"biomarker": "hemoglobin", "pattern": "low", "note": "anemia of chronic disease"},
+          {"biomarker": "platelets", "pattern": "elevated", "note": "reactive thrombocytosis"}
+        ]
+      },
+      "systemic_lupus": {
+        "icd10": "M32",
+        "typical_biomarker_pattern": [
+          {"biomarker": "ana", "pattern": "positive"},
+          {"biomarker": "anti_dsdna", "pattern": "positive", "note": "specific for SLE"},
+          {"biomarker": "complement_c3", "pattern": "low", "note": "during flares"},
+          {"biomarker": "complement_c4", "pattern": "low"},
+          {"biomarker": "esr", "pattern": "elevated"},
+          {"biomarker": "crp", "pattern": "often_normal", "note": "CRP often normal unless infection"},
+          {"biomarker": "wbc", "pattern": "low", "note": "leukopenia"},
+          {"biomarker": "lymphocytes_absolute", "pattern": "low"},
+          {"biomarker": "hemoglobin", "pattern": "low"},
+          {"biomarker": "platelets", "pattern": "low"},
+          {"biomarker": "creatinine", "pattern": "elevated_if_nephritis"},
+          {"biomarker": "uacr", "pattern": "elevated_if_nephritis"}
+        ]
+      },
+      "inflammatory_bowel_disease": {
+        "icd10": "K50-K51",
+        "typical_biomarker_pattern": [
+          {"biomarker": "hs_crp", "pattern": "elevated"},
+          {"biomarker": "esr", "pattern": "elevated"},
+          {"biomarker": "hemoglobin", "pattern": "low", "note": "iron deficiency and/or chronic disease"},
+          {"biomarker": "ferritin", "pattern": "variable"},
+          {"biomarker": "albumin", "pattern": "low", "note": "malnutrition, protein loss"},
+          {"biomarker": "vitamin_b12", "pattern": "low", "note": "especially Crohn's with ileal involvement"},
+          {"biomarker": "vitamin_d_25oh", "pattern": "low"},
+          {"biomarker": "calprotectin_fecal", "pattern": "elevated"}
+        ]
+      }
+    },
+    "hormonal": {
+      "male_hypogonadism": {
+        "icd10": "E29.1",
+        "diagnostic_criteria": {
+          "testosterone_total": "<264 ng/dL on two morning samples"
+        },
+        "typical_biomarker_pattern": [
+          {"biomarker": "testosterone_total_male", "pattern": "low"},
+          {"biomarker": "free_testosterone_male", "pattern": "low"},
+          {"biomarker": "lh", "pattern": "low_or_elevated", "note": "low = secondary, elevated = primary"},
+          {"biomarker": "fsh", "pattern": "low_or_elevated"},
+          {"biomarker": "shbg", "pattern": "elevated_in_aging"},
+          {"biomarker": "prolactin", "pattern": "check_if_secondary"},
+          {"biomarker": "hemoglobin", "pattern": "low"}
+        ],
+        "classification": {
+          "primary": "low T, high LH/FSH (testicular)",
+          "secondary": "low T, low/normal LH/FSH (pituitary/hypothalamic)"
+        }
+      },
+      "pcos": {
+        "icd10": "E28.2",
+        "diagnostic_criteria": {
+          "rotterdam": "2 of 3: oligo/anovulation, hyperandrogenism, polycystic ovaries"
+        },
+        "typical_biomarker_pattern": [
+          {"biomarker": "testosterone_total_female", "pattern": "elevated"},
+          {"biomarker": "free_testosterone", "pattern": "elevated"},
+          {"biomarker": "dhea_s", "pattern": "elevated_or_normal"},
+          {"biomarker": "lh", "pattern": "elevated"},
+          {"biomarker": "fsh", "pattern": "normal_or_low"},
+          {"biomarker": "lh_fsh_ratio", "pattern": "elevated", "note": ">2:1"},
+          {"biomarker": "amh", "pattern": "elevated"},
+          {"biomarker": "insulin_fasting", "pattern": "elevated"},
+          {"biomarker": "glucose_fasting", "pattern": "elevated_borderline"},
+          {"biomarker": "shbg", "pattern": "low"}
+        ]
+      },
+      "cushing_syndrome": {
+        "icd10": "E24",
+        "typical_biomarker_pattern": [
+          {"biomarker": "cortisol_am", "pattern": "elevated"},
+          {"biomarker": "24h_urine_cortisol", "pattern": "elevated"},
+          {"biomarker": "late_night_salivary_cortisol", "pattern": "elevated"},
+          {"biomarker": "glucose_fasting", "pattern": "elevated"},
+          {"biomarker": "potassium", "pattern": "low"},
+          {"biomarker": "wbc", "pattern": "elevated"},
+          {"biomarker": "lymphocytes", "pattern": "low"}
+        ]
+      },
+      "addison_disease": {
+        "icd10": "E27.1",
+        "typical_biomarker_pattern": [
+          {"biomarker": "cortisol_am", "pattern": "low"},
+          {"biomarker": "acth", "pattern": "elevated", "note": "in primary"},
+          {"biomarker": "sodium", "pattern": "low"},
+          {"biomarker": "potassium", "pattern": "elevated"},
+          {"biomarker": "glucose_fasting", "pattern": "low"},
+          {"biomarker": "eosinophils_absolute", "pattern": "elevated"}
+        ]
+      }
+    },
+    "bone": {
+      "osteoporosis": {
+        "icd10": "M81",
+        "typical_biomarker_pattern": [
+          {"biomarker": "vitamin_d_25oh", "pattern": "often_low"},
+          {"biomarker": "calcium", "pattern": "usually_normal"},
+          {"biomarker": "pth", "pattern": "may_be_elevated_secondary"},
+          {"biomarker": "alp", "pattern": "normal_or_mildly_elevated"},
+          {"biomarker": "ctx", "pattern": "marker_of_resorption"},
+          {"biomarker": "p1np", "pattern": "marker_of_formation"}
+        ],
+        "monitoring": ["vitamin D", "calcium", "bone turnover markers if on treatment"]
+      },
+      "primary_hyperparathyroidism": {
+        "icd10": "E21.0",
+        "typical_biomarker_pattern": [
+          {"biomarker": "calcium", "pattern": "elevated"},
+          {"biomarker": "ionized_calcium", "pattern": "elevated"},
+          {"biomarker": "pth", "pattern": "elevated_or_inappropriate_normal", "note": "should be suppressed with high Ca"},
+          {"biomarker": "phosphorus", "pattern": "low_or_low_normal"},
+          {"biomarker": "vitamin_d_25oh", "pattern": "often_low"},
+          {"biomarker": "alp", "pattern": "mildly_elevated"}
+        ]
+      }
+    },
+    "coagulation": {
+      "dvt_pe": {
+        "icd10": "I26, I82",
+        "typical_biomarker_pattern": [
+          {"biomarker": "d_dimer", "pattern": "elevated", "note": "sensitive but not specific"},
+          {"biomarker": "troponin_i", "pattern": "may_elevate_in_pe", "note": "RV strain"}
+        ],
+        "note": "D-dimer useful to rule out, not rule in"
+      },
+      "dic": {
+        "icd10": "D65",
+        "typical_biomarker_pattern": [
+          {"biomarker": "platelets", "pattern": "low", "note": "consumption"},
+          {"biomarker": "pt", "pattern": "prolonged"},
+          {"biomarker": "ptt", "pattern": "prolonged"},
+          {"biomarker": "fibrinogen", "pattern": "low"},
+          {"biomarker": "d_dimer", "pattern": "elevated"}
+        ]
+      }
+    }
+  }
+}

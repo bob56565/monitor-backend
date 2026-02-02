@@ -1,0 +1,584 @@
+{
+  "schema_version": "1.0.0",
+  "last_updated": "2026-02-02",
+  "total_kits": 28,
+  "categories": [
+    "blood_panel",
+    "genetic",
+    "microbiome",
+    "hormone",
+    "allergy",
+    "std",
+    "metabolic",
+    "cardiovascular",
+    "inflammation"
+  ],
+  "kits": {
+    "blood_panel": [
+      {
+        "id": "everlywell_comprehensive",
+        "manufacturer": "Everlywell",
+        "name": "Comprehensive Health Test",
+        "category": "blood_panel",
+        "sample_type": "fingerstick_blood",
+        "fda_status": "clia_certified_lab",
+        "biomarkers": [
+          {"name": "HbA1c", "unit": "%", "reference_range": {"low": 4.0, "high": 5.6}, "clinical_significance": "diabetes_screening"},
+          {"name": "Total Cholesterol", "unit": "mg/dL", "reference_range": {"low": 0, "high": 200}},
+          {"name": "HDL Cholesterol", "unit": "mg/dL", "reference_range": {"low": 40, "high": 999}},
+          {"name": "LDL Cholesterol", "unit": "mg/dL", "reference_range": {"low": 0, "high": 100}},
+          {"name": "Triglycerides", "unit": "mg/dL", "reference_range": {"low": 0, "high": 150}},
+          {"name": "Hs-CRP", "unit": "mg/L", "reference_range": {"low": 0, "high": 3.0}},
+          {"name": "Vitamin D", "unit": "ng/mL", "reference_range": {"low": 30, "high": 100}},
+          {"name": "TSH", "unit": "mIU/L", "reference_range": {"low": 0.4, "high": 4.0}}
+        ],
+        "turnaround_days": 5,
+        "cost_usd": 299,
+        "accuracy_note": "CLIA-certified lab processing",
+        "data_export": ["pdf", "csv"],
+        "api_available": false
+      },
+      {
+        "id": "insidetracker_ultimate",
+        "manufacturer": "InsideTracker",
+        "name": "Ultimate Plan",
+        "category": "blood_panel",
+        "sample_type": "venipuncture",
+        "fda_status": "clia_certified_lab",
+        "biomarkers": [
+          {"name": "Glucose", "unit": "mg/dL", "reference_range": {"low": 70, "high": 100}},
+          {"name": "HbA1c", "unit": "%", "reference_range": {"low": 4.0, "high": 5.6}},
+          {"name": "Total Cholesterol", "unit": "mg/dL"},
+          {"name": "HDL Cholesterol", "unit": "mg/dL"},
+          {"name": "LDL Cholesterol", "unit": "mg/dL"},
+          {"name": "Triglycerides", "unit": "mg/dL"},
+          {"name": "ApoB", "unit": "mg/dL", "reference_range": {"low": 0, "high": 90}},
+          {"name": "Lp(a)", "unit": "nmol/L", "reference_range": {"low": 0, "high": 75}},
+          {"name": "Hs-CRP", "unit": "mg/L"},
+          {"name": "Homocysteine", "unit": "µmol/L", "reference_range": {"low": 5, "high": 15}},
+          {"name": "Cortisol", "unit": "µg/dL"},
+          {"name": "DHEA-S", "unit": "µg/dL"},
+          {"name": "Testosterone", "unit": "ng/dL"},
+          {"name": "Free Testosterone", "unit": "pg/mL"},
+          {"name": "SHBG", "unit": "nmol/L"},
+          {"name": "Estradiol", "unit": "pg/mL"},
+          {"name": "IGF-1", "unit": "ng/mL"},
+          {"name": "Vitamin D", "unit": "ng/mL"},
+          {"name": "Vitamin B12", "unit": "pg/mL"},
+          {"name": "Folate", "unit": "ng/mL"},
+          {"name": "Iron", "unit": "µg/dL"},
+          {"name": "Ferritin", "unit": "ng/mL"},
+          {"name": "TIBC", "unit": "µg/dL"},
+          {"name": "Magnesium", "unit": "mg/dL"},
+          {"name": "Creatinine", "unit": "mg/dL"},
+          {"name": "eGFR", "unit": "mL/min/1.73m²"},
+          {"name": "ALT", "unit": "U/L"},
+          {"name": "AST", "unit": "U/L"},
+          {"name": "GGT", "unit": "U/L"},
+          {"name": "WBC", "unit": "K/µL"},
+          {"name": "RBC", "unit": "M/µL"},
+          {"name": "Hemoglobin", "unit": "g/dL"},
+          {"name": "Hematocrit", "unit": "%"},
+          {"name": "MCV", "unit": "fL"},
+          {"name": "Platelets", "unit": "K/µL"}
+        ],
+        "turnaround_days": 7,
+        "cost_usd": 589,
+        "includes_ai_recommendations": true,
+        "data_export": ["pdf", "csv"],
+        "api_available": true
+      },
+      {
+        "id": "function_health_annual",
+        "manufacturer": "Function Health",
+        "name": "Annual Membership",
+        "category": "blood_panel",
+        "sample_type": "venipuncture",
+        "fda_status": "clia_certified_lab",
+        "biomarker_count": 100,
+        "biomarkers": [
+          {"name": "Comprehensive Metabolic Panel", "type": "panel"},
+          {"name": "Complete Blood Count", "type": "panel"},
+          {"name": "Lipid Panel Extended", "type": "panel"},
+          {"name": "Thyroid Panel Complete", "type": "panel"},
+          {"name": "Hormone Panel", "type": "panel"},
+          {"name": "Inflammation Markers", "type": "panel"},
+          {"name": "Liver Function", "type": "panel"},
+          {"name": "Kidney Function", "type": "panel"},
+          {"name": "Vitamin/Mineral Panel", "type": "panel"},
+          {"name": "Cancer Markers", "type": "panel"}
+        ],
+        "tests_per_year": 2,
+        "turnaround_days": 7,
+        "cost_usd_annual": 499,
+        "data_export": ["pdf"],
+        "api_available": false
+      },
+      {
+        "id": "letsgetchecked_mens_health",
+        "manufacturer": "LetsGetChecked",
+        "name": "Men's Health Test",
+        "category": "blood_panel",
+        "sample_type": "fingerstick_blood",
+        "fda_status": "clia_certified_lab",
+        "biomarkers": [
+          {"name": "PSA", "unit": "ng/mL", "reference_range": {"low": 0, "high": 4.0}},
+          {"name": "Total Testosterone", "unit": "ng/dL"},
+          {"name": "Free Testosterone", "unit": "pg/mL"},
+          {"name": "SHBG", "unit": "nmol/L"},
+          {"name": "Cortisol", "unit": "µg/dL"}
+        ],
+        "turnaround_days": 5,
+        "cost_usd": 199,
+        "data_export": ["pdf"],
+        "api_available": false
+      },
+      {
+        "id": "quest_diagnostics_essential",
+        "manufacturer": "Quest Diagnostics",
+        "name": "Essential Health Panel",
+        "category": "blood_panel",
+        "sample_type": "venipuncture",
+        "fda_status": "clia_certified_lab",
+        "biomarkers": [
+          {"name": "Complete Metabolic Panel", "type": "panel", "includes": ["glucose", "bun", "creatinine", "sodium", "potassium", "chloride", "co2", "calcium", "total_protein", "albumin", "bilirubin", "alkaline_phosphatase", "ast", "alt"]},
+          {"name": "Lipid Panel", "type": "panel"},
+          {"name": "Complete Blood Count", "type": "panel"},
+          {"name": "TSH", "unit": "mIU/L"}
+        ],
+        "turnaround_days": 3,
+        "cost_usd": 149,
+        "prescription_required": false,
+        "data_export": ["pdf", "hl7"],
+        "api_available": true,
+        "api_type": "quest_diagnostics_api"
+      }
+    ],
+    "genetic": [
+      {
+        "id": "23andme_health_ancestry",
+        "manufacturer": "23andMe",
+        "name": "Health + Ancestry Service",
+        "category": "genetic",
+        "sample_type": "saliva",
+        "fda_status": "fda_authorized",
+        "test_type": "snp_genotyping",
+        "snps_tested": 700000,
+        "reports": [
+          {"type": "health_predisposition", "conditions": ["type_2_diabetes", "parkinsons", "alzheimers_late_onset", "celiac", "macular_degeneration", "hereditary_thrombophilia"]},
+          {"type": "carrier_status", "conditions": ["cystic_fibrosis", "sickle_cell", "tay_sachs", "hereditary_hearing_loss"]},
+          {"type": "wellness", "traits": ["caffeine_metabolism", "lactose_intolerance", "alcohol_flush", "sleep_movement", "muscle_composition"]},
+          {"type": "pharmacogenomics", "drugs": ["clopidogrel", "warfarin", "certain_statins"]}
+        ],
+        "turnaround_days": 21,
+        "cost_usd": 229,
+        "data_export": ["pdf", "raw_dna_txt"],
+        "api_available": true,
+        "api_type": "23andme_api",
+        "accuracy_note": "SNP genotyping, not whole genome sequencing"
+      },
+      {
+        "id": "ancestry_health",
+        "manufacturer": "Ancestry",
+        "name": "AncestryHealth",
+        "category": "genetic",
+        "sample_type": "saliva",
+        "fda_status": "fda_authorized",
+        "test_type": "snp_genotyping",
+        "reports": [
+          {"type": "health_predisposition", "conditions": ["heart_disease", "breast_cancer_brca1_brca2"]},
+          {"type": "carrier_status", "conditions": 40},
+          {"type": "wellness", "traits": ["vitamin_levels", "food_sensitivities"]}
+        ],
+        "turnaround_days": 28,
+        "cost_usd": 199,
+        "data_export": ["pdf", "raw_dna_txt"],
+        "api_available": false
+      },
+      {
+        "id": "nebula_genomics_30x",
+        "manufacturer": "Nebula Genomics",
+        "name": "30x Whole Genome Sequencing",
+        "category": "genetic",
+        "sample_type": "saliva",
+        "fda_status": "research_use_only",
+        "test_type": "whole_genome_sequencing",
+        "coverage": "30x",
+        "variants_detected": "billions",
+        "reports": [
+          {"type": "ancestry", "detail": "high"},
+          {"type": "traits", "count": 200},
+          {"type": "health_predisposition", "count": 100},
+          {"type": "rare_variants", "included": true}
+        ],
+        "turnaround_days": 56,
+        "cost_usd": 299,
+        "data_export": ["vcf", "bam", "fastq", "pdf"],
+        "api_available": true,
+        "notes": "Most comprehensive genetic data available consumer-grade"
+      },
+      {
+        "id": "color_hereditary_cancer",
+        "manufacturer": "Color Health",
+        "name": "Hereditary Cancer Test",
+        "category": "genetic",
+        "sample_type": "saliva",
+        "fda_status": "clia_certified_lab",
+        "test_type": "targeted_sequencing",
+        "genes_tested": 30,
+        "genes": ["BRCA1", "BRCA2", "MLH1", "MSH2", "MSH6", "PMS2", "APC", "MUTYH", "CDH1", "PALB2", "CHEK2", "ATM", "TP53", "PTEN", "STK11"],
+        "turnaround_days": 21,
+        "cost_usd": 249,
+        "includes_genetic_counseling": true,
+        "data_export": ["pdf"],
+        "api_available": false
+      },
+      {
+        "id": "invitae_proactive",
+        "manufacturer": "Invitae",
+        "name": "Proactive Genetic Health Screen",
+        "category": "genetic",
+        "sample_type": "saliva",
+        "fda_status": "clia_certified_lab",
+        "test_type": "targeted_sequencing",
+        "genes_tested": 60,
+        "categories": ["hereditary_cancer", "cardiac", "pharmacogenomics"],
+        "turnaround_days": 14,
+        "cost_usd": 250,
+        "includes_genetic_counseling": true,
+        "data_export": ["pdf"],
+        "api_available": false
+      }
+    ],
+    "microbiome": [
+      {
+        "id": "viome_gut_intelligence",
+        "manufacturer": "Viome",
+        "name": "Gut Intelligence Test",
+        "category": "microbiome",
+        "sample_type": "stool",
+        "test_type": "metatranscriptomic_sequencing",
+        "measures": [
+          {"name": "microbial_species", "count": "300+"},
+          {"name": "microbial_activity", "type": "functional"},
+          {"name": "pathway_scores", "pathways": ["inflammatory", "gas_production", "protein_fermentation", "metabolic_fitness"]}
+        ],
+        "reports": [
+          {"type": "gut_health_scores", "metrics": ["digestive_efficiency", "inflammatory_activity", "metabolic_fitness", "gut_lining_health"]},
+          {"type": "food_recommendations", "personalized": true},
+          {"type": "supplement_recommendations", "personalized": true}
+        ],
+        "turnaround_days": 21,
+        "cost_usd": 249,
+        "subscription_available": true,
+        "data_export": ["pdf"],
+        "api_available": false,
+        "accuracy_note": "RNA sequencing shows active microbes, not just DNA presence"
+      },
+      {
+        "id": "zoe_gut_health",
+        "manufacturer": "ZOE",
+        "name": "At-Home Test Kit",
+        "category": "microbiome",
+        "sample_type": "stool_and_blood",
+        "test_type": "shotgun_metagenomics",
+        "measures": [
+          {"name": "gut_microbiome", "species": "100+"},
+          {"name": "blood_sugar_response", "type": "cgm_challenge"},
+          {"name": "blood_fat_response", "type": "postprandial"}
+        ],
+        "reports": [
+          {"type": "personalized_scores", "metrics": ["gut_health", "blood_sugar_control", "blood_fat_control"]},
+          {"type": "food_scores", "foods": 1000},
+          {"type": "meal_recommendations", "personalized": true}
+        ],
+        "includes_cgm": true,
+        "cgm_duration_days": 14,
+        "turnaround_days": 28,
+        "cost_usd": 399,
+        "subscription_usd_monthly": 60,
+        "data_export": ["pdf"],
+        "api_available": false
+      },
+      {
+        "id": "thorne_gut_health",
+        "manufacturer": "Thorne",
+        "name": "Gut Health Test",
+        "category": "microbiome",
+        "sample_type": "stool",
+        "test_type": "16s_rrna_sequencing",
+        "measures": [
+          {"name": "bacterial_diversity", "type": "alpha_beta"},
+          {"name": "pathogenic_bacteria", "screening": true},
+          {"name": "beneficial_bacteria", "quantification": true}
+        ],
+        "turnaround_days": 21,
+        "cost_usd": 198,
+        "data_export": ["pdf"],
+        "api_available": false
+      }
+    ],
+    "hormone": [
+      {
+        "id": "modern_fertility_hormone",
+        "manufacturer": "Modern Fertility",
+        "name": "Hormone Test",
+        "category": "hormone",
+        "sample_type": "fingerstick_blood",
+        "target_population": "women",
+        "fda_status": "clia_certified_lab",
+        "biomarkers": [
+          {"name": "AMH", "unit": "ng/mL", "significance": "ovarian_reserve"},
+          {"name": "FSH", "unit": "mIU/mL", "significance": "ovarian_function"},
+          {"name": "E2", "unit": "pg/mL", "significance": "estrogen_levels"},
+          {"name": "LH", "unit": "mIU/mL", "significance": "ovulation"},
+          {"name": "TSH", "unit": "mIU/L", "significance": "thyroid"},
+          {"name": "Free T4", "unit": "ng/dL", "significance": "thyroid"},
+          {"name": "Prolactin", "unit": "ng/mL", "significance": "pituitary"}
+        ],
+        "turnaround_days": 7,
+        "cost_usd": 179,
+        "timing_requirement": "cycle_day_3",
+        "data_export": ["pdf"],
+        "api_available": false
+      },
+      {
+        "id": "dutch_complete",
+        "manufacturer": "Precision Analytical",
+        "name": "DUTCH Complete",
+        "category": "hormone",
+        "sample_type": "dried_urine",
+        "fda_status": "clia_certified_lab",
+        "biomarkers": [
+          {"name": "Cortisol_metabolites", "type": "panel"},
+          {"name": "Cortisone_metabolites", "type": "panel"},
+          {"name": "Estrogen_metabolites", "includes": ["E1", "E2", "E3", "2OH_E1", "4OH_E1", "16OH_E1"]},
+          {"name": "Progesterone_metabolites", "type": "panel"},
+          {"name": "Androgen_metabolites", "includes": ["DHEA", "testosterone", "DHT_metabolites"]},
+          {"name": "Melatonin", "unit": "ng/mg_creatinine"},
+          {"name": "Organic_acids", "includes": ["8OHdG", "melatonin_metabolite"]}
+        ],
+        "collection_protocol": "4_samples_over_24_hours",
+        "turnaround_days": 14,
+        "cost_usd": 399,
+        "requires_practitioner": true,
+        "data_export": ["pdf"],
+        "api_available": false,
+        "accuracy_note": "Gold standard for comprehensive hormone metabolite testing"
+      },
+      {
+        "id": "everlywell_testosterone",
+        "manufacturer": "Everlywell",
+        "name": "Men's Health Test",
+        "category": "hormone",
+        "sample_type": "fingerstick_blood",
+        "target_population": "men",
+        "fda_status": "clia_certified_lab",
+        "biomarkers": [
+          {"name": "Total Testosterone", "unit": "ng/dL"},
+          {"name": "Free Testosterone", "unit": "pg/mL"},
+          {"name": "DHEA-S", "unit": "µg/dL"},
+          {"name": "Cortisol", "unit": "µg/dL"}
+        ],
+        "turnaround_days": 5,
+        "cost_usd": 99,
+        "data_export": ["pdf"],
+        "api_available": false
+      }
+    ],
+    "allergy": [
+      {
+        "id": "everlywell_food_sensitivity",
+        "manufacturer": "Everlywell",
+        "name": "Food Sensitivity Test",
+        "category": "allergy",
+        "sample_type": "fingerstick_blood",
+        "test_type": "igg_antibody",
+        "foods_tested": 96,
+        "food_categories": ["dairy", "eggs", "grains", "fruits", "vegetables", "nuts", "seafood", "meats", "spices"],
+        "turnaround_days": 7,
+        "cost_usd": 199,
+        "data_export": ["pdf"],
+        "api_available": false,
+        "clinical_note": "IgG testing not validated for true food allergies; measures exposure/tolerance"
+      },
+      {
+        "id": "everlywell_indoor_outdoor_allergy",
+        "manufacturer": "Everlywell",
+        "name": "Indoor & Outdoor Allergy Test",
+        "category": "allergy",
+        "sample_type": "fingerstick_blood",
+        "test_type": "ige_antibody",
+        "allergens_tested": 40,
+        "allergen_categories": ["dust_mites", "mold", "pet_dander", "tree_pollen", "grass_pollen", "weed_pollen", "cockroach"],
+        "turnaround_days": 7,
+        "cost_usd": 159,
+        "data_export": ["pdf"],
+        "api_available": false,
+        "clinical_note": "IgE testing clinically validated for type I hypersensitivity"
+      }
+    ],
+    "std": [
+      {
+        "id": "stdcheck_10_panel",
+        "manufacturer": "STDcheck",
+        "name": "10 Test Panel",
+        "category": "std",
+        "sample_type": "blood_and_urine",
+        "fda_status": "clia_certified_lab",
+        "tests": [
+          {"name": "HIV_1_2_antibody", "method": "elisa"},
+          {"name": "Herpes_1", "method": "antibody"},
+          {"name": "Herpes_2", "method": "antibody"},
+          {"name": "Hepatitis_A", "method": "antibody"},
+          {"name": "Hepatitis_B", "method": "antigen_antibody"},
+          {"name": "Hepatitis_C", "method": "antibody"},
+          {"name": "Chlamydia", "method": "naat"},
+          {"name": "Gonorrhea", "method": "naat"},
+          {"name": "Syphilis", "method": "rpr"},
+          {"name": "Trichomoniasis", "method": "naat"}
+        ],
+        "turnaround_days": 3,
+        "cost_usd": 198,
+        "anonymous_testing": true,
+        "data_export": ["pdf"],
+        "api_available": false
+      }
+    ],
+    "metabolic": [
+      {
+        "id": "levels_cgm_program",
+        "manufacturer": "Levels",
+        "name": "Metabolic Health Program",
+        "category": "metabolic",
+        "sample_type": "cgm_sensor",
+        "cgm_brand": "dexcom_stelo_or_libre",
+        "duration_days": 28,
+        "measures": [
+          {"name": "glucose_patterns", "continuous": true},
+          {"name": "meal_scores", "per_meal": true},
+          {"name": "metabolic_score", "daily": true}
+        ],
+        "includes_app": true,
+        "includes_coaching": true,
+        "turnaround_days": 0,
+        "cost_usd": 199,
+        "subscription_usd_monthly": 199,
+        "data_export": ["csv", "json"],
+        "api_available": true
+      },
+      {
+        "id": "nutrisense_cgm",
+        "manufacturer": "Nutrisense",
+        "name": "CGM Program",
+        "category": "metabolic",
+        "sample_type": "cgm_sensor",
+        "cgm_brand": "freestyle_libre",
+        "duration_days": 28,
+        "measures": [
+          {"name": "glucose_variability", "continuous": true},
+          {"name": "time_in_range", "daily": true},
+          {"name": "meal_impact", "per_meal": true}
+        ],
+        "includes_app": true,
+        "includes_dietitian": true,
+        "turnaround_days": 0,
+        "cost_usd": 225,
+        "subscription_usd_monthly": 225,
+        "data_export": ["csv"],
+        "api_available": false
+      }
+    ],
+    "cardiovascular": [
+      {
+        "id": "cleerly_ct_analysis",
+        "manufacturer": "Cleerly",
+        "name": "Heart Disease Analysis",
+        "category": "cardiovascular",
+        "sample_type": "ct_angiogram_images",
+        "test_type": "ai_plaque_analysis",
+        "measures": [
+          {"name": "total_plaque_volume", "unit": "mm³"},
+          {"name": "calcified_plaque_volume", "unit": "mm³"},
+          {"name": "non_calcified_plaque_volume", "unit": "mm³"},
+          {"name": "low_density_plaque_volume", "unit": "mm³"},
+          {"name": "stenosis_percent", "per_vessel": true},
+          {"name": "positive_remodeling", "type": "boolean"}
+        ],
+        "requires_imaging": true,
+        "imaging_type": "coronary_ct_angiography",
+        "turnaround_days": 3,
+        "cost_usd": 500,
+        "prescription_required": true,
+        "data_export": ["pdf", "dicom"],
+        "api_available": false,
+        "clinical_note": "AI-powered detailed plaque characterization beyond calcium scoring"
+      },
+      {
+        "id": "boston_heart_advanced_lipid",
+        "manufacturer": "Boston Heart Diagnostics",
+        "name": "Advanced Lipid Panel",
+        "category": "cardiovascular",
+        "sample_type": "venipuncture",
+        "fda_status": "clia_certified_lab",
+        "biomarkers": [
+          {"name": "LDL_Particle_Number", "unit": "nmol/L", "reference": {"optimal": "<1000"}},
+          {"name": "LDL_Particle_Size", "unit": "nm", "patterns": ["A_large", "B_small"]},
+          {"name": "HDL_Particle_Number", "unit": "µmol/L"},
+          {"name": "ApoB", "unit": "mg/dL"},
+          {"name": "ApoA1", "unit": "mg/dL"},
+          {"name": "Lp(a)", "unit": "nmol/L"},
+          {"name": "LpPLA2", "unit": "ng/mL"},
+          {"name": "sdLDL", "unit": "mg/dL"},
+          {"name": "HDL_Map", "type": "subfractionation"},
+          {"name": "Cholesterol_Balance", "includes": ["absorption", "synthesis"]}
+        ],
+        "turnaround_days": 7,
+        "cost_usd": 299,
+        "requires_practitioner": true,
+        "data_export": ["pdf"],
+        "api_available": false
+      }
+    ],
+    "inflammation": [
+      {
+        "id": "cyrex_array_5",
+        "manufacturer": "Cyrex Laboratories",
+        "name": "Multiple Autoimmune Reactivity Screen",
+        "category": "inflammation",
+        "sample_type": "venipuncture",
+        "fda_status": "clia_certified_lab",
+        "test_type": "autoantibody_panel",
+        "antibodies_tested": 24,
+        "targets": [
+          "thyroid_peroxidase",
+          "thyroglobulin",
+          "21_hydroxylase",
+          "parietal_cells",
+          "intrinsic_factor",
+          "gad65",
+          "islet_cell",
+          "myelin_basic_protein",
+          "asialoganglioside",
+          "alpha_beta_crystallin",
+          "actin",
+          "tropomyosin",
+          "mitochondria",
+          "hepatocyte",
+          "smooth_muscle",
+          "nuclear_antigens",
+          "ds_dna",
+          "centromere",
+          "ovary",
+          "testis"
+        ],
+        "turnaround_days": 14,
+        "cost_usd": 495,
+        "requires_practitioner": true,
+        "data_export": ["pdf"],
+        "api_available": false,
+        "clinical_note": "Screens for autoimmune reactivity across multiple organ systems"
+      }
+    ]
+  }
+}

@@ -1,0 +1,385 @@
+{
+  "schema_version": "1.0.0",
+  "last_updated": "2026-02-02",
+  "total_supplements": 48,
+  "supplements": {
+    "vitamin_d": {
+      "common_forms": ["vitamin_d3", "cholecalciferol", "vitamin_d2", "ergocalciferol"],
+      "biomarker_effects": [
+        {"biomarker": "vitamin_d_25oh", "effect": "increase", "dose_response": "~1 ng/mL per 100 IU daily"},
+        {"biomarker": "calcium", "effect": "increase", "note": "enhances absorption"},
+        {"biomarker": "pth", "effect": "decrease", "note": "if previously elevated from deficiency"}
+      ],
+      "drug_interactions": [
+        {"drug": "thiazide_diuretics", "effect": "hypercalcemia risk", "severity": "moderate"},
+        {"drug": "digoxin", "effect": "toxicity risk with hypercalcemia", "severity": "moderate"},
+        {"drug": "orlistat", "effect": "reduced vitamin D absorption", "severity": "minor"},
+        {"drug": "cholestyramine", "effect": "reduced absorption", "severity": "moderate"}
+      ],
+      "upper_limit": "4000 IU/day (can go higher under supervision)",
+      "toxicity_threshold": "vitamin_d_25oh > 150 ng/mL"
+    },
+    "omega_3_fatty_acids": {
+      "common_forms": ["fish_oil", "EPA", "DHA", "algae_oil", "krill_oil"],
+      "biomarker_effects": [
+        {"biomarker": "triglycerides", "effect": "decrease", "magnitude": "15-30%", "dose": "2-4g/day"},
+        {"biomarker": "hdl_cholesterol", "effect": "increase", "magnitude": "slight"},
+        {"biomarker": "ldl_cholesterol", "effect": "increase", "magnitude": "5-10%", "note": "particle size improves"},
+        {"biomarker": "hs_crp", "effect": "decrease", "magnitude": "variable"}
+      ],
+      "drug_interactions": [
+        {"drug": "warfarin", "effect": "increased bleeding risk", "severity": "moderate", "recommendation": "monitor INR"},
+        {"drug": "antiplatelet_agents", "effect": "increased bleeding risk", "severity": "moderate"},
+        {"drug": "blood_pressure_medications", "effect": "additive BP lowering", "severity": "minor"}
+      ],
+      "note": "High doses (>3g/day) may increase bleeding time"
+    },
+    "vitamin_b12": {
+      "common_forms": ["cyanocobalamin", "methylcobalamin", "hydroxocobalamin", "adenosylcobalamin"],
+      "biomarker_effects": [
+        {"biomarker": "vitamin_b12", "effect": "increase"},
+        {"biomarker": "homocysteine", "effect": "decrease", "note": "if elevated from B12 deficiency"},
+        {"biomarker": "mcv", "effect": "normalize", "note": "if macrocytic from deficiency"}
+      ],
+      "drug_interactions": [
+        {"drug": "metformin", "effect": "metformin reduces B12; supplementation beneficial", "severity": "minor"},
+        {"drug": "proton_pump_inhibitors", "effect": "PPIs reduce B12 absorption", "severity": "minor"},
+        {"drug": "h2_blockers", "effect": "reduced absorption", "severity": "minor"}
+      ],
+      "note": "Very safe; no established upper limit"
+    },
+    "magnesium": {
+      "common_forms": ["magnesium_glycinate", "magnesium_citrate", "magnesium_oxide", "magnesium_threonate", "magnesium_taurate"],
+      "biomarker_effects": [
+        {"biomarker": "magnesium", "effect": "increase"},
+        {"biomarker": "glucose_fasting", "effect": "decrease", "magnitude": "slight", "note": "improves insulin sensitivity"},
+        {"biomarker": "hba1c", "effect": "decrease", "magnitude": "slight"},
+        {"biomarker": "blood_pressure", "effect": "decrease", "magnitude": "2-4 mmHg"}
+      ],
+      "drug_interactions": [
+        {"drug": "bisphosphonates", "effect": "reduced drug absorption", "severity": "moderate", "recommendation": "separate by 2h"},
+        {"drug": "antibiotics_fluoroquinolones", "effect": "reduced drug absorption", "severity": "major", "recommendation": "separate by 2-4h"},
+        {"drug": "antibiotics_tetracyclines", "effect": "reduced drug absorption", "severity": "moderate"},
+        {"drug": "loop_diuretics", "effect": "increased magnesium loss", "severity": "moderate"},
+        {"drug": "thiazide_diuretics", "effect": "increased magnesium loss", "severity": "moderate"}
+      ],
+      "upper_limit": "350 mg/day from supplements",
+      "note": "GI side effects (loose stools) common with oxide form"
+    },
+    "iron": {
+      "common_forms": ["ferrous_sulfate", "ferrous_gluconate", "ferrous_fumarate", "iron_bisglycinate", "carbonyl_iron"],
+      "biomarker_effects": [
+        {"biomarker": "ferritin", "effect": "increase"},
+        {"biomarker": "iron", "effect": "increase"},
+        {"biomarker": "transferrin_saturation", "effect": "increase"},
+        {"biomarker": "hemoglobin", "effect": "increase", "note": "if anemia from deficiency"}
+      ],
+      "drug_interactions": [
+        {"drug": "levothyroxine", "effect": "reduced thyroid absorption", "severity": "moderate", "recommendation": "separate by 4h"},
+        {"drug": "antibiotics_fluoroquinolones", "effect": "reduced antibiotic absorption", "severity": "major", "recommendation": "separate by 2h"},
+        {"drug": "antibiotics_tetracyclines", "effect": "reduced antibiotic absorption", "severity": "major"},
+        {"drug": "levodopa", "effect": "reduced levodopa absorption", "severity": "moderate"},
+        {"drug": "proton_pump_inhibitors", "effect": "reduced iron absorption", "severity": "moderate"},
+        {"drug": "ace_inhibitors", "effect": "reduced ACEi absorption", "severity": "minor"}
+      ],
+      "upper_limit": "45 mg/day elemental iron",
+      "warnings": ["Do not supplement without documented deficiency", "Toxicity risk especially in children", "Hemochromatosis screening if high ferritin"]
+    },
+    "calcium": {
+      "common_forms": ["calcium_carbonate", "calcium_citrate", "calcium_phosphate"],
+      "biomarker_effects": [
+        {"biomarker": "calcium", "effect": "increase"},
+        {"biomarker": "pth", "effect": "decrease", "note": "if previously elevated"}
+      ],
+      "drug_interactions": [
+        {"drug": "levothyroxine", "effect": "reduced absorption", "severity": "moderate", "recommendation": "separate by 4h"},
+        {"drug": "bisphosphonates", "effect": "reduced absorption", "severity": "major", "recommendation": "separate by 2h"},
+        {"drug": "antibiotics_fluoroquinolones", "effect": "reduced absorption", "severity": "major"},
+        {"drug": "antibiotics_tetracyclines", "effect": "reduced absorption", "severity": "major"},
+        {"drug": "thiazide_diuretics", "effect": "hypercalcemia risk", "severity": "moderate"}
+      ],
+      "upper_limit": "2000-2500 mg/day total",
+      "warnings": ["Cardiovascular concerns with high supplemental calcium", "Prefer dietary sources when possible", "Carbonate requires stomach acid; citrate doesn't"]
+    },
+    "zinc": {
+      "common_forms": ["zinc_picolinate", "zinc_gluconate", "zinc_citrate", "zinc_acetate", "zinc_sulfate"],
+      "biomarker_effects": [
+        {"biomarker": "zinc", "effect": "increase"},
+        {"biomarker": "copper", "effect": "decrease", "note": "competitive absorption; risk with chronic high zinc"}
+      ],
+      "drug_interactions": [
+        {"drug": "antibiotics_fluoroquinolones", "effect": "reduced absorption", "severity": "major", "recommendation": "separate by 2h"},
+        {"drug": "antibiotics_tetracyclines", "effect": "reduced absorption", "severity": "major"},
+        {"drug": "penicillamine", "effect": "reduced penicillamine absorption", "severity": "major"}
+      ],
+      "upper_limit": "40 mg/day",
+      "warnings": ["Long-term high doses cause copper deficiency", "Can cause nausea on empty stomach"]
+    },
+    "vitamin_c": {
+      "common_forms": ["ascorbic_acid", "sodium_ascorbate", "liposomal_vitamin_c"],
+      "biomarker_effects": [
+        {"biomarker": "iron", "effect": "increase_absorption", "note": "enhances non-heme iron absorption"},
+        {"biomarker": "uric_acid", "effect": "decrease", "magnitude": "slight"},
+        {"biomarker": "glucose_fasting", "effect": "interfere_with_measurement", "note": "can falsely elevate fingerstick glucose"}
+      ],
+      "drug_interactions": [
+        {"drug": "warfarin", "effect": "may reduce INR at high doses", "severity": "minor"},
+        {"drug": "statins", "effect": "may reduce efficacy", "severity": "minor", "note": "antioxidant interference"},
+        {"drug": "chemotherapy", "effect": "theoretical interference", "severity": "moderate", "note": "discuss with oncologist"}
+      ],
+      "upper_limit": "2000 mg/day",
+      "note": "High doses may cause GI upset, kidney stones in predisposed"
+    },
+    "vitamin_e": {
+      "common_forms": ["d-alpha-tocopherol", "mixed_tocopherols", "tocotrienols"],
+      "biomarker_effects": [
+        {"biomarker": "vitamin_e", "effect": "increase"}
+      ],
+      "drug_interactions": [
+        {"drug": "warfarin", "effect": "increased bleeding risk", "severity": "moderate"},
+        {"drug": "antiplatelet_agents", "effect": "increased bleeding risk", "severity": "moderate"},
+        {"drug": "statins", "effect": "may reduce benefit", "severity": "minor"},
+        {"drug": "chemotherapy", "effect": "may reduce efficacy", "severity": "moderate"}
+      ],
+      "upper_limit": "1000 mg/day (1500 IU synthetic, 1000 IU natural)",
+      "warnings": ["High doses associated with increased mortality in some studies", "Avoid >400 IU/day without indication"]
+    },
+    "folate": {
+      "common_forms": ["folic_acid", "methylfolate", "5-MTHF", "folinic_acid"],
+      "biomarker_effects": [
+        {"biomarker": "folate", "effect": "increase"},
+        {"biomarker": "homocysteine", "effect": "decrease"},
+        {"biomarker": "mcv", "effect": "normalize", "note": "if macrocytic from deficiency"}
+      ],
+      "drug_interactions": [
+        {"drug": "methotrexate", "effect": "reduces methotrexate efficacy", "severity": "major", "note": "except when used intentionally as rescue"},
+        {"drug": "phenytoin", "effect": "reduced phenytoin levels", "severity": "moderate"},
+        {"drug": "sulfasalazine", "effect": "sulfasalazine reduces folate", "severity": "moderate"}
+      ],
+      "upper_limit": "1000 mcg/day folic acid",
+      "warnings": ["Can mask B12 deficiency", "MTHFR variants may benefit from methylfolate form"]
+    },
+    "coenzyme_q10": {
+      "common_forms": ["ubiquinone", "ubiquinol"],
+      "biomarker_effects": [
+        {"biomarker": "coq10_level", "effect": "increase"},
+        {"biomarker": "blood_pressure", "effect": "decrease", "magnitude": "slight"}
+      ],
+      "drug_interactions": [
+        {"drug": "warfarin", "effect": "may reduce INR", "severity": "moderate", "recommendation": "monitor INR"},
+        {"drug": "statins", "effect": "statins deplete CoQ10; supplementation may help muscle symptoms", "severity": "minor"},
+        {"drug": "blood_pressure_medications", "effect": "additive BP lowering", "severity": "minor"}
+      ],
+      "note": "Ubiquinol form better absorbed especially in older adults"
+    },
+    "probiotics": {
+      "common_forms": ["lactobacillus", "bifidobacterium", "saccharomyces_boulardii"],
+      "biomarker_effects": [
+        {"biomarker": "hs_crp", "effect": "decrease", "magnitude": "variable"},
+        {"biomarker": "glucose_fasting", "effect": "decrease", "magnitude": "slight", "note": "some strains"}
+      ],
+      "drug_interactions": [
+        {"drug": "immunosuppressants", "effect": "infection risk in immunocompromised", "severity": "moderate"},
+        {"drug": "antibiotics", "effect": "antibiotics kill probiotics; separate by 2h", "severity": "minor"}
+      ],
+      "warnings": ["Caution in severely immunocompromised", "Saccharomyces boulardii safe during antibiotics"]
+    },
+    "curcumin": {
+      "common_forms": ["turmeric_extract", "curcumin_phytosome", "curcumin_with_piperine"],
+      "biomarker_effects": [
+        {"biomarker": "hs_crp", "effect": "decrease"},
+        {"biomarker": "il6", "effect": "decrease"},
+        {"biomarker": "alt", "effect": "decrease", "note": "some hepatoprotective effects"}
+      ],
+      "drug_interactions": [
+        {"drug": "warfarin", "effect": "increased bleeding risk", "severity": "moderate"},
+        {"drug": "antiplatelet_agents", "effect": "increased bleeding risk", "severity": "moderate"},
+        {"drug": "sulfasalazine", "effect": "may enhance effect", "severity": "minor"},
+        {"drug": "tacrolimus", "effect": "may increase tacrolimus levels", "severity": "moderate"}
+      ],
+      "note": "Poorly absorbed without piperine or lipid formulation"
+    },
+    "berberine": {
+      "common_forms": ["berberine_hcl", "berberine_phytosome"],
+      "biomarker_effects": [
+        {"biomarker": "glucose_fasting", "effect": "decrease", "magnitude": "15-25%"},
+        {"biomarker": "hba1c", "effect": "decrease", "magnitude": "0.5-1%"},
+        {"biomarker": "ldl_cholesterol", "effect": "decrease", "magnitude": "20-30%"},
+        {"biomarker": "triglycerides", "effect": "decrease", "magnitude": "20-35%"},
+        {"biomarker": "alt", "effect": "variable", "note": "hepatoprotective but rare hepatotoxicity reported"}
+      ],
+      "drug_interactions": [
+        {"drug": "metformin", "effect": "additive glucose lowering; hypoglycemia risk", "severity": "moderate"},
+        {"drug": "cyclosporine", "effect": "increased cyclosporine levels", "severity": "major"},
+        {"drug": "statins", "effect": "may increase statin levels", "severity": "moderate"},
+        {"drug": "cyp3a4_substrates", "effect": "inhibits CYP3A4", "severity": "moderate"}
+      ],
+      "warnings": ["GI side effects common", "Avoid in pregnancy"]
+    },
+    "ashwagandha": {
+      "common_forms": ["ksm-66", "sensoril", "withania_somnifera_root"],
+      "biomarker_effects": [
+        {"biomarker": "cortisol_am", "effect": "decrease", "magnitude": "variable"},
+        {"biomarker": "testosterone_total_male", "effect": "increase", "magnitude": "10-20%", "note": "modest effect"},
+        {"biomarker": "tsh", "effect": "increase_thyroid_function", "note": "may help subclinical hypothyroidism; avoid in hyperthyroid"}
+      ],
+      "drug_interactions": [
+        {"drug": "thyroid_medications", "effect": "may alter thyroid levels", "severity": "moderate"},
+        {"drug": "sedatives", "effect": "additive sedation", "severity": "moderate"},
+        {"drug": "immunosuppressants", "effect": "may stimulate immune system", "severity": "moderate"}
+      ],
+      "warnings": ["Avoid in hyperthyroidism", "May affect thyroid tests"]
+    },
+    "melatonin": {
+      "common_forms": ["melatonin_ir", "melatonin_er", "melatonin_sublingual"],
+      "biomarker_effects": [
+        {"biomarker": "melatonin", "effect": "increase"},
+        {"biomarker": "glucose_fasting", "effect": "variable", "note": "may impair glucose tolerance in some"}
+      ],
+      "drug_interactions": [
+        {"drug": "sedatives", "effect": "additive sedation", "severity": "moderate"},
+        {"drug": "warfarin", "effect": "may affect INR", "severity": "minor"},
+        {"drug": "immunosuppressants", "effect": "may affect immune function", "severity": "minor"},
+        {"drug": "blood_pressure_medications", "effect": "may affect BP", "severity": "minor"}
+      ]
+    },
+    "biotin": {
+      "common_forms": ["biotin", "vitamin_b7"],
+      "biomarker_effects": [
+        {"biomarker": "tsh", "effect": "falsely_decreased", "note": "ASSAY INTERFERENCE"},
+        {"biomarker": "free_t4", "effect": "falsely_increased", "note": "ASSAY INTERFERENCE"},
+        {"biomarker": "free_t3", "effect": "falsely_increased", "note": "ASSAY INTERFERENCE"},
+        {"biomarker": "troponin_i", "effect": "falsely_decreased", "note": "CRITICAL - could miss MI"},
+        {"biomarker": "bnp", "effect": "falsely_decreased", "note": "ASSAY INTERFERENCE"},
+        {"biomarker": "pth", "effect": "falsely_abnormal", "note": "ASSAY INTERFERENCE"},
+        {"biomarker": "testosterone", "effect": "falsely_elevated", "note": "ASSAY INTERFERENCE"}
+      ],
+      "warnings": [
+        "CRITICAL: Must stop 48-72 hours before ANY blood work",
+        "Causes false results in streptavidin-biotin immunoassays",
+        "Can lead to missed diagnoses of MI, thyroid disease",
+        "Even 'normal' doses (2.5-10mg) can interfere",
+        "Hair/skin/nail supplements often contain high biotin"
+      ],
+      "safe_dose": "30 mcg (adequate intake); hair supplements often 2500-10000 mcg"
+    },
+    "st_johns_wort": {
+      "common_forms": ["hypericum_perforatum"],
+      "biomarker_effects": [
+        {"biomarker": "mood_markers", "effect": "improve", "note": "mild-moderate depression"}
+      ],
+      "drug_interactions": [
+        {"drug": "ssris", "effect": "serotonin syndrome", "severity": "major"},
+        {"drug": "oral_contraceptives", "effect": "reduced efficacy", "severity": "major"},
+        {"drug": "warfarin", "effect": "reduced anticoagulation", "severity": "major"},
+        {"drug": "cyclosporine", "effect": "organ rejection risk", "severity": "contraindicated"},
+        {"drug": "tacrolimus", "effect": "organ rejection risk", "severity": "contraindicated"},
+        {"drug": "hiv_medications", "effect": "reduced efficacy", "severity": "major"},
+        {"drug": "statins", "effect": "reduced efficacy", "severity": "moderate"},
+        {"drug": "digoxin", "effect": "reduced digoxin levels", "severity": "major"}
+      ],
+      "mechanism": "Potent CYP3A4 and P-gp inducer",
+      "warnings": ["One of the most drug-interactive supplements", "Avoid unless specifically recommended and interactions cleared"]
+    },
+    "garlic_supplements": {
+      "common_forms": ["aged_garlic_extract", "garlic_oil", "allicin_supplements"],
+      "biomarker_effects": [
+        {"biomarker": "total_cholesterol", "effect": "decrease", "magnitude": "5-10%"},
+        {"biomarker": "ldl_cholesterol", "effect": "decrease", "magnitude": "5-10%"},
+        {"biomarker": "blood_pressure", "effect": "decrease", "magnitude": "5-8 mmHg"}
+      ],
+      "drug_interactions": [
+        {"drug": "warfarin", "effect": "increased bleeding", "severity": "moderate"},
+        {"drug": "antiplatelet_agents", "effect": "increased bleeding", "severity": "moderate"},
+        {"drug": "hiv_protease_inhibitors", "effect": "reduced efficacy", "severity": "moderate"}
+      ]
+    },
+    "ginkgo_biloba": {
+      "common_forms": ["ginkgo_extract", "EGb_761"],
+      "biomarker_effects": [],
+      "drug_interactions": [
+        {"drug": "warfarin", "effect": "increased bleeding", "severity": "moderate"},
+        {"drug": "antiplatelet_agents", "effect": "increased bleeding", "severity": "moderate"},
+        {"drug": "ssris", "effect": "serotonin syndrome risk", "severity": "moderate"},
+        {"drug": "seizure_medications", "effect": "may lower seizure threshold", "severity": "moderate"}
+      ]
+    },
+    "creatine": {
+      "common_forms": ["creatine_monohydrate", "creatine_hcl"],
+      "biomarker_effects": [
+        {"biomarker": "creatinine", "effect": "increase", "note": "NOT indicating kidney damage - artifact of creatine metabolism"},
+        {"biomarker": "egfr", "effect": "falsely_decreased", "note": "creatinine-based eGFR will be falsely low"}
+      ],
+      "drug_interactions": [
+        {"drug": "nsaids", "effect": "theoretical renal concern", "severity": "minor"},
+        {"drug": "nephrotoxic_drugs", "effect": "additive renal stress", "severity": "minor"}
+      ],
+      "warnings": ["Creatinine elevation is expected and NOT harmful", "Inform healthcare provider to avoid false concern about kidney function", "Use cystatin C-based eGFR if needed"]
+    },
+    "saw_palmetto": {
+      "common_forms": ["saw_palmetto_extract", "serenoa_repens"],
+      "biomarker_effects": [
+        {"biomarker": "psa", "effect": "decrease", "note": "may mask prostate cancer detection"}
+      ],
+      "drug_interactions": [
+        {"drug": "antiplatelet_agents", "effect": "increased bleeding", "severity": "minor"},
+        {"drug": "oral_contraceptives", "effect": "theoretical anti-androgenic interaction", "severity": "minor"},
+        {"drug": "finasteride", "effect": "additive effect", "severity": "minor"}
+      ],
+      "warnings": ["May lower PSA and mask prostate cancer", "Inform urologist of use"]
+    },
+    "red_yeast_rice": {
+      "common_forms": ["red_yeast_rice_extract"],
+      "biomarker_effects": [
+        {"biomarker": "ldl_cholesterol", "effect": "decrease", "magnitude": "15-25%"},
+        {"biomarker": "total_cholesterol", "effect": "decrease"},
+        {"biomarker": "alt", "effect": "increase", "note": "contains naturally occurring statins"},
+        {"biomarker": "ast", "effect": "increase"}
+      ],
+      "drug_interactions": [
+        {"drug": "statins", "effect": "additive statin effects and toxicity", "severity": "major"},
+        {"drug": "cyp3a4_inhibitors", "effect": "increased toxicity", "severity": "major"},
+        {"drug": "gemfibrozil", "effect": "myopathy risk", "severity": "major"}
+      ],
+      "warnings": [
+        "Contains monacolin K (lovastatin) - IS a statin",
+        "Same risks as prescription statins: myopathy, liver issues",
+        "Product quality highly variable",
+        "Should NOT be combined with prescription statins"
+      ]
+    },
+    "nac": {
+      "common_forms": ["n-acetyl-cysteine", "NAC"],
+      "biomarker_effects": [
+        {"biomarker": "glutathione", "effect": "increase"},
+        {"biomarker": "homocysteine", "effect": "decrease"},
+        {"biomarker": "hs_crp", "effect": "decrease", "magnitude": "variable"}
+      ],
+      "drug_interactions": [
+        {"drug": "nitroglycerin", "effect": "enhanced hypotension and headache", "severity": "moderate"},
+        {"drug": "activated_charcoal", "effect": "reduced NAC absorption", "severity": "minor"}
+      ]
+    },
+    "alpha_lipoic_acid": {
+      "common_forms": ["r-lipoic_acid", "alpha_lipoic_acid", "ALA"],
+      "biomarker_effects": [
+        {"biomarker": "glucose_fasting", "effect": "decrease", "magnitude": "slight"},
+        {"biomarker": "hba1c", "effect": "decrease", "magnitude": "slight"}
+      ],
+      "drug_interactions": [
+        {"drug": "diabetes_medications", "effect": "additive hypoglycemia", "severity": "moderate"},
+        {"drug": "thyroid_medications", "effect": "may reduce thyroid hormone levels", "severity": "moderate"}
+      ]
+    }
+  },
+  "timing_recommendations": {
+    "empty_stomach": ["iron", "levothyroxine_interactions"],
+    "with_food": ["fat_soluble_vitamins", "curcumin", "coq10"],
+    "separate_from_medications": {
+      "2_hours": ["magnesium", "calcium", "iron", "zinc"],
+      "4_hours": ["thyroid_interacting_supplements"]
+    },
+    "morning": ["b_vitamins", "coq10", "iron"],
+    "evening": ["magnesium", "melatonin"]
+  }
+}

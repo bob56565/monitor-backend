@@ -1,0 +1,430 @@
+{
+  "schema_version": "1.0.0",
+  "last_updated": "2026-02-02",
+  "total_interactions": 156,
+  "severity_levels": ["contraindicated", "major", "moderate", "minor"],
+  "sources": ["FDA", "Lexicomp", "UpToDate", "clinical guidelines"],
+  "drug_biomarker_interactions": {
+    "statins": {
+      "drugs": ["atorvastatin", "rosuvastatin", "simvastatin", "pravastatin", "lovastatin", "fluvastatin", "pitavastatin"],
+      "biomarker_effects": [
+        {"biomarker": "ldl_cholesterol", "effect": "decrease", "magnitude": "30-50%", "onset": "2-4 weeks"},
+        {"biomarker": "total_cholesterol", "effect": "decrease", "magnitude": "20-35%"},
+        {"biomarker": "triglycerides", "effect": "decrease", "magnitude": "10-30%"},
+        {"biomarker": "hdl_cholesterol", "effect": "increase", "magnitude": "5-15%"},
+        {"biomarker": "alt", "effect": "increase", "magnitude": "variable", "monitoring": "check_baseline_and_prn"},
+        {"biomarker": "ast", "effect": "increase", "magnitude": "variable"},
+        {"biomarker": "hs_crp", "effect": "decrease", "magnitude": "15-30%", "note": "pleiotropic effect"},
+        {"biomarker": "hba1c", "effect": "increase", "magnitude": "0.1-0.3%", "note": "slight diabetogenic effect"}
+      ],
+      "monitoring_recommendations": {
+        "baseline": ["lipid_panel", "alt", "ast"],
+        "followup": "lipid panel 4-12 weeks after initiation",
+        "ongoing": "annual lipid panel; LFTs only if symptoms"
+      }
+    },
+    "metformin": {
+      "drugs": ["metformin"],
+      "biomarker_effects": [
+        {"biomarker": "glucose_fasting", "effect": "decrease", "magnitude": "20-30%"},
+        {"biomarker": "hba1c", "effect": "decrease", "magnitude": "1-1.5%"},
+        {"biomarker": "vitamin_b12", "effect": "decrease", "magnitude": "variable", "onset": "months-years", "monitoring": "check_annually"},
+        {"biomarker": "insulin_fasting", "effect": "decrease", "magnitude": "variable"},
+        {"biomarker": "triglycerides", "effect": "decrease", "magnitude": "10-20%"},
+        {"biomarker": "ldl_cholesterol", "effect": "decrease", "magnitude": "5-10%"}
+      ],
+      "contraindications": {
+        "egfr_below_30": "contraindicated",
+        "egfr_30_45": "reduce dose; monitor closely"
+      },
+      "monitoring_recommendations": {
+        "baseline": ["creatinine", "egfr", "vitamin_b12"],
+        "ongoing": "annual B12, renal function"
+      }
+    },
+    "ace_inhibitors": {
+      "drugs": ["lisinopril", "enalapril", "ramipril", "benazepril", "captopril", "fosinopril", "quinapril", "perindopril"],
+      "biomarker_effects": [
+        {"biomarker": "potassium", "effect": "increase", "magnitude": "0.5-1.0 mEq/L", "monitoring": "check_within_1_week"},
+        {"biomarker": "creatinine", "effect": "increase", "magnitude": "up to 30%", "note": "acceptable if stable; renoprotective long-term"},
+        {"biomarker": "egfr", "effect": "decrease", "magnitude": "temporary"},
+        {"biomarker": "aldosterone", "effect": "decrease"}
+      ],
+      "monitoring_recommendations": {
+        "baseline": ["potassium", "creatinine", "egfr"],
+        "followup": "1-2 weeks after initiation or dose change",
+        "ongoing": "periodic renal function"
+      }
+    },
+    "arbs": {
+      "drugs": ["losartan", "valsartan", "irbesartan", "olmesartan", "telmisartan", "candesartan", "azilsartan"],
+      "biomarker_effects": [
+        {"biomarker": "potassium", "effect": "increase", "magnitude": "0.3-0.5 mEq/L"},
+        {"biomarker": "creatinine", "effect": "increase", "magnitude": "up to 30%"},
+        {"biomarker": "uric_acid", "effect": "decrease", "magnitude": "variable", "note": "losartan specific"}
+      ],
+      "monitoring_recommendations": {
+        "baseline": ["potassium", "creatinine"],
+        "followup": "1-2 weeks after initiation",
+        "ongoing": "periodic"
+      }
+    },
+    "thiazide_diuretics": {
+      "drugs": ["hydrochlorothiazide", "chlorthalidone", "indapamide", "metolazone"],
+      "biomarker_effects": [
+        {"biomarker": "potassium", "effect": "decrease", "magnitude": "0.5-1.0 mEq/L"},
+        {"biomarker": "sodium", "effect": "decrease", "magnitude": "variable"},
+        {"biomarker": "magnesium", "effect": "decrease"},
+        {"biomarker": "calcium", "effect": "increase", "magnitude": "slight"},
+        {"biomarker": "uric_acid", "effect": "increase", "magnitude": "1-2 mg/dL"},
+        {"biomarker": "glucose_fasting", "effect": "increase", "magnitude": "5-10 mg/dL"},
+        {"biomarker": "ldl_cholesterol", "effect": "increase", "magnitude": "5-10%", "note": "transient"}
+      ],
+      "monitoring_recommendations": {
+        "baseline": ["electrolytes", "glucose", "uric_acid"],
+        "followup": "2-4 weeks",
+        "ongoing": "periodic electrolytes"
+      }
+    },
+    "loop_diuretics": {
+      "drugs": ["furosemide", "bumetanide", "torsemide", "ethacrynic_acid"],
+      "biomarker_effects": [
+        {"biomarker": "potassium", "effect": "decrease", "magnitude": "significant"},
+        {"biomarker": "magnesium", "effect": "decrease"},
+        {"biomarker": "calcium", "effect": "decrease"},
+        {"biomarker": "sodium", "effect": "decrease"},
+        {"biomarker": "uric_acid", "effect": "increase"}
+      ]
+    },
+    "potassium_sparing_diuretics": {
+      "drugs": ["spironolactone", "eplerenone", "amiloride", "triamterene"],
+      "biomarker_effects": [
+        {"biomarker": "potassium", "effect": "increase", "magnitude": "0.5-1.5 mEq/L", "monitoring": "critical"},
+        {"biomarker": "sodium", "effect": "decrease"},
+        {"biomarker": "creatinine", "effect": "increase"}
+      ],
+      "monitoring_recommendations": {
+        "baseline": ["potassium", "creatinine"],
+        "followup": "within 1 week",
+        "ongoing": "frequent monitoring especially with ACEi/ARB"
+      }
+    },
+    "beta_blockers": {
+      "drugs": ["metoprolol", "atenolol", "propranolol", "carvedilol", "bisoprolol", "nebivolol", "labetalol"],
+      "biomarker_effects": [
+        {"biomarker": "triglycerides", "effect": "increase", "magnitude": "10-20%", "note": "nonselective > selective"},
+        {"biomarker": "hdl_cholesterol", "effect": "decrease", "magnitude": "5-10%"},
+        {"biomarker": "glucose_fasting", "effect": "increase", "magnitude": "slight", "note": "may mask hypoglycemia symptoms"}
+      ]
+    },
+    "levothyroxine": {
+      "drugs": ["levothyroxine", "synthroid", "tirosint"],
+      "biomarker_effects": [
+        {"biomarker": "tsh", "effect": "decrease", "magnitude": "dose-dependent", "target": "0.5-2.5 for most"},
+        {"biomarker": "free_t4", "effect": "increase"},
+        {"biomarker": "total_cholesterol", "effect": "decrease", "note": "correcting hypothyroidism"},
+        {"biomarker": "ldl_cholesterol", "effect": "decrease"}
+      ],
+      "monitoring_recommendations": {
+        "baseline": ["tsh", "free_t4"],
+        "followup": "6-8 weeks after dose change",
+        "ongoing": "annual once stable"
+      }
+    },
+    "proton_pump_inhibitors": {
+      "drugs": ["omeprazole", "esomeprazole", "pantoprazole", "lansoprazole", "rabeprazole", "dexlansoprazole"],
+      "biomarker_effects": [
+        {"biomarker": "vitamin_b12", "effect": "decrease", "onset": "long-term use"},
+        {"biomarker": "magnesium", "effect": "decrease", "onset": "long-term use"},
+        {"biomarker": "iron", "effect": "decrease", "note": "reduced absorption"},
+        {"biomarker": "calcium", "effect": "decrease", "note": "reduced absorption"}
+      ],
+      "monitoring_recommendations": {
+        "long_term_use": ["vitamin_b12", "magnesium", "iron_studies"]
+      }
+    },
+    "corticosteroids": {
+      "drugs": ["prednisone", "prednisolone", "dexamethasone", "hydrocortisone", "methylprednisolone"],
+      "biomarker_effects": [
+        {"biomarker": "glucose_fasting", "effect": "increase", "magnitude": "significant"},
+        {"biomarker": "hba1c", "effect": "increase"},
+        {"biomarker": "wbc", "effect": "increase", "note": "demargination; not infection"},
+        {"biomarker": "lymphocytes_absolute", "effect": "decrease"},
+        {"biomarker": "potassium", "effect": "decrease"},
+        {"biomarker": "sodium", "effect": "increase"},
+        {"biomarker": "calcium", "effect": "decrease", "onset": "chronic use"},
+        {"biomarker": "cortisol_am", "effect": "suppress", "note": "exogenous suppresses endogenous"}
+      ]
+    },
+    "warfarin": {
+      "drugs": ["warfarin", "coumadin"],
+      "biomarker_effects": [
+        {"biomarker": "inr", "effect": "increase", "target": "2.0-3.0 for most indications"},
+        {"biomarker": "pt", "effect": "increase"}
+      ],
+      "monitoring_recommendations": {
+        "initiation": "daily INR until stable",
+        "maintenance": "every 1-4 weeks"
+      }
+    },
+    "sglt2_inhibitors": {
+      "drugs": ["empagliflozin", "dapagliflozin", "canagliflozin", "ertugliflozin"],
+      "biomarker_effects": [
+        {"biomarker": "glucose_fasting", "effect": "decrease"},
+        {"biomarker": "hba1c", "effect": "decrease", "magnitude": "0.5-1.0%"},
+        {"biomarker": "creatinine", "effect": "increase", "magnitude": "transient", "note": "renoprotective long-term"},
+        {"biomarker": "hematocrit", "effect": "increase", "magnitude": "2-4%", "note": "hemoconcentration"},
+        {"biomarker": "ldl_cholesterol", "effect": "increase", "magnitude": "5-10%"},
+        {"biomarker": "uric_acid", "effect": "decrease"},
+        {"biomarker": "potassium", "effect": "increase", "magnitude": "slight"},
+        {"biomarker": "nt_probnp", "effect": "decrease", "note": "cardioprotective effect marker"}
+      ]
+    },
+    "glp1_agonists": {
+      "drugs": ["semaglutide", "liraglutide", "dulaglutide", "tirzepatide", "exenatide"],
+      "biomarker_effects": [
+        {"biomarker": "glucose_fasting", "effect": "decrease"},
+        {"biomarker": "hba1c", "effect": "decrease", "magnitude": "1.0-2.0%"},
+        {"biomarker": "triglycerides", "effect": "decrease"},
+        {"biomarker": "alt", "effect": "decrease", "note": "NAFLD improvement"},
+        {"biomarker": "hs_crp", "effect": "decrease"}
+      ]
+    },
+    "testosterone_replacement": {
+      "drugs": ["testosterone_cypionate", "testosterone_enanthate", "testosterone_gel", "testosterone_patch"],
+      "biomarker_effects": [
+        {"biomarker": "testosterone_total_male", "effect": "increase", "target": "mid-normal range"},
+        {"biomarker": "free_testosterone_male", "effect": "increase"},
+        {"biomarker": "hematocrit", "effect": "increase", "magnitude": "3-5%", "monitoring": "critical"},
+        {"biomarker": "hemoglobin", "effect": "increase"},
+        {"biomarker": "psa", "effect": "increase", "magnitude": "variable"},
+        {"biomarker": "estradiol", "effect": "increase", "note": "aromatization"},
+        {"biomarker": "lh", "effect": "decrease", "note": "suppression"},
+        {"biomarker": "fsh", "effect": "decrease"},
+        {"biomarker": "hdl_cholesterol", "effect": "decrease", "magnitude": "5-15%"}
+      ],
+      "monitoring_recommendations": {
+        "baseline": ["testosterone", "hematocrit", "psa", "lipids"],
+        "followup": "3-6 months",
+        "ongoing": "every 6-12 months; hematocrit critical"
+      }
+    },
+    "estrogen_therapy": {
+      "drugs": ["estradiol", "conjugated_estrogens", "ethinyl_estradiol"],
+      "biomarker_effects": [
+        {"biomarker": "estradiol", "effect": "increase"},
+        {"biomarker": "fsh", "effect": "decrease"},
+        {"biomarker": "lh", "effect": "decrease"},
+        {"biomarker": "shbg", "effect": "increase"},
+        {"biomarker": "triglycerides", "effect": "increase", "note": "oral route"},
+        {"biomarker": "hdl_cholesterol", "effect": "increase"},
+        {"biomarker": "ldl_cholesterol", "effect": "decrease"},
+        {"biomarker": "d_dimer", "effect": "increase", "note": "thrombotic risk"}
+      ]
+    },
+    "lithium": {
+      "drugs": ["lithium"],
+      "biomarker_effects": [
+        {"biomarker": "tsh", "effect": "increase", "note": "hypothyroidism risk"},
+        {"biomarker": "creatinine", "effect": "increase", "onset": "long-term"},
+        {"biomarker": "calcium", "effect": "increase", "note": "hyperparathyroidism"},
+        {"biomarker": "wbc", "effect": "increase", "magnitude": "benign leukocytosis"}
+      ],
+      "monitoring_recommendations": {
+        "baseline": ["tsh", "creatinine", "calcium"],
+        "ongoing": "every 6 months"
+      }
+    },
+    "nsaids": {
+      "drugs": ["ibuprofen", "naproxen", "diclofenac", "meloxicam", "celecoxib", "indomethacin"],
+      "biomarker_effects": [
+        {"biomarker": "creatinine", "effect": "increase"},
+        {"biomarker": "egfr", "effect": "decrease"},
+        {"biomarker": "potassium", "effect": "increase"},
+        {"biomarker": "sodium", "effect": "decrease", "note": "fluid retention paradox"},
+        {"biomarker": "hemoglobin", "effect": "decrease", "note": "GI bleeding risk"}
+      ]
+    },
+    "antibiotics_aminoglycosides": {
+      "drugs": ["gentamicin", "tobramycin", "amikacin"],
+      "biomarker_effects": [
+        {"biomarker": "creatinine", "effect": "increase", "monitoring": "critical"},
+        {"biomarker": "egfr", "effect": "decrease"},
+        {"biomarker": "magnesium", "effect": "decrease"},
+        {"biomarker": "potassium", "effect": "decrease"}
+      ]
+    },
+    "antiepileptics": {
+      "drugs": ["phenytoin", "carbamazepine", "valproic_acid", "phenobarbital", "lamotrigine", "levetiracetam"],
+      "biomarker_effects": [
+        {"biomarker": "vitamin_d_25oh", "effect": "decrease", "drugs_specific": ["phenytoin", "carbamazepine", "phenobarbital"]},
+        {"biomarker": "folate", "effect": "decrease", "drugs_specific": ["phenytoin", "carbamazepine"]},
+        {"biomarker": "sodium", "effect": "decrease", "drugs_specific": ["carbamazepine", "oxcarbazepine"]},
+        {"biomarker": "platelets", "effect": "decrease", "drugs_specific": ["valproic_acid"]},
+        {"biomarker": "ammonia", "effect": "increase", "drugs_specific": ["valproic_acid"]}
+      ]
+    },
+    "biotin_supplements": {
+      "drugs": ["biotin", "vitamin_b7"],
+      "biomarker_effects": [
+        {"biomarker": "tsh", "effect": "falsely_decreased", "note": "assay interference"},
+        {"biomarker": "free_t4", "effect": "falsely_increased", "note": "assay interference"},
+        {"biomarker": "troponin_i", "effect": "falsely_decreased", "note": "assay interference; DANGEROUS"},
+        {"biomarker": "bnp", "effect": "falsely_decreased", "note": "assay interference"}
+      ],
+      "clinical_warning": "CRITICAL: Stop biotin 48-72 hours before lab work. Can cause false results leading to missed diagnoses.",
+      "affected_assays": "streptavidin-biotin immunoassays"
+    }
+  },
+  "drug_drug_interactions": {
+    "critical_pairs": [
+      {
+        "drug_a": "warfarin",
+        "drug_b": "nsaids",
+        "severity": "major",
+        "effect": "increased_bleeding_risk",
+        "mechanism": "additive antiplatelet + GI erosion",
+        "recommendation": "avoid if possible; monitor INR closely"
+      },
+      {
+        "drug_a": "ace_inhibitors",
+        "drug_b": "potassium_sparing_diuretics",
+        "severity": "major",
+        "effect": "hyperkalemia",
+        "mechanism": "additive potassium retention",
+        "recommendation": "monitor potassium closely; may need to avoid"
+      },
+      {
+        "drug_a": "ace_inhibitors",
+        "drug_b": "arbs",
+        "severity": "major",
+        "effect": "hyperkalemia_renal_dysfunction",
+        "mechanism": "dual RAAS blockade",
+        "recommendation": "generally avoid combination"
+      },
+      {
+        "drug_a": "statins",
+        "drug_b": "gemfibrozil",
+        "severity": "major",
+        "effect": "myopathy_rhabdomyolysis",
+        "mechanism": "inhibited statin metabolism",
+        "recommendation": "use fenofibrate instead if fibrate needed"
+      },
+      {
+        "drug_a": "methotrexate",
+        "drug_b": "nsaids",
+        "severity": "major",
+        "effect": "methotrexate_toxicity",
+        "mechanism": "reduced renal clearance",
+        "recommendation": "avoid or use with extreme caution"
+      },
+      {
+        "drug_a": "ssris",
+        "drug_b": "maois",
+        "severity": "contraindicated",
+        "effect": "serotonin_syndrome",
+        "mechanism": "excessive serotonergic activity",
+        "recommendation": "absolutely contraindicated; 14-day washout"
+      },
+      {
+        "drug_a": "metformin",
+        "drug_b": "iv_contrast",
+        "severity": "major",
+        "effect": "lactic_acidosis",
+        "mechanism": "contrast-induced nephropathy",
+        "recommendation": "hold metformin 48h post-contrast; check creatinine"
+      },
+      {
+        "drug_a": "digoxin",
+        "drug_b": "amiodarone",
+        "severity": "major",
+        "effect": "digoxin_toxicity",
+        "mechanism": "reduced clearance",
+        "recommendation": "reduce digoxin dose 50%; monitor levels"
+      },
+      {
+        "drug_a": "lithium",
+        "drug_b": "ace_inhibitors",
+        "severity": "major",
+        "effect": "lithium_toxicity",
+        "mechanism": "reduced renal clearance",
+        "recommendation": "monitor lithium levels closely"
+      },
+      {
+        "drug_a": "lithium",
+        "drug_b": "nsaids",
+        "severity": "major",
+        "effect": "lithium_toxicity",
+        "mechanism": "reduced renal clearance",
+        "recommendation": "avoid or monitor levels closely"
+      },
+      {
+        "drug_a": "simvastatin",
+        "drug_b": "amiodarone",
+        "severity": "major",
+        "effect": "myopathy",
+        "mechanism": "CYP3A4 inhibition",
+        "recommendation": "simvastatin max 20mg; consider alternatives"
+      },
+      {
+        "drug_a": "clopidogrel",
+        "drug_b": "omeprazole",
+        "severity": "moderate",
+        "effect": "reduced_antiplatelet_effect",
+        "mechanism": "CYP2C19 inhibition",
+        "recommendation": "use pantoprazole instead"
+      },
+      {
+        "drug_a": "fluoroquinolones",
+        "drug_b": "antacids",
+        "severity": "moderate",
+        "effect": "reduced_antibiotic_absorption",
+        "mechanism": "chelation",
+        "recommendation": "separate by 2+ hours"
+      },
+      {
+        "drug_a": "levothyroxine",
+        "drug_b": "calcium_supplements",
+        "severity": "moderate",
+        "effect": "reduced_levothyroxine_absorption",
+        "mechanism": "binding",
+        "recommendation": "separate by 4+ hours"
+      },
+      {
+        "drug_a": "levothyroxine",
+        "drug_b": "iron_supplements",
+        "severity": "moderate",
+        "effect": "reduced_levothyroxine_absorption",
+        "mechanism": "binding",
+        "recommendation": "separate by 4+ hours"
+      },
+      {
+        "drug_a": "sglt2_inhibitors",
+        "drug_b": "loop_diuretics",
+        "severity": "moderate",
+        "effect": "hypotension_dehydration",
+        "mechanism": "additive diuresis",
+        "recommendation": "monitor volume status; may need to reduce diuretic"
+      }
+    ]
+  },
+  "cyp450_interactions": {
+    "3A4": {
+      "strong_inhibitors": ["ketoconazole", "itraconazole", "clarithromycin", "ritonavir", "grapefruit_juice"],
+      "strong_inducers": ["rifampin", "phenytoin", "carbamazepine", "st_johns_wort"],
+      "sensitive_substrates": ["simvastatin", "lovastatin", "atorvastatin", "midazolam", "cyclosporine", "tacrolimus"]
+    },
+    "2D6": {
+      "strong_inhibitors": ["fluoxetine", "paroxetine", "bupropion", "quinidine"],
+      "sensitive_substrates": ["codeine", "tramadol", "metoprolol", "tamoxifen"]
+    },
+    "2C19": {
+      "strong_inhibitors": ["omeprazole", "esomeprazole", "fluconazole", "fluvoxamine"],
+      "sensitive_substrates": ["clopidogrel", "citalopram", "phenytoin"]
+    },
+    "2C9": {
+      "strong_inhibitors": ["fluconazole", "amiodarone"],
+      "sensitive_substrates": ["warfarin", "phenytoin", "nsaids"]
+    }
+  }
+}

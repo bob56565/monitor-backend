@@ -1,0 +1,721 @@
+{
+  "schema_version": "1.0.0",
+  "last_updated": "2026-02-02",
+  "total_devices": 32,
+  "categories": [
+    "cgm",
+    "wearable",
+    "blood_pressure",
+    "scale",
+    "pulse_oximeter",
+    "thermometer",
+    "ecg",
+    "glucose_meter",
+    "ketone_meter",
+    "spirometer"
+  ],
+  "devices": {
+    "cgm": [
+      {
+        "id": "dexcom_g7",
+        "manufacturer": "Dexcom",
+        "model": "G7",
+        "category": "cgm",
+        "fda_cleared": true,
+        "fda_clearance_date": "2022-12",
+        "sensor_duration_days": 10.5,
+        "warmup_hours": 0.5,
+        "mard_percent": 8.2,
+        "glucose_range_mg_dl": [40, 400],
+        "reading_interval_minutes": 5,
+        "data_points": {
+          "glucose_mg_dl": {"type": "float", "unit": "mg/dL", "frequency": "5min"},
+          "trend_arrow": {"type": "enum", "values": ["rapidly_falling", "falling", "slowly_falling", "stable", "slowly_rising", "rising", "rapidly_rising"]},
+          "trend_rate_mg_dl_min": {"type": "float", "unit": "mg/dL/min", "frequency": "5min"}
+        },
+        "connectivity": ["bluetooth_le", "nfc"],
+        "api_available": true,
+        "api_type": "dexcom_clarity_api",
+        "api_documentation": "https://developer.dexcom.com/",
+        "data_export_formats": ["csv", "json", "pdf"],
+        "compatible_apps": ["dexcom_app", "clarity", "sugarmate", "xdrip"],
+        "accuracy_studies": [
+          {
+            "pmid": "35917614",
+            "population": "adults_t1d",
+            "mard": 8.2,
+            "note": "FDA pivotal trial"
+          }
+        ],
+        "cost_usd_monthly": 350,
+        "prescription_required": true,
+        "user_friction": "low",
+        "notes": "15-day extended wear available in some regions"
+      },
+      {
+        "id": "dexcom_g6",
+        "manufacturer": "Dexcom",
+        "model": "G6",
+        "category": "cgm",
+        "fda_cleared": true,
+        "fda_clearance_date": "2018-03",
+        "sensor_duration_days": 10,
+        "warmup_hours": 2,
+        "mard_percent": 9.0,
+        "glucose_range_mg_dl": [40, 400],
+        "reading_interval_minutes": 5,
+        "data_points": {
+          "glucose_mg_dl": {"type": "float", "unit": "mg/dL", "frequency": "5min"},
+          "trend_arrow": {"type": "enum", "values": ["rapidly_falling", "falling", "slowly_falling", "stable", "slowly_rising", "rising", "rapidly_rising"]},
+          "trend_rate_mg_dl_min": {"type": "float", "unit": "mg/dL/min", "frequency": "5min"}
+        },
+        "connectivity": ["bluetooth_le"],
+        "api_available": true,
+        "api_type": "dexcom_clarity_api",
+        "data_export_formats": ["csv", "json", "pdf"],
+        "cost_usd_monthly": 300,
+        "prescription_required": true,
+        "user_friction": "low"
+      },
+      {
+        "id": "dexcom_stelo",
+        "manufacturer": "Dexcom",
+        "model": "Stelo",
+        "category": "cgm",
+        "fda_cleared": true,
+        "fda_clearance_date": "2024-03",
+        "sensor_duration_days": 15,
+        "warmup_hours": 1,
+        "mard_percent": 9.0,
+        "glucose_range_mg_dl": [40, 400],
+        "reading_interval_minutes": 15,
+        "data_points": {
+          "glucose_mg_dl": {"type": "float", "unit": "mg/dL", "frequency": "15min"},
+          "trend_arrow": {"type": "enum", "values": ["falling", "stable", "rising"]}
+        },
+        "connectivity": ["bluetooth_le"],
+        "api_available": false,
+        "data_export_formats": ["csv"],
+        "cost_usd_monthly": 99,
+        "prescription_required": false,
+        "user_friction": "very_low",
+        "notes": "OTC consumer wellness CGM, not for diabetes treatment decisions"
+      },
+      {
+        "id": "freestyle_libre_3",
+        "manufacturer": "Abbott",
+        "model": "FreeStyle Libre 3",
+        "category": "cgm",
+        "fda_cleared": true,
+        "fda_clearance_date": "2022-05",
+        "sensor_duration_days": 14,
+        "warmup_hours": 1,
+        "mard_percent": 7.9,
+        "glucose_range_mg_dl": [40, 500],
+        "reading_interval_minutes": 1,
+        "data_points": {
+          "glucose_mg_dl": {"type": "float", "unit": "mg/dL", "frequency": "1min"},
+          "trend_arrow": {"type": "enum", "values": ["falling_fast", "falling", "stable", "rising", "rising_fast"]}
+        },
+        "connectivity": ["bluetooth_le"],
+        "api_available": true,
+        "api_type": "libreview_api",
+        "api_documentation": "https://developer.libreview.io/",
+        "data_export_formats": ["csv", "pdf"],
+        "cost_usd_monthly": 150,
+        "prescription_required": true,
+        "user_friction": "low",
+        "accuracy_studies": [
+          {
+            "pmid": "35703819",
+            "population": "adults",
+            "mard": 7.9
+          }
+        ]
+      },
+      {
+        "id": "freestyle_libre_2",
+        "manufacturer": "Abbott",
+        "model": "FreeStyle Libre 2",
+        "category": "cgm",
+        "fda_cleared": true,
+        "fda_clearance_date": "2020-06",
+        "sensor_duration_days": 14,
+        "warmup_hours": 1,
+        "mard_percent": 9.3,
+        "glucose_range_mg_dl": [40, 500],
+        "reading_interval_minutes": 1,
+        "data_points": {
+          "glucose_mg_dl": {"type": "float", "unit": "mg/dL", "frequency": "1min"}
+        },
+        "connectivity": ["bluetooth_le", "nfc"],
+        "api_available": true,
+        "data_export_formats": ["csv", "pdf"],
+        "cost_usd_monthly": 120,
+        "prescription_required": true
+      },
+      {
+        "id": "eversense_e3",
+        "manufacturer": "Senseonics",
+        "model": "Eversense E3",
+        "category": "cgm",
+        "fda_cleared": true,
+        "fda_clearance_date": "2022-02",
+        "sensor_duration_days": 180,
+        "warmup_hours": 24,
+        "mard_percent": 8.5,
+        "glucose_range_mg_dl": [40, 400],
+        "reading_interval_minutes": 5,
+        "implantable": true,
+        "data_points": {
+          "glucose_mg_dl": {"type": "float", "unit": "mg/dL", "frequency": "5min"},
+          "trend_arrow": {"type": "enum", "values": ["falling_fast", "falling", "stable", "rising", "rising_fast"]}
+        },
+        "connectivity": ["bluetooth_le"],
+        "api_available": true,
+        "cost_usd_monthly": 300,
+        "prescription_required": true,
+        "user_friction": "high",
+        "notes": "Requires minor surgical procedure for implantation"
+      }
+    ],
+    "wearable": [
+      {
+        "id": "apple_watch_series_10",
+        "manufacturer": "Apple",
+        "model": "Apple Watch Series 10",
+        "category": "wearable",
+        "fda_cleared_features": ["ecg", "afib_detection", "fall_detection"],
+        "data_points": {
+          "heart_rate_bpm": {"type": "int", "unit": "bpm", "frequency": "continuous"},
+          "heart_rate_variability_ms": {"type": "float", "unit": "ms", "frequency": "daily_summary"},
+          "resting_heart_rate_bpm": {"type": "int", "unit": "bpm", "frequency": "daily"},
+          "walking_heart_rate_bpm": {"type": "int", "unit": "bpm", "frequency": "per_workout"},
+          "spo2_percent": {"type": "float", "unit": "%", "frequency": "on_demand"},
+          "respiratory_rate_brpm": {"type": "float", "unit": "breaths/min", "frequency": "sleep"},
+          "ecg_waveform": {"type": "array", "unit": "mV", "frequency": "on_demand"},
+          "afib_detection": {"type": "boolean", "frequency": "continuous"},
+          "steps": {"type": "int", "unit": "count", "frequency": "continuous"},
+          "distance_km": {"type": "float", "unit": "km", "frequency": "continuous"},
+          "active_calories_kcal": {"type": "float", "unit": "kcal", "frequency": "continuous"},
+          "exercise_minutes": {"type": "int", "unit": "minutes", "frequency": "daily"},
+          "stand_hours": {"type": "int", "unit": "hours", "frequency": "daily"},
+          "sleep_duration_hours": {"type": "float", "unit": "hours", "frequency": "nightly"},
+          "sleep_stages": {"type": "object", "components": ["awake", "rem", "core", "deep"], "frequency": "nightly"},
+          "wrist_temperature_deviation_c": {"type": "float", "unit": "°C", "frequency": "nightly"},
+          "noise_exposure_db": {"type": "float", "unit": "dB", "frequency": "continuous"},
+          "cardio_fitness_vo2max": {"type": "float", "unit": "mL/kg/min", "frequency": "per_workout"},
+          "walking_steadiness": {"type": "enum", "values": ["ok", "low", "very_low"], "frequency": "weekly"}
+        },
+        "connectivity": ["bluetooth", "wifi", "cellular_optional"],
+        "api_available": true,
+        "api_type": "apple_healthkit",
+        "data_export_formats": ["xml", "json"],
+        "accuracy_studies": [
+          {
+            "pmid": "32094994",
+            "metric": "heart_rate",
+            "accuracy": "clinical_grade"
+          },
+          {
+            "pmid": "31542775",
+            "metric": "ecg_afib",
+            "sensitivity": 0.98,
+            "specificity": 0.99
+          }
+        ],
+        "cost_usd": 399,
+        "prescription_required": false
+      },
+      {
+        "id": "apple_watch_ultra_2",
+        "manufacturer": "Apple",
+        "model": "Apple Watch Ultra 2",
+        "category": "wearable",
+        "fda_cleared_features": ["ecg", "afib_detection", "fall_detection"],
+        "data_points": {
+          "heart_rate_bpm": {"type": "int", "unit": "bpm", "frequency": "continuous"},
+          "heart_rate_variability_ms": {"type": "float", "unit": "ms", "frequency": "daily_summary"},
+          "spo2_percent": {"type": "float", "unit": "%", "frequency": "on_demand"},
+          "depth_meters": {"type": "float", "unit": "m", "frequency": "diving"},
+          "water_temperature_c": {"type": "float", "unit": "°C", "frequency": "diving"},
+          "ecg_waveform": {"type": "array", "unit": "mV", "frequency": "on_demand"}
+        },
+        "connectivity": ["bluetooth", "wifi", "cellular"],
+        "api_available": true,
+        "api_type": "apple_healthkit",
+        "cost_usd": 799,
+        "prescription_required": false
+      },
+      {
+        "id": "oura_ring_gen3",
+        "manufacturer": "Oura",
+        "model": "Oura Ring Gen 3",
+        "category": "wearable",
+        "data_points": {
+          "heart_rate_bpm": {"type": "int", "unit": "bpm", "frequency": "continuous"},
+          "heart_rate_variability_ms": {"type": "float", "unit": "ms", "frequency": "nightly"},
+          "resting_heart_rate_bpm": {"type": "int", "unit": "bpm", "frequency": "nightly"},
+          "respiratory_rate_brpm": {"type": "float", "unit": "breaths/min", "frequency": "nightly"},
+          "body_temperature_deviation_c": {"type": "float", "unit": "°C", "frequency": "nightly"},
+          "spo2_percent": {"type": "float", "unit": "%", "frequency": "nightly"},
+          "sleep_duration_hours": {"type": "float", "unit": "hours", "frequency": "nightly"},
+          "sleep_efficiency_percent": {"type": "float", "unit": "%", "frequency": "nightly"},
+          "sleep_latency_minutes": {"type": "int", "unit": "minutes", "frequency": "nightly"},
+          "sleep_stages": {"type": "object", "components": ["awake", "rem", "light", "deep"], "frequency": "nightly"},
+          "readiness_score": {"type": "int", "unit": "0-100", "frequency": "daily"},
+          "sleep_score": {"type": "int", "unit": "0-100", "frequency": "daily"},
+          "activity_score": {"type": "int", "unit": "0-100", "frequency": "daily"},
+          "steps": {"type": "int", "unit": "count", "frequency": "continuous"},
+          "active_calories_kcal": {"type": "float", "unit": "kcal", "frequency": "daily"}
+        },
+        "connectivity": ["bluetooth_le"],
+        "api_available": true,
+        "api_type": "oura_cloud_api",
+        "api_documentation": "https://cloud.ouraring.com/docs/",
+        "data_export_formats": ["json", "csv"],
+        "accuracy_studies": [
+          {
+            "pmid": "34890591",
+            "metric": "sleep_staging",
+            "accuracy": "moderate_agreement_psg"
+          },
+          {
+            "pmid": "33086131",
+            "metric": "temperature",
+            "note": "validated_for_fever_detection"
+          }
+        ],
+        "cost_usd": 299,
+        "subscription_usd_monthly": 6,
+        "prescription_required": false
+      },
+      {
+        "id": "whoop_4",
+        "manufacturer": "Whoop",
+        "model": "Whoop 4.0",
+        "category": "wearable",
+        "data_points": {
+          "heart_rate_bpm": {"type": "int", "unit": "bpm", "frequency": "continuous"},
+          "heart_rate_variability_ms": {"type": "float", "unit": "ms", "frequency": "daily"},
+          "resting_heart_rate_bpm": {"type": "int", "unit": "bpm", "frequency": "daily"},
+          "respiratory_rate_brpm": {"type": "float", "unit": "breaths/min", "frequency": "sleep"},
+          "spo2_percent": {"type": "float", "unit": "%", "frequency": "sleep"},
+          "skin_temperature_c": {"type": "float", "unit": "°C", "frequency": "continuous"},
+          "sleep_duration_hours": {"type": "float", "unit": "hours", "frequency": "nightly"},
+          "sleep_stages": {"type": "object", "components": ["awake", "rem", "light", "sws"], "frequency": "nightly"},
+          "sleep_performance_percent": {"type": "float", "unit": "%", "frequency": "nightly"},
+          "strain_score": {"type": "float", "unit": "0-21", "frequency": "daily"},
+          "recovery_score": {"type": "int", "unit": "0-100", "frequency": "daily"},
+          "calories_kcal": {"type": "float", "unit": "kcal", "frequency": "daily"}
+        },
+        "connectivity": ["bluetooth_le"],
+        "api_available": true,
+        "api_type": "whoop_api",
+        "data_export_formats": ["csv", "json"],
+        "cost_usd": 0,
+        "subscription_usd_monthly": 30,
+        "prescription_required": false
+      },
+      {
+        "id": "garmin_fenix_8",
+        "manufacturer": "Garmin",
+        "model": "Fenix 8",
+        "category": "wearable",
+        "data_points": {
+          "heart_rate_bpm": {"type": "int", "unit": "bpm", "frequency": "continuous"},
+          "heart_rate_variability_ms": {"type": "float", "unit": "ms", "frequency": "daily"},
+          "spo2_percent": {"type": "float", "unit": "%", "frequency": "on_demand"},
+          "stress_level": {"type": "int", "unit": "0-100", "frequency": "continuous"},
+          "body_battery": {"type": "int", "unit": "0-100", "frequency": "continuous"},
+          "respiration_rate_brpm": {"type": "float", "unit": "breaths/min", "frequency": "continuous"},
+          "sleep_duration_hours": {"type": "float", "unit": "hours", "frequency": "nightly"},
+          "sleep_stages": {"type": "object", "components": ["awake", "rem", "light", "deep"], "frequency": "nightly"},
+          "sleep_score": {"type": "int", "unit": "0-100", "frequency": "nightly"},
+          "steps": {"type": "int", "unit": "count", "frequency": "continuous"},
+          "floors_climbed": {"type": "int", "unit": "count", "frequency": "continuous"},
+          "active_calories_kcal": {"type": "float", "unit": "kcal", "frequency": "daily"},
+          "vo2_max": {"type": "float", "unit": "mL/kg/min", "frequency": "per_workout"},
+          "training_status": {"type": "enum", "values": ["productive", "maintaining", "recovery", "unproductive", "detraining", "overreaching"], "frequency": "daily"},
+          "training_load": {"type": "float", "unit": "arbitrary", "frequency": "daily"},
+          "race_predictor": {"type": "object", "components": ["5k", "10k", "half_marathon", "marathon"], "frequency": "weekly"}
+        },
+        "connectivity": ["bluetooth", "ant+", "wifi"],
+        "api_available": true,
+        "api_type": "garmin_connect_api",
+        "data_export_formats": ["fit", "tcx", "gpx", "csv"],
+        "cost_usd": 999,
+        "prescription_required": false
+      },
+      {
+        "id": "fitbit_sense_2",
+        "manufacturer": "Google/Fitbit",
+        "model": "Fitbit Sense 2",
+        "category": "wearable",
+        "fda_cleared_features": ["afib_detection"],
+        "data_points": {
+          "heart_rate_bpm": {"type": "int", "unit": "bpm", "frequency": "continuous"},
+          "heart_rate_variability_ms": {"type": "float", "unit": "ms", "frequency": "nightly"},
+          "spo2_percent": {"type": "float", "unit": "%", "frequency": "nightly"},
+          "skin_temperature_variation_c": {"type": "float", "unit": "°C", "frequency": "nightly"},
+          "stress_management_score": {"type": "int", "unit": "0-100", "frequency": "daily"},
+          "eda_responses": {"type": "int", "unit": "count", "frequency": "per_session"},
+          "sleep_duration_hours": {"type": "float", "unit": "hours", "frequency": "nightly"},
+          "sleep_stages": {"type": "object", "components": ["awake", "rem", "light", "deep"], "frequency": "nightly"},
+          "sleep_score": {"type": "int", "unit": "0-100", "frequency": "nightly"},
+          "steps": {"type": "int", "unit": "count", "frequency": "continuous"},
+          "active_zone_minutes": {"type": "int", "unit": "minutes", "frequency": "daily"}
+        },
+        "connectivity": ["bluetooth", "wifi"],
+        "api_available": true,
+        "api_type": "fitbit_web_api",
+        "data_export_formats": ["json", "csv"],
+        "cost_usd": 299,
+        "subscription_usd_monthly": 10,
+        "prescription_required": false
+      },
+      {
+        "id": "samsung_galaxy_watch_6",
+        "manufacturer": "Samsung",
+        "model": "Galaxy Watch 6",
+        "category": "wearable",
+        "fda_cleared_features": ["ecg", "afib_detection"],
+        "data_points": {
+          "heart_rate_bpm": {"type": "int", "unit": "bpm", "frequency": "continuous"},
+          "ecg_waveform": {"type": "array", "unit": "mV", "frequency": "on_demand"},
+          "spo2_percent": {"type": "float", "unit": "%", "frequency": "on_demand"},
+          "body_composition": {"type": "object", "components": ["body_fat_percent", "muscle_mass_kg", "body_water_percent", "bmr_kcal"], "frequency": "on_demand"},
+          "sleep_duration_hours": {"type": "float", "unit": "hours", "frequency": "nightly"},
+          "sleep_stages": {"type": "object", "frequency": "nightly"},
+          "steps": {"type": "int", "unit": "count", "frequency": "continuous"},
+          "stress_level": {"type": "int", "unit": "0-100", "frequency": "on_demand"}
+        },
+        "connectivity": ["bluetooth", "wifi", "lte_optional"],
+        "api_available": true,
+        "api_type": "samsung_health_sdk",
+        "cost_usd": 329,
+        "prescription_required": false
+      }
+    ],
+    "blood_pressure": [
+      {
+        "id": "omron_evolv",
+        "manufacturer": "Omron",
+        "model": "Evolv",
+        "category": "blood_pressure",
+        "fda_cleared": true,
+        "measurement_type": "oscillometric",
+        "cuff_location": "upper_arm",
+        "data_points": {
+          "systolic_mmhg": {"type": "int", "unit": "mmHg", "frequency": "on_demand"},
+          "diastolic_mmhg": {"type": "int", "unit": "mmHg", "frequency": "on_demand"},
+          "pulse_bpm": {"type": "int", "unit": "bpm", "frequency": "on_demand"},
+          "irregular_heartbeat": {"type": "boolean", "frequency": "on_demand"}
+        },
+        "connectivity": ["bluetooth"],
+        "api_available": true,
+        "api_type": "omron_connect_api",
+        "data_export_formats": ["csv"],
+        "accuracy_validation": "esh_validated",
+        "cost_usd": 100,
+        "prescription_required": false
+      },
+      {
+        "id": "withings_bpm_connect",
+        "manufacturer": "Withings",
+        "model": "BPM Connect",
+        "category": "blood_pressure",
+        "fda_cleared": true,
+        "measurement_type": "oscillometric",
+        "cuff_location": "upper_arm",
+        "data_points": {
+          "systolic_mmhg": {"type": "int", "unit": "mmHg", "frequency": "on_demand"},
+          "diastolic_mmhg": {"type": "int", "unit": "mmHg", "frequency": "on_demand"},
+          "heart_rate_bpm": {"type": "int", "unit": "bpm", "frequency": "on_demand"}
+        },
+        "connectivity": ["bluetooth", "wifi"],
+        "api_available": true,
+        "api_type": "withings_health_api",
+        "data_export_formats": ["json", "csv"],
+        "accuracy_validation": "esh_validated",
+        "cost_usd": 130,
+        "prescription_required": false
+      },
+      {
+        "id": "qardio_arm",
+        "manufacturer": "Qardio",
+        "model": "QardioArm",
+        "category": "blood_pressure",
+        "fda_cleared": true,
+        "measurement_type": "oscillometric",
+        "cuff_location": "upper_arm",
+        "data_points": {
+          "systolic_mmhg": {"type": "int", "unit": "mmHg", "frequency": "on_demand"},
+          "diastolic_mmhg": {"type": "int", "unit": "mmHg", "frequency": "on_demand"},
+          "heart_rate_bpm": {"type": "int", "unit": "bpm", "frequency": "on_demand"},
+          "irregular_heartbeat": {"type": "boolean", "frequency": "on_demand"}
+        },
+        "connectivity": ["bluetooth"],
+        "api_available": true,
+        "api_type": "qardio_api",
+        "cost_usd": 100,
+        "prescription_required": false
+      }
+    ],
+    "scale": [
+      {
+        "id": "withings_body_plus",
+        "manufacturer": "Withings",
+        "model": "Body+",
+        "category": "scale",
+        "fda_cleared": true,
+        "measurement_type": "bioelectrical_impedance",
+        "data_points": {
+          "weight_kg": {"type": "float", "unit": "kg", "frequency": "on_demand"},
+          "body_fat_percent": {"type": "float", "unit": "%", "frequency": "on_demand"},
+          "muscle_mass_kg": {"type": "float", "unit": "kg", "frequency": "on_demand"},
+          "water_percent": {"type": "float", "unit": "%", "frequency": "on_demand"},
+          "bone_mass_kg": {"type": "float", "unit": "kg", "frequency": "on_demand"},
+          "bmi": {"type": "float", "unit": "kg/m²", "frequency": "on_demand"}
+        },
+        "connectivity": ["wifi", "bluetooth"],
+        "api_available": true,
+        "api_type": "withings_health_api",
+        "cost_usd": 100,
+        "prescription_required": false
+      },
+      {
+        "id": "withings_body_scan",
+        "manufacturer": "Withings",
+        "model": "Body Scan",
+        "category": "scale",
+        "fda_cleared": true,
+        "measurement_type": "segmental_bioelectrical_impedance",
+        "data_points": {
+          "weight_kg": {"type": "float", "unit": "kg", "frequency": "on_demand"},
+          "body_fat_percent": {"type": "float", "unit": "%", "frequency": "on_demand"},
+          "visceral_fat_index": {"type": "int", "unit": "index", "frequency": "on_demand"},
+          "muscle_mass_kg": {"type": "float", "unit": "kg", "frequency": "on_demand"},
+          "segmental_muscle_mass": {"type": "object", "components": ["torso", "left_arm", "right_arm", "left_leg", "right_leg"], "frequency": "on_demand"},
+          "segmental_fat_mass": {"type": "object", "components": ["torso", "left_arm", "right_arm", "left_leg", "right_leg"], "frequency": "on_demand"},
+          "extracellular_water_percent": {"type": "float", "unit": "%", "frequency": "on_demand"},
+          "intracellular_water_percent": {"type": "float", "unit": "%", "frequency": "on_demand"},
+          "ecg_waveform": {"type": "array", "unit": "mV", "frequency": "on_demand"},
+          "pulse_wave_velocity_m_s": {"type": "float", "unit": "m/s", "frequency": "on_demand"},
+          "vascular_age": {"type": "int", "unit": "years", "frequency": "on_demand"}
+        },
+        "connectivity": ["wifi", "bluetooth"],
+        "api_available": true,
+        "api_type": "withings_health_api",
+        "cost_usd": 400,
+        "prescription_required": false,
+        "notes": "6-lead ECG via handheld electrodes, nerve activity assessment"
+      },
+      {
+        "id": "renpho_smart_scale",
+        "manufacturer": "Renpho",
+        "model": "Smart Scale",
+        "category": "scale",
+        "measurement_type": "bioelectrical_impedance",
+        "data_points": {
+          "weight_kg": {"type": "float", "unit": "kg", "frequency": "on_demand"},
+          "body_fat_percent": {"type": "float", "unit": "%", "frequency": "on_demand"},
+          "muscle_mass_kg": {"type": "float", "unit": "kg", "frequency": "on_demand"},
+          "bmi": {"type": "float", "unit": "kg/m²", "frequency": "on_demand"},
+          "bmr_kcal": {"type": "int", "unit": "kcal", "frequency": "on_demand"}
+        },
+        "connectivity": ["bluetooth"],
+        "api_available": false,
+        "data_export_formats": ["csv"],
+        "cost_usd": 30,
+        "prescription_required": false
+      }
+    ],
+    "pulse_oximeter": [
+      {
+        "id": "masimo_mightysat",
+        "manufacturer": "Masimo",
+        "model": "MightySat",
+        "category": "pulse_oximeter",
+        "fda_cleared": true,
+        "measurement_type": "optical_plethysmography",
+        "data_points": {
+          "spo2_percent": {"type": "float", "unit": "%", "frequency": "on_demand"},
+          "pulse_rate_bpm": {"type": "int", "unit": "bpm", "frequency": "on_demand"},
+          "perfusion_index": {"type": "float", "unit": "%", "frequency": "on_demand"},
+          "pleth_variability_index": {"type": "float", "unit": "%", "frequency": "on_demand"},
+          "respiration_rate_brpm": {"type": "float", "unit": "breaths/min", "frequency": "on_demand"}
+        },
+        "connectivity": ["bluetooth"],
+        "api_available": true,
+        "accuracy_spo2_arms": 2,
+        "cost_usd": 300,
+        "prescription_required": false,
+        "notes": "Medical-grade accuracy"
+      },
+      {
+        "id": "wellue_o2ring",
+        "manufacturer": "Wellue",
+        "model": "O2Ring",
+        "category": "pulse_oximeter",
+        "fda_cleared": true,
+        "measurement_type": "optical_plethysmography",
+        "wearable": true,
+        "data_points": {
+          "spo2_percent": {"type": "float", "unit": "%", "frequency": "4sec"},
+          "pulse_rate_bpm": {"type": "int", "unit": "bpm", "frequency": "4sec"},
+          "motion": {"type": "int", "unit": "arbitrary", "frequency": "4sec"}
+        },
+        "connectivity": ["bluetooth"],
+        "api_available": false,
+        "data_export_formats": ["csv", "pdf"],
+        "cost_usd": 180,
+        "prescription_required": false,
+        "notes": "Overnight continuous SpO2 monitoring"
+      }
+    ],
+    "thermometer": [
+      {
+        "id": "withings_thermo",
+        "manufacturer": "Withings",
+        "model": "Thermo",
+        "category": "thermometer",
+        "fda_cleared": true,
+        "measurement_type": "temporal_artery_infrared",
+        "data_points": {
+          "temperature_c": {"type": "float", "unit": "°C", "frequency": "on_demand"},
+          "fever_indicator": {"type": "boolean", "frequency": "on_demand"}
+        },
+        "connectivity": ["wifi", "bluetooth"],
+        "api_available": true,
+        "api_type": "withings_health_api",
+        "accuracy_c": 0.2,
+        "cost_usd": 100,
+        "prescription_required": false
+      },
+      {
+        "id": "kinsa_quickcare",
+        "manufacturer": "Kinsa",
+        "model": "QuickCare",
+        "category": "thermometer",
+        "fda_cleared": true,
+        "measurement_type": "predictive_contact",
+        "data_points": {
+          "temperature_c": {"type": "float", "unit": "°C", "frequency": "on_demand"}
+        },
+        "connectivity": ["bluetooth"],
+        "api_available": true,
+        "cost_usd": 20,
+        "prescription_required": false
+      }
+    ],
+    "ecg": [
+      {
+        "id": "kardia_mobile_6l",
+        "manufacturer": "AliveCor",
+        "model": "KardiaMobile 6L",
+        "category": "ecg",
+        "fda_cleared": true,
+        "ecg_leads": 6,
+        "data_points": {
+          "ecg_waveform": {"type": "array", "unit": "mV", "frequency": "on_demand", "sample_rate_hz": 300},
+          "heart_rate_bpm": {"type": "int", "unit": "bpm", "frequency": "on_demand"},
+          "rhythm_classification": {"type": "enum", "values": ["normal", "afib", "bradycardia", "tachycardia", "unclassified"], "frequency": "on_demand"},
+          "qt_interval_ms": {"type": "int", "unit": "ms", "frequency": "on_demand"},
+          "qtc_interval_ms": {"type": "int", "unit": "ms", "frequency": "on_demand"}
+        },
+        "connectivity": ["bluetooth"],
+        "api_available": true,
+        "data_export_formats": ["pdf", "csv"],
+        "accuracy_studies": [
+          {
+            "pmid": "31461733",
+            "metric": "afib_detection",
+            "sensitivity": 0.97,
+            "specificity": 0.94
+          }
+        ],
+        "cost_usd": 150,
+        "subscription_usd_monthly": 10,
+        "prescription_required": false
+      }
+    ],
+    "glucose_meter": [
+      {
+        "id": "onetouch_verio_reflect",
+        "manufacturer": "LifeScan",
+        "model": "OneTouch Verio Reflect",
+        "category": "glucose_meter",
+        "fda_cleared": true,
+        "measurement_type": "electrochemical_fingerstick",
+        "data_points": {
+          "glucose_mg_dl": {"type": "float", "unit": "mg/dL", "frequency": "on_demand"}
+        },
+        "connectivity": ["bluetooth"],
+        "api_available": true,
+        "accuracy_iso_15197_compliant": true,
+        "cost_usd": 40,
+        "strip_cost_per_test": 0.50,
+        "prescription_required": false
+      },
+      {
+        "id": "contour_next_one",
+        "manufacturer": "Ascensia",
+        "model": "Contour Next One",
+        "category": "glucose_meter",
+        "fda_cleared": true,
+        "measurement_type": "electrochemical_fingerstick",
+        "data_points": {
+          "glucose_mg_dl": {"type": "float", "unit": "mg/dL", "frequency": "on_demand"}
+        },
+        "connectivity": ["bluetooth"],
+        "api_available": true,
+        "accuracy_iso_15197_compliant": true,
+        "cost_usd": 20,
+        "strip_cost_per_test": 0.40,
+        "prescription_required": false
+      }
+    ],
+    "ketone_meter": [
+      {
+        "id": "keto_mojo_gk",
+        "manufacturer": "Keto-Mojo",
+        "model": "GK+",
+        "category": "ketone_meter",
+        "fda_cleared": true,
+        "measurement_type": "electrochemical_fingerstick",
+        "data_points": {
+          "ketone_mmol_l": {"type": "float", "unit": "mmol/L", "frequency": "on_demand"},
+          "glucose_mg_dl": {"type": "float", "unit": "mg/dL", "frequency": "on_demand"},
+          "gki_ratio": {"type": "float", "unit": "ratio", "frequency": "calculated"}
+        },
+        "connectivity": ["bluetooth"],
+        "api_available": true,
+        "cost_usd": 50,
+        "strip_cost_per_test_ketone": 1.00,
+        "strip_cost_per_test_glucose": 0.50,
+        "prescription_required": false
+      }
+    ],
+    "spirometer": [
+      {
+        "id": "nuvoair_air_smart",
+        "manufacturer": "NuvoAir",
+        "model": "Air Smart Spirometer",
+        "category": "spirometer",
+        "fda_cleared": true,
+        "data_points": {
+          "fev1_liters": {"type": "float", "unit": "L", "frequency": "on_demand"},
+          "fvc_liters": {"type": "float", "unit": "L", "frequency": "on_demand"},
+          "fev1_fvc_ratio": {"type": "float", "unit": "ratio", "frequency": "on_demand"},
+          "pef_l_min": {"type": "float", "unit": "L/min", "frequency": "on_demand"}
+        },
+        "connectivity": ["bluetooth"],
+        "api_available": true,
+        "cost_usd": 300,
+        "prescription_required": false,
+        "notes": "Used for asthma/COPD monitoring"
+      }
+    ]
+  }
+}
