@@ -1166,3 +1166,308 @@ def run_full_inference_v2(inputs: Dict[str, Any]) -> Dict[str, Any]:
 
 # Override original function
 run_full_inference = run_full_inference_v2
+
+# =============================================================================
+# SECTION 6: ADDITIONAL BIOMARKER ASSESSMENTS
+# =============================================================================
+
+def assess_liver_function(
+    alt: Optional[float] = None,
+    ast: Optional[float] = None,
+    sex: Optional[str] = None
+) -> InferenceResult:
+    """
+    Assess liver function based on ALT/AST.
+    Source: ACG Clinical Guidelines
+    """
+    sources = ["ACG Clinical Guidelines on Liver Enzymes"]
+    factors = []
+    
+    if alt is None and ast is None:
+        return InferenceResult(
+            key="liver_function",
+            title="Liver Function Assessment",
+            risk_level=RiskLevel.LOW,
+            risk_score=0,
+            confidence=0.0,
+            explanation="Insufficient data. Need ALT and/or AST values.",
+            contributing_factors=[],
+            recommendations=["Obtain comprehensive metabolic panel"],
+            sources=sources
+        )
+    
+    risk_points = 0
+    max_points = 0
+    
+    # ALT assessment (more liver-specific)
+    if alt is not None:
+        max_points += 60
+        alt_upper = 55 if sex and sex.upper() in ['M', 'MALE'] else 45
+        
+        if alt > alt_upper * 3:  # >3x ULN
+            risk_points += 60
+            factors.append({"factor": f"ALT {alt} U/L (significantly elevated >3x normal)", "impact": 60, "direction": "+"})
+        elif alt > alt_upper * 2:  # 2-3x ULN
+            risk_points += 45
+            factors.append({"factor": f"ALT {alt} U/L (elevated 2-3x normal)", "impact": 45, "direction": "+"})
+        elif alt > alt_upper:  # 1-2x ULN
+            risk_points += 25
+            factors.append({"factor": f"ALT {alt} U/L (mildly elevated)", "impact": 25, "direction": "+"})
+        else:
+            factors.append({"factor": f"ALT {alt} U/L (normal)", "impact": 0, "direction": "="})
+    
+    # AST assessment
+    if ast is not None:
+        max_points += 40
+        ast_upper = 40
+        
+        if ast > ast_upper * 3:
+            risk_points += 40
+            factors.append({"factor": f"AST {ast} U/L (significantly elevated)", "impact": 40, "direction": "+"})
+        elif ast > ast_upper:
+            risk_points += 20
+            factors.append({"factor": f"AST {ast} U/L (elevated)", "impact": 20, "direction": "+"})
+        else:
+            factors.append({"factor": f"AST {ast} U/L (normal)", "impact": 0, "direction": "="})
+    
+    # Calculate AST/ALT ratio if both available
+    if alt is not None and ast is not None and alt > 0:
+        ratio = ast / alt
+        if ratio > 2:
+            factors.append({"factor": f"AST/ALT ratio {ratio:.1f} (>2 may suggest alcoholic liver disease)", "impact": 10, "direction": "+"})
+            risk_points += 10
+            max_points += 10
+    
+    risk_score = (risk_points / max_points * 100) if max_points > 0 else 0
+    confidence = min(0.90, 0.5 + (0.4 if alt else 0) + (0.3 if ast else 0))
+    
+    if risk_score >= 60:
+        risk_level = RiskLevel.HIGH
+        explanation = "Liver enzymes are significantly elevated. Medical evaluation needed."
+        recommendations = [
+            "Consult gastroenterologist/hepatologist",
+            "Avoid alcohol completely",
+            "Review medications for hepatotoxicity",
+            "Consider hepatitis panel, liver ultrasound"
+        ]
+    elif risk_score >= 30:
+        risk_level = RiskLevel.MODERATE
+        explanation = "Liver enzymes are mildly elevated. May indicate fatty liver or other causes."
+        recommendations = [
+            "Repeat tests in 2-4 weeks",
+            "Reduce alcohol intake",
+            "Lose weight if overweight",
+            "Consider fatty liver (NAFLD)"
+        ]
+    else:
+        risk_level = RiskLevel.LOW
+        explanation = "Liver enzymes are within normal limits."
+        recommendations = ["Continue healthy lifestyle", "Annual screening"]
+    
+    return InferenceResult(
+        key="liver_function",
+        title="Liver Function Assessment",
+        risk_level=risk_level,
+        risk_score=round(risk_score, 1),
+        confidence=round(confidence, 2),
+        explanation=explanation,
+        contributing_factors=factors,
+        recommendations=recommendations,
+        sources=sources
+    )
+
+def assess_vitamin_b12(b12: float) -> InferenceResult:
+    """
+    Assess Vitamin B12 status.
+    Source: Clinical reference ranges
+    """
+    sources = ["Clinical Reference Ranges", "NEJM B12 Deficiency Review"]
+    factors = []
+    
+    if b12 < 200:
+        risk_level = RiskLevel.HIGH
+        risk_score = 75
+        explanation = f"Vitamin B12 {b12} pg/mL is deficient (<200). This can cause neurological and hematological problems."
+        factors.append({"factor": f"B12 {b12} pg/mL (deficient <200)", "impact": 75, "direction": "+"})
+        recommendations = [
+            "B12 supplementation (oral or injection)",
+            "Evaluate for pernicious anemia",
+            "Check methylmalonic acid (MMA) to confirm deficiency",
+            "Consider GI evaluation if malabsorption suspected"
+        ]
+    elif b12 < 300:
+        risk_level = RiskLevel.MODERATE
+        risk_score = 45
+        explanation = f"Vitamin B12 {b12} pg/mL is borderline low (200-300). May benefit from supplementation."
+        factors.append({"factor": f"B12 {b12} pg/mL (borderline 200-300)", "impact": 45, "direction": "+"})
+        recommendations = [
+            "Consider B12 supplementation",
+            "Check MMA if symptoms present",
+            "Increase B12-rich foods (meat, fish, eggs, dairy)"
+        ]
+    elif b12 > 1000:
+        risk_level = RiskLevel.LOW
+        risk_score = 20
+        explanation = f"Vitamin B12 {b12} pg/mL is elevated (>1000). Usually not harmful but investigate if not supplementing."
+        factors.append({"factor": f"B12 {b12} pg/mL (elevated >1000)", "impact": 20, "direction": "+"})
+        recommendations = [
+            "If not supplementing, investigate cause",
+            "Usually benign if on supplements"
+        ]
+    else:
+        risk_level = RiskLevel.LOW
+        risk_score = 10
+        explanation = f"Vitamin B12 {b12} pg/mL is sufficient (300-900)."
+        factors.append({"factor": f"B12 {b12} pg/mL (sufficient)", "impact": 0, "direction": "="})
+        recommendations = ["Maintain adequate intake", "Annual monitoring if vegetarian/vegan"]
+    
+    return InferenceResult(
+        key="vitamin_b12_status",
+        title="Vitamin B12 Status Assessment",
+        risk_level=risk_level,
+        risk_score=round(risk_score, 1),
+        confidence=0.85,
+        explanation=explanation,
+        contributing_factors=factors,
+        recommendations=recommendations,
+        sources=sources
+    )
+
+def assess_iron_status(ferritin: float, sex: Optional[str] = None) -> InferenceResult:
+    """
+    Assess iron stores based on ferritin.
+    Source: WHO Guidelines, Hematology references
+    """
+    sources = ["WHO Iron Deficiency Guidelines", "ASH Anemia Guidelines"]
+    factors = []
+    
+    # Sex-specific thresholds
+    ferritin_low = 30 if sex and sex.upper() in ['M', 'MALE'] else 15
+    ferritin_high = 400 if sex and sex.upper() in ['M', 'MALE'] else 150
+    
+    if ferritin < ferritin_low:
+        risk_level = RiskLevel.HIGH
+        risk_score = 70
+        explanation = f"Ferritin {ferritin} ng/mL indicates iron deficiency. This can cause anemia and fatigue."
+        factors.append({"factor": f"Ferritin {ferritin} ng/mL (low, iron deficient)", "impact": 70, "direction": "+"})
+        recommendations = [
+            "Iron supplementation (ferrous sulfate 325mg daily)",
+            "Check CBC for anemia",
+            "Investigate cause (GI blood loss, heavy periods)",
+            "Increase iron-rich foods with vitamin C"
+        ]
+    elif ferritin < 50:
+        risk_level = RiskLevel.MODERATE
+        risk_score = 40
+        explanation = f"Ferritin {ferritin} ng/mL is borderline low. Iron stores are suboptimal."
+        factors.append({"factor": f"Ferritin {ferritin} ng/mL (borderline low)", "impact": 40, "direction": "+"})
+        recommendations = [
+            "Increase dietary iron intake",
+            "Consider low-dose iron supplement",
+            "Monitor for symptoms of deficiency"
+        ]
+    elif ferritin > ferritin_high:
+        risk_level = RiskLevel.MODERATE
+        risk_score = 50
+        explanation = f"Ferritin {ferritin} ng/mL is elevated. May indicate iron overload or inflammation."
+        factors.append({"factor": f"Ferritin {ferritin} ng/mL (elevated)", "impact": 50, "direction": "+"})
+        recommendations = [
+            "Evaluate for hemochromatosis (genetic testing)",
+            "Check transferrin saturation",
+            "Rule out inflammation (ferritin is acute phase reactant)",
+            "Avoid iron supplements and vitamin C with meals"
+        ]
+    else:
+        risk_level = RiskLevel.LOW
+        risk_score = 10
+        explanation = f"Ferritin {ferritin} ng/mL indicates adequate iron stores."
+        factors.append({"factor": f"Ferritin {ferritin} ng/mL (normal)", "impact": 0, "direction": "="})
+        recommendations = ["Maintain balanced diet", "Annual screening if at risk"]
+    
+    return InferenceResult(
+        key="iron_status",
+        title="Iron Status Assessment (Ferritin)",
+        risk_level=risk_level,
+        risk_score=round(risk_score, 1),
+        confidence=0.80,
+        explanation=explanation,
+        contributing_factors=factors,
+        recommendations=recommendations,
+        sources=sources
+    )
+
+# Update the main inference function to include new assessments
+def run_full_inference_v3(inputs: Dict[str, Any]) -> Dict[str, Any]:
+    """Enhanced inference with all assessments."""
+    # Start with v2 results
+    results = run_full_inference_v2(inputs)
+    
+    # Add Liver Function
+    if any(k in inputs for k in ["alt", "ast"]):
+        liver = assess_liver_function(
+            alt=inputs.get("alt"),
+            ast=inputs.get("ast"),
+            sex=inputs.get("sex")
+        )
+        if liver.confidence > 0:
+            results["inferences"].append({
+                "key": liver.key,
+                "title": liver.title,
+                "risk_level": liver.risk_level.value,
+                "risk_score": liver.risk_score,
+                "confidence": liver.confidence,
+                "explanation": liver.explanation,
+                "contributing_factors": liver.contributing_factors,
+                "recommendations": liver.recommendations,
+                "sources": liver.sources
+            })
+    
+    # Add Vitamin B12
+    if "vitamin_b12" in inputs or "b12" in inputs:
+        b12_val = inputs.get("vitamin_b12") or inputs.get("b12")
+        b12 = assess_vitamin_b12(b12_val)
+        results["inferences"].append({
+            "key": b12.key,
+            "title": b12.title,
+            "risk_level": b12.risk_level.value,
+            "risk_score": b12.risk_score,
+            "confidence": b12.confidence,
+            "explanation": b12.explanation,
+            "contributing_factors": b12.contributing_factors,
+            "recommendations": b12.recommendations,
+            "sources": b12.sources
+        })
+    
+    # Add Iron/Ferritin
+    if "ferritin" in inputs:
+        iron = assess_iron_status(inputs["ferritin"], inputs.get("sex"))
+        results["inferences"].append({
+            "key": iron.key,
+            "title": iron.title,
+            "risk_level": iron.risk_level.value,
+            "risk_score": iron.risk_score,
+            "confidence": iron.confidence,
+            "explanation": iron.explanation,
+            "contributing_factors": iron.contributing_factors,
+            "recommendations": iron.recommendations,
+            "sources": iron.sources
+        })
+    
+    # Recalculate overall health score
+    if results["inferences"]:
+        weighted_scores = []
+        for inf in results["inferences"]:
+            weight = inf["confidence"]
+            health_score = 100 - inf["risk_score"]
+            weighted_scores.append((health_score, weight))
+        
+        total_weight = sum(w for _, w in weighted_scores)
+        if total_weight > 0:
+            results["overall_health_score"] = round(
+                sum(s * w for s, w in weighted_scores) / total_weight, 1
+            )
+    
+    return results
+
+# Override
+run_full_inference = run_full_inference_v3
