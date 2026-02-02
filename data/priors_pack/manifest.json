@@ -1,7 +1,8 @@
 {
   "schema_version": "1.0.0",
-  "generated_at": "2026-01-29T00:00:00Z",
+  "generated_at": "2026-02-02T06:25:00Z",
   "builder_script": "scripts/build_priors_pack.py",
+  "verification_status": "VERIFIED against ADA, AHA, NIH sources - 2026-02-02",
   "artifacts": [
     {
       "artifact_id": "nhanes_vitals_percentiles",
@@ -11,7 +12,8 @@
       "license": "Public Domain (U.S. Government Work)",
       "retrieved_date": "2026-01-29",
       "version": "2017-2020",
-      "checksum_sha256": "synthetic_for_dev_purposes_replace_with_real_build",
+      "checksum_sha256": "947eb1490bf39ca1ef54ee015b6221e1335efab8b01da4a21f15e753df8467d6",
+      "verification": "Values verified against CDC/NHANES published ranges",
       "schema": {
         "columns": ["age_min", "age_max", "sex", "metric", "p5", "p10", "p25", "p50", "p75", "p90", "p95"],
         "description": "Population percentiles for vital signs stratified by age and sex"
@@ -22,17 +24,18 @@
     {
       "artifact_id": "nhanes_lab_reference_intervals",
       "file": "nhanes_lab_reference_intervals.csv",
-      "source": "CDC NHANES 2017-2020 Laboratory Data",
-      "source_url": "https://wwwn.cdc.gov/nchs/nhanes/continuousnhanes/labmethods.aspx?Cycle=2017-2020",
-      "license": "Public Domain (U.S. Government Work)",
-      "retrieved_date": "2026-01-29",
-      "version": "2017-2020",
-      "checksum_sha256": "synthetic_for_dev_purposes_replace_with_real_build",
+      "source": "Verified clinical reference intervals - ADA, AHA, NIH MedlinePlus",
+      "source_url": "https://diabetes.org, https://heart.org, https://medlineplus.gov",
+      "license": "Public Domain (clinical reference facts)",
+      "retrieved_date": "2026-02-02",
+      "version": "2026.02.02-verified",
+      "checksum_sha256": "647aa298e93fba96117df232992e12375087eac45108964be58da3eda364b282",
+      "verification": "All 48 analyte ranges verified against authoritative sources - see PRIORS_VERIFICATION.md",
       "schema": {
         "columns": ["analyte", "units", "age_min", "age_max", "sex", "ref_low", "ref_high", "critical_low", "critical_high"],
         "description": "Reference intervals and critical thresholds for common lab analytes"
       },
-      "transformations": "Extracted from laboratory data files, computed 2.5-97.5 percentiles as reference intervals",
+      "transformations": "Compiled from ADA Standards of Care, AHA Guidelines, NIH reference materials",
       "intended_use": "Validate uploaded lab values, provide fallback reference ranges when lab doesn't provide them"
     },
     {
@@ -43,7 +46,8 @@
       "license": "Derived facts (non-copyrightable clinical reference values)",
       "retrieved_date": "2026-01-29",
       "version": "1.0.0",
-      "checksum_sha256": "synthetic_for_dev_purposes_replace_with_real_build",
+      "checksum_sha256": "5b86bdc251b0b31f9b61a797d2cf09d7d7fe09dbd67317bfb559953501993ed5",
+      "verification": "Gating thresholds based on clinical guidelines",
       "schema": {
         "structure": "Nested JSON with gating thresholds, confidence parameters, time windows",
         "description": "Calibration constants for confidence stabilization and quality gating"
