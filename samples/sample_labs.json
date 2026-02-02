@@ -1,0 +1,191 @@
+{
+  "samples": [
+    {
+      "name": "Healthy Adult",
+      "description": "35-year-old male with optimal markers",
+      "data": {
+        "glucose": 85,
+        "hemoglobin_a1c": 5.1,
+        "total_cholesterol": 175,
+        "ldl_cholesterol": 92,
+        "hdl_cholesterol": 58,
+        "triglycerides": 95,
+        "creatinine": 0.95,
+        "bun": 14,
+        "tsh": 2.1,
+        "vitamin_d": 45,
+        "age": 35,
+        "sex": "M"
+      },
+      "expected_outcomes": {
+        "glycemic_status": "LOW",
+        "cardiovascular_risk": "LOW",
+        "metabolic_syndrome": "LOW"
+      }
+    },
+    {
+      "name": "Pre-diabetic Pattern",
+      "description": "52-year-old female with metabolic concerns",
+      "data": {
+        "glucose": 112,
+        "hemoglobin_a1c": 6.1,
+        "total_cholesterol": 225,
+        "ldl_cholesterol": 142,
+        "hdl_cholesterol": 38,
+        "triglycerides": 195,
+        "creatinine": 0.88,
+        "bun": 16,
+        "tsh": 3.2,
+        "vitamin_d": 22,
+        "age": 52,
+        "sex": "F"
+      },
+      "expected_outcomes": {
+        "glycemic_status": "MODERATE",
+        "cardiovascular_risk": "MODERATE",
+        "metabolic_syndrome": "HIGH"
+      }
+    },
+    {
+      "name": "Type 2 Diabetes",
+      "description": "58-year-old male with established diabetes",
+      "data": {
+        "glucose": 145,
+        "hemoglobin_a1c": 7.8,
+        "total_cholesterol": 248,
+        "ldl_cholesterol": 165,
+        "hdl_cholesterol": 35,
+        "triglycerides": 285,
+        "creatinine": 1.4,
+        "bun": 24,
+        "tsh": 4.8,
+        "vitamin_d": 18,
+        "age": 58,
+        "sex": "M"
+      },
+      "expected_outcomes": {
+        "glycemic_status": "HIGH",
+        "cardiovascular_risk": "HIGH",
+        "metabolic_syndrome": "HIGH"
+      }
+    },
+    {
+      "name": "Lipid Focus",
+      "description": "45-year-old with familial hypercholesterolemia pattern",
+      "data": {
+        "glucose": 92,
+        "hemoglobin_a1c": 5.4,
+        "total_cholesterol": 295,
+        "ldl_cholesterol": 215,
+        "hdl_cholesterol": 52,
+        "triglycerides": 140,
+        "age": 45,
+        "sex": "F"
+      },
+      "expected_outcomes": {
+        "glycemic_status": "LOW",
+        "cardiovascular_risk": "HIGH",
+        "metabolic_syndrome": "LOW"
+      }
+    },
+    {
+      "name": "Young Athlete",
+      "description": "28-year-old endurance athlete with excellent markers",
+      "data": {
+        "glucose": 78,
+        "hemoglobin_a1c": 4.8,
+        "total_cholesterol": 158,
+        "ldl_cholesterol": 72,
+        "hdl_cholesterol": 72,
+        "triglycerides": 65,
+        "creatinine": 1.1,
+        "bun": 18,
+        "tsh": 1.8,
+        "vitamin_d": 62,
+        "hemoglobin": 15.8,
+        "age": 28,
+        "sex": "M"
+      },
+      "expected_outcomes": {
+        "glycemic_status": "LOW",
+        "cardiovascular_risk": "LOW",
+        "metabolic_syndrome": "LOW"
+      }
+    },
+    {
+      "name": "Metabolic Syndrome",
+      "description": "49-year-old with classic metabolic syndrome pattern",
+      "data": {
+        "glucose": 108,
+        "hemoglobin_a1c": 5.9,
+        "total_cholesterol": 215,
+        "ldl_cholesterol": 135,
+        "hdl_cholesterol": 36,
+        "triglycerides": 210,
+        "systolic_bp": 142,
+        "diastolic_bp": 88,
+        "waist_cm": 108,
+        "weight_kg": 98,
+        "height_cm": 175,
+        "age": 49,
+        "sex": "M"
+      },
+      "expected_outcomes": {
+        "glycemic_status": "MODERATE",
+        "cardiovascular_risk": "MODERATE",
+        "metabolic_syndrome": "HIGH"
+      }
+    },
+    {
+      "name": "Thyroid Concern",
+      "description": "42-year-old female with hypothyroid symptoms",
+      "data": {
+        "glucose": 95,
+        "hemoglobin_a1c": 5.5,
+        "total_cholesterol": 235,
+        "ldl_cholesterol": 155,
+        "hdl_cholesterol": 48,
+        "triglycerides": 160,
+        "tsh": 8.5,
+        "vitamin_d": 28,
+        "vitamin_b12": 320,
+        "age": 42,
+        "sex": "F"
+      },
+      "expected_outcomes": {
+        "glycemic_status": "LOW",
+        "cardiovascular_risk": "MODERATE",
+        "thyroid_function": "MODERATE"
+      }
+    },
+    {
+      "name": "Vitamin Deficient",
+      "description": "65-year-old with nutritional deficiencies",
+      "data": {
+        "glucose": 102,
+        "hemoglobin_a1c": 5.8,
+        "total_cholesterol": 198,
+        "ldl_cholesterol": 118,
+        "hdl_cholesterol": 45,
+        "triglycerides": 175,
+        "vitamin_d": 12,
+        "vitamin_b12": 165,
+        "ferritin": 18,
+        "hemoglobin": 11.2,
+        "age": 65,
+        "sex": "F"
+      },
+      "expected_outcomes": {
+        "glycemic_status": "MODERATE",
+        "vitamin_d_status": "HIGH",
+        "vitamin_b12_status": "HIGH"
+      }
+    }
+  ],
+  "metadata": {
+    "version": "1.0.0",
+    "created": "2026-02-02",
+    "purpose": "Testing and demonstration of MONITOR inference engine",
+    "note": "All values are synthetic examples for testing purposes"
+  }
+}
