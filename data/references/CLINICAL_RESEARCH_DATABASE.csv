@@ -1,0 +1,166 @@
+Category,Biomarker/Topic,Finding,Reference Range/Value,Source,PMID/DOI,Database,Year,Peer Reviewed,Notes
+Metabolic,Fasting Glucose,Normal range,70-99 mg/dL,American Diabetes Association,37995379,PubMed,2024,Yes,ADA Standards of Care 2024
+Metabolic,Fasting Glucose,Prediabetes threshold,100-125 mg/dL,American Diabetes Association,37995379,PubMed,2024,Yes,Impaired fasting glucose
+Metabolic,Fasting Glucose,Diabetes threshold,≥126 mg/dL,American Diabetes Association,37995379,PubMed,2024,Yes,Requires confirmation
+Metabolic,HbA1c,Normal range,4.0-5.6%,American Diabetes Association,37995379,PubMed,2024,Yes,Non-fasting test
+Metabolic,HbA1c,Prediabetes range,5.7-6.4%,American Diabetes Association,37995379,PubMed,2024,Yes,High risk for progression
+Metabolic,HbA1c,Diabetes threshold,≥6.5%,American Diabetes Association,37995379,PubMed,2024,Yes,Diagnostic criterion
+Metabolic,HbA1c,Treatment target (general),<7.0%,American Diabetes Association,37995379,PubMed,2024,Yes,Most non-pregnant adults
+Metabolic,HbA1c,Treatment target (stringent),<6.5%,American Diabetes Association,37995379,PubMed,2024,Yes,If achievable without hypoglycemia
+Metabolic,HOMA-IR,Normal,<2.0,Matthews et al.,6376781,PubMed,1985,Yes,Homeostatic Model Assessment
+Metabolic,HOMA-IR,Insulin resistance,≥2.5,Multiple validation studies,N/A,Clinical consensus,Various,Yes,Cutoff varies by population
+Metabolic,TG/HDL Ratio,Insulin resistance marker,>3.0,McLaughlin et al.,14679177,PubMed,2003,Yes,Simple surrogate for IR
+Lipid,Total Cholesterol,Desirable,<200 mg/dL,ATP IV Guidelines,24239923,PubMed,2013,Yes,ACC/AHA guidelines
+Lipid,Total Cholesterol,Borderline high,200-239 mg/dL,ATP IV Guidelines,24239923,PubMed,2013,Yes,
+Lipid,Total Cholesterol,High,≥240 mg/dL,ATP IV Guidelines,24239923,PubMed,2013,Yes,
+Lipid,LDL Cholesterol,Optimal,<100 mg/dL,ATP IV Guidelines,24239923,PubMed,2013,Yes,
+Lipid,LDL Cholesterol,Near optimal,100-129 mg/dL,ATP IV Guidelines,24239923,PubMed,2013,Yes,
+Lipid,LDL Cholesterol,Borderline high,130-159 mg/dL,ATP IV Guidelines,24239923,PubMed,2013,Yes,
+Lipid,LDL Cholesterol,High,160-189 mg/dL,ATP IV Guidelines,24239923,PubMed,2013,Yes,
+Lipid,LDL Cholesterol,Very high,≥190 mg/dL,ATP IV Guidelines,24239923,PubMed,2013,Yes,Consider FH
+Lipid,LDL Target,Very high CV risk,<55 mg/dL,ESC/EAS Guidelines,31497854,PubMed,2019,Yes,European guidelines
+Lipid,LDL Target,High CV risk,<70 mg/dL,ESC/EAS Guidelines,31497854,PubMed,2019,Yes,
+Lipid,LDL Target,Moderate CV risk,<100 mg/dL,ESC/EAS Guidelines,31497854,PubMed,2019,Yes,
+Lipid,HDL Cholesterol,Low (male),<40 mg/dL,ATP IV Guidelines,24239923,PubMed,2013,Yes,CV risk factor
+Lipid,HDL Cholesterol,Low (female),<50 mg/dL,ATP IV Guidelines,24239923,PubMed,2013,Yes,CV risk factor
+Lipid,HDL Cholesterol,Optimal,≥60 mg/dL,ATP IV Guidelines,24239923,PubMed,2013,Yes,Cardioprotective
+Lipid,Triglycerides,Normal,<150 mg/dL,ATP IV Guidelines,24239923,PubMed,2013,Yes,Fasting
+Lipid,Triglycerides,Borderline high,150-199 mg/dL,ATP IV Guidelines,24239923,PubMed,2013,Yes,
+Lipid,Triglycerides,High,200-499 mg/dL,ATP IV Guidelines,24239923,PubMed,2013,Yes,
+Lipid,Triglycerides,Very high (pancreatitis risk),≥500 mg/dL,ATP IV Guidelines,24239923,PubMed,2013,Yes,Pancreatitis risk
+Lipid,Lipoprotein(a),Elevated,≥50 mg/dL or ≥125 nmol/L,ESC/EAS Guidelines,31497854,PubMed,2019,Yes,Independent CV risk
+Lipid,ApoB,Target very high risk,<65 mg/dL,ESC/EAS Guidelines,31497854,PubMed,2019,Yes,Better predictor than LDL-C
+Lipid,ApoB,Target high risk,<80 mg/dL,ESC/EAS Guidelines,31497854,PubMed,2019,Yes,
+Lipid,Non-HDL Cholesterol,Optimal,<130 mg/dL,ATP IV Guidelines,24239923,PubMed,2013,Yes,Total - HDL
+Thyroid,TSH,Normal range,0.4-4.0 mIU/L,American Thyroid Association,25266247,PubMed,2014,Yes,May vary by lab
+Thyroid,TSH,Pregnancy 1st trimester,0.1-2.5 mIU/L,American Thyroid Association,25266247,PubMed,2014,Yes,Lower upper limit
+Thyroid,TSH,Pregnancy 2nd trimester,0.2-3.0 mIU/L,American Thyroid Association,25266247,PubMed,2014,Yes,
+Thyroid,TSH,Pregnancy 3rd trimester,0.3-3.0 mIU/L,American Thyroid Association,25266247,PubMed,2014,Yes,
+Thyroid,TSH,Elderly (>70),0.4-5.0 mIU/L,Biondi & Cooper,30285179,PubMed,2018,Yes,Higher upper limit acceptable
+Thyroid,Free T4,Normal range,0.8-1.8 ng/dL,Clinical Laboratory Standards,N/A,CLSI,2020,Yes,Method-dependent
+Thyroid,Free T3,Normal range,2.3-4.2 pg/mL,Clinical Laboratory Standards,N/A,CLSI,2020,Yes,Method-dependent
+Thyroid,TPO Antibodies,Negative,<34 IU/mL,Clinical consensus,N/A,Various,N/A,Yes,Lab-dependent cutoff
+Kidney,eGFR (CKD-EPI 2021),Normal/high,≥90 mL/min/1.73m²,KDIGO,34272381,PubMed,2021,Yes,Race-free equation
+Kidney,eGFR,Mildly decreased (G2),60-89 mL/min/1.73m²,KDIGO,34272381,PubMed,2021,Yes,
+Kidney,eGFR,Mild-mod decrease (G3a),45-59 mL/min/1.73m²,KDIGO,34272381,PubMed,2021,Yes,
+Kidney,eGFR,Mod-severe decrease (G3b),30-44 mL/min/1.73m²,KDIGO,34272381,PubMed,2021,Yes,
+Kidney,eGFR,Severely decreased (G4),15-29 mL/min/1.73m²,KDIGO,34272381,PubMed,2021,Yes,
+Kidney,eGFR,Kidney failure (G5),<15 mL/min/1.73m²,KDIGO,34272381,PubMed,2021,Yes,
+Kidney,UACR,Normal (A1),<30 mg/g,KDIGO,23013602,PubMed,2012,Yes,
+Kidney,UACR,Moderately increased (A2),30-300 mg/g,KDIGO,23013602,PubMed,2012,Yes,Microalbuminuria
+Kidney,UACR,Severely increased (A3),>300 mg/g,KDIGO,23013602,PubMed,2012,Yes,Macroalbuminuria
+Kidney,Creatinine (male),Normal range,0.74-1.35 mg/dL,Clinical Laboratory Standards,N/A,CLSI,2020,Yes,
+Kidney,Creatinine (female),Normal range,0.59-1.04 mg/dL,Clinical Laboratory Standards,N/A,CLSI,2020,Yes,
+Liver,ALT (male),Normal,7-56 U/L,Clinical Laboratory Standards,N/A,CLSI,2020,Yes,
+Liver,ALT (female),Normal,7-45 U/L,Clinical Laboratory Standards,N/A,CLSI,2020,Yes,
+Liver,ALT,Optimal (male),<30 U/L,Prati et al.,12407587,PubMed,2002,Yes,Healthy donor data
+Liver,ALT,Optimal (female),<19 U/L,Prati et al.,12407587,PubMed,2002,Yes,Healthy donor data
+Liver,AST,Normal range,10-40 U/L,Clinical Laboratory Standards,N/A,CLSI,2020,Yes,
+Liver,AST/ALT Ratio,NAFLD typical,<1.0,Sorbi et al.,10403245,PubMed,1999,Yes,
+Liver,AST/ALT Ratio,Alcoholic/Cirrhosis,>2.0,Sorbi et al.,10403245,PubMed,1999,Yes,De Ritis ratio
+Liver,GGT (male),Normal,8-61 U/L,Clinical Laboratory Standards,N/A,CLSI,2020,Yes,
+Liver,GGT (female),Normal,5-36 U/L,Clinical Laboratory Standards,N/A,CLSI,2020,Yes,
+Liver,FIB-4,Low fibrosis risk,<1.3,Sterling et al.,16729309,PubMed,2006,Yes,Age-adjusted >65: <2.0
+Liver,FIB-4,High fibrosis risk,>2.67,Sterling et al.,16729309,PubMed,2006,Yes,
+Liver,Albumin,Normal range,3.5-5.0 g/dL,Clinical Laboratory Standards,N/A,CLSI,2020,Yes,
+Inflammation,hs-CRP,Low CV risk,<1.0 mg/L,Ridker et al.,14610012,PubMed,2003,Yes,JUPITER trial basis
+Inflammation,hs-CRP,Average CV risk,1.0-3.0 mg/L,Ridker et al.,14610012,PubMed,2003,Yes,
+Inflammation,hs-CRP,High CV risk,3.0-10.0 mg/L,Ridker et al.,14610012,PubMed,2003,Yes,
+Inflammation,hs-CRP,Acute inflammation,>10.0 mg/L,Clinical consensus,N/A,Various,N/A,Yes,Rule out acute cause
+Inflammation,ESR (male <50),Normal,0-15 mm/hr,Clinical Laboratory Standards,N/A,CLSI,2020,Yes,
+Inflammation,ESR (male >50),Normal,0-20 mm/hr,Clinical Laboratory Standards,N/A,CLSI,2020,Yes,
+Inflammation,ESR (female <50),Normal,0-20 mm/hr,Clinical Laboratory Standards,N/A,CLSI,2020,Yes,
+Inflammation,ESR (female >50),Normal,0-30 mm/hr,Clinical Laboratory Standards,N/A,CLSI,2020,Yes,
+Inflammation,Homocysteine,Normal,5-15 µmol/L,Clinical consensus,N/A,Various,N/A,Yes,
+Inflammation,Homocysteine,Optimal,<10 µmol/L,Refsum et al.,15226153,PubMed,2004,Yes,CV risk reduction
+Cardiac,Troponin I,Normal,<0.04 ng/mL,Clinical Laboratory Standards,N/A,CLSI,2020,Yes,99th percentile
+Cardiac,hs-Troponin T (male),99th percentile,<22 ng/L,Apple et al.,28607134,PubMed,2017,Yes,
+Cardiac,hs-Troponin T (female),99th percentile,<14 ng/L,Apple et al.,28607134,PubMed,2017,Yes,Sex-specific cutoffs
+Cardiac,BNP,Normal,<100 pg/mL,Maisel et al.,12124404,PubMed,2002,Yes,Heart failure screening
+Cardiac,NT-proBNP (<75 years),Normal,<125 pg/mL,Clinical consensus,N/A,Various,N/A,Yes,
+Cardiac,NT-proBNP (>75 years),Normal,<450 pg/mL,Clinical consensus,N/A,Various,N/A,Yes,Age-adjusted
+Cardiac,D-dimer,Normal,<500 ng/mL FEU,Clinical Laboratory Standards,N/A,CLSI,2020,Yes,
+Cardiac,D-dimer,Age-adjusted cutoff,Age × 10 (if >50),Schouten et al.,23558888,PubMed,2013,Yes,
+Hematology,Hemoglobin (male),Normal,13.5-17.5 g/dL,WHO,N/A,WHO,2011,Yes,
+Hematology,Hemoglobin (female),Normal,12.0-16.0 g/dL,WHO,N/A,WHO,2011,Yes,
+Hematology,Hemoglobin (pregnancy),Normal,11.0-14.0 g/dL,WHO,N/A,WHO,2011,Yes,
+Hematology,Hematocrit (male),Normal,38.8-50.0%,Clinical Laboratory Standards,N/A,CLSI,2020,Yes,
+Hematology,Hematocrit (female),Normal,34.9-44.5%,Clinical Laboratory Standards,N/A,CLSI,2020,Yes,
+Hematology,MCV,Normal (normocytic),80-100 fL,Clinical Laboratory Standards,N/A,CLSI,2020,Yes,
+Hematology,MCV,Microcytic,<80 fL,Clinical Laboratory Standards,N/A,CLSI,2020,Yes,Iron deficiency; thalassemia
+Hematology,MCV,Macrocytic,>100 fL,Clinical Laboratory Standards,N/A,CLSI,2020,Yes,B12/folate deficiency
+Hematology,Ferritin (male),Normal,30-400 ng/mL,Clinical Laboratory Standards,N/A,CLSI,2020,Yes,
+Hematology,Ferritin (premenopausal female),Normal,15-150 ng/mL,Clinical Laboratory Standards,N/A,CLSI,2020,Yes,
+Hematology,Ferritin,Iron deficiency,<30 ng/mL,Camaschella,25940720,PubMed,2015,Yes,Functional iron deficiency
+Hematology,Transferrin Saturation,Normal,20-50%,Clinical Laboratory Standards,N/A,CLSI,2020,Yes,
+Hematology,Transferrin Saturation,Iron deficiency,<20%,Camaschella,25940720,PubMed,2015,Yes,
+Hematology,Transferrin Saturation,Iron overload,>45%,EASL,20471133,PubMed,2010,Yes,Screen for hemochromatosis
+Vitamin,Vitamin D (25-OH),Deficient,<20 ng/mL,Endocrine Society,21646368,PubMed,2011,Yes,
+Vitamin,Vitamin D (25-OH),Insufficient,20-29 ng/mL,Endocrine Society,21646368,PubMed,2011,Yes,
+Vitamin,Vitamin D (25-OH),Sufficient,30-100 ng/mL,Endocrine Society,21646368,PubMed,2011,Yes,
+Vitamin,Vitamin D (25-OH),Optimal,40-60 ng/mL,Holick,17634462,PubMed,2007,Yes,
+Vitamin,Vitamin D (25-OH),Toxic,>150 ng/mL,Endocrine Society,21646368,PubMed,2011,Yes,
+Vitamin,Vitamin B12,Normal,200-900 pg/mL,Clinical Laboratory Standards,N/A,CLSI,2020,Yes,
+Vitamin,Vitamin B12,Optimal,400-700 pg/mL,Clinical consensus,N/A,Various,N/A,Yes,
+Vitamin,Vitamin B12,Deficient,<200 pg/mL,Green,28189192,PubMed,2017,Yes,Check MMA if borderline
+Vitamin,Folate,Normal,>3.0 ng/mL,Clinical Laboratory Standards,N/A,CLSI,2020,Yes,Serum folate
+Hormone,Testosterone (male),Normal,264-916 ng/dL,Endocrine Society,29562364,PubMed,2018,Yes,Morning sample
+Hormone,Testosterone (male),Low,<264 ng/dL,Endocrine Society,29562364,PubMed,2018,Yes,Confirm with repeat
+Hormone,Testosterone (male),Age 65+ adjusted,200-700 ng/dL,Clinical consensus,N/A,Various,N/A,Yes,Lower threshold acceptable
+Hormone,Free Testosterone (male),Normal,47-244 pg/mL,Clinical Laboratory Standards,N/A,CLSI,2020,Yes,Calculated or direct
+Hormone,SHBG (male),Normal,10-57 nmol/L,Clinical Laboratory Standards,N/A,CLSI,2020,Yes,
+Hormone,SHBG (female),Normal,18-144 nmol/L,Clinical Laboratory Standards,N/A,CLSI,2020,Yes,
+Hormone,DHEA-S (male 31-50),Normal,120-520 µg/dL,Clinical Laboratory Standards,N/A,CLSI,2020,Yes,Age-dependent
+Hormone,Cortisol (AM),Normal,6.2-19.4 µg/dL,Clinical Laboratory Standards,N/A,CLSI,2020,Yes,8 AM sample
+Hormone,Estradiol (male),Normal,10-40 pg/mL,Clinical Laboratory Standards,N/A,CLSI,2020,Yes,
+Hormone,IGF-1 (age 40-54),Normal,90-360 ng/mL,Clinical Laboratory Standards,N/A,CLSI,2020,Yes,Age-dependent
+CV Risk,ASCVD 10-yr Risk,Low,<5%,ACC/AHA,24222018,PubMed,2013,Yes,Pooled Cohort Equations
+CV Risk,ASCVD 10-yr Risk,Borderline,5-7.5%,ACC/AHA,24222018,PubMed,2013,Yes,
+CV Risk,ASCVD 10-yr Risk,Intermediate,7.5-20%,ACC/AHA,24222018,PubMed,2013,Yes,Consider risk enhancers
+CV Risk,ASCVD 10-yr Risk,High,≥20%,ACC/AHA,24222018,PubMed,2013,Yes,High-intensity statin
+CV Risk,Coronary Artery Calcium,No calcification,0 Agatston units,MESA,22538252,PubMed,2012,Yes,Negative risk factor
+CV Risk,Coronary Artery Calcium,Mild,1-99 Agatston units,MESA,22538252,PubMed,2012,Yes,
+CV Risk,Coronary Artery Calcium,Moderate,100-399 Agatston units,MESA,22538252,PubMed,2012,Yes,
+CV Risk,Coronary Artery Calcium,Severe,≥400 Agatston units,MESA,22538252,PubMed,2012,Yes,
+Sleep,Total Sleep Duration,Recommended (adults),7-9 hours,National Sleep Foundation,29073412,PubMed,2015,Yes,
+Sleep,Total Sleep Duration,Short sleep,<6 hours,Watson et al.,26039963,PubMed,2015,Yes,Associated with mortality
+Sleep,Deep Sleep,Normal percentage,15-20% of total,Walker (research),N/A,Academic,2017,Yes,Decreases with age
+Sleep,REM Sleep,Normal percentage,20-25% of total,Walker (research),N/A,Academic,2017,Yes,
+Sleep,Sleep Efficiency,Good,≥85%,Reed & Sacco,26194576,PubMed,2016,Yes,Time asleep/time in bed
+Sleep,Sleep Latency,Normal,<20 minutes,American Academy Sleep Medicine,16335336,PubMed,2005,Yes,
+HRV,SDNN,Normal range,50-100 ms,Task Force ESC/NASPE,8598068,PubMed,1996,Yes,24-hour recording
+HRV,RMSSD,Normal range,20-60 ms,Task Force ESC/NASPE,8598068,PubMed,1996,Yes,Parasympathetic marker
+HRV,Low HRV,Mortality predictor,<50 ms SDNN,Kleiger et al.,3316160,PubMed,1987,Yes,Post-MI population
+Exercise,VO2 Max (male 40-49),Excellent,>42 mL/kg/min,ACSM,N/A,ACSM Guidelines,2021,Yes,Cardiorespiratory fitness
+Exercise,VO2 Max (female 40-49),Excellent,>34 mL/kg/min,ACSM,N/A,ACSM Guidelines,2021,Yes,
+Exercise,Resting Heart Rate,Normal,60-100 bpm,AHA,N/A,AHA,N/A,Yes,
+Exercise,Resting Heart Rate,Athletic,40-60 bpm,AHA,N/A,AHA,N/A,Yes,Well-trained
+Drug Effect,Statins on LDL,Reduction,30-50%,CTT Collaboration,20585178,PubMed,2010,Yes,Meta-analysis
+Drug Effect,Statins on hs-CRP,Reduction,15-30%,Ridker et al.,18997196,PubMed,2008,Yes,JUPITER trial
+Drug Effect,Metformin on HbA1c,Reduction,1-1.5%,Inzucchi et al.,22517736,PubMed,2012,Yes,
+Drug Effect,Metformin on B12,Decrease,Variable over years,Aroda et al.,27549543,PubMed,2016,Yes,Monitor annually
+Drug Effect,SGLT2i on eGFR,Initial dip then protection,Transient decrease,Heerspink et al.,32605676,PubMed,2020,Yes,DAPA-CKD trial
+Drug Effect,GLP-1 RA on HbA1c,Reduction,1.0-2.0%,Marso et al.,27295427,PubMed,2016,Yes,LEADER trial
+Drug Effect,ACE/ARB on K+,Increase,0.5-1.0 mEq/L,Clinical consensus,N/A,Various,N/A,Yes,Monitor early
+Drug Effect,Testosterone on Hct,Increase,3-5%,Bhasin et al.,29562364,PubMed,2018,Yes,Monitor closely
+Supplement,Biotin Interference,TSH falsely low,At doses >2.5 mg,FDA Safety Communication,N/A,FDA,2019,N/A,Assay interference
+Supplement,Biotin Interference,Troponin falsely low,At doses >2.5 mg,FDA Safety Communication,N/A,FDA,2019,N/A,CRITICAL - can miss MI
+Supplement,Omega-3 on TG,Reduction,15-30%,Skulas-Ray et al.,31567006,PubMed,2019,Yes,2-4g/day prescription
+Supplement,Berberine on LDL,Reduction,20-30%,Lan et al.,25498346,PubMed,2015,Yes,Meta-analysis
+Supplement,Vitamin D response,~1 ng/mL per 100 IU,Dose-response,Heaney et al.,12499343,PubMed,2003,Yes,
+Supplement,Creatine on Creatinine,Increases level,Expected not harmful,Persky & Brazeau,11356982,PubMed,2001,Yes,Not kidney damage
+Lifestyle,Exercise on HDL,Increase,5-15%,Kodama et al.,17846391,PubMed,2007,Yes,Meta-analysis
+Lifestyle,Exercise on HbA1c,Decrease,0.5-0.7%,Umpierre et al.,21868435,PubMed,2011,Yes,Meta-analysis
+Lifestyle,Keto Diet on TG,Decrease,20-40%,Volek et al.,15148064,PubMed,2004,Yes,
+Lifestyle,Keto Diet on LDL,Variable increase,Individual variation,Bueno et al.,23651522,PubMed,2013,Yes,Monitor lipids
+Lifestyle,Sleep Deprivation on Glucose,Increase,Impaired tolerance,Spiegel et al.,10543671,PubMed,1999,Yes,
+Lifestyle,Alcohol on GGT,Significant elevation,Sensitive marker,Whitfield,12519392,PubMed,2001,Yes,
+Lifestyle,Smoking on WBC,Chronic elevation,1-2 K/µL higher,Smith et al.,12668990,PubMed,2003,Yes,
+Condition,Type 2 Diabetes Pattern,Elevated glucose + A1c,+TG +low HDL,ADA,37995379,PubMed,2024,Yes,
+Condition,Hypothyroid Pattern,High TSH + low fT4,+Elevated lipids,ATA,25266247,PubMed,2014,Yes,
+Condition,Iron Deficiency Pattern,Low ferritin + low iron,+Low TSAT +High TIBC,Camaschella,25940720,PubMed,2015,Yes,
+Condition,Anemia Chronic Disease,Normal/high ferritin,+Low iron +Low TIBC,Weiss & Goodnough,15772070,PubMed,2005,Yes,Key differentiator
+Condition,NAFLD Pattern,Elevated ALT (AST<ALT),+TG +IR markers,Chalasani et al.,29222906,PubMed,2018,Yes,
+Condition,Alcoholic Liver Pattern,AST/ALT >2,+Elevated GGT +MCV,Sorbi et al.,10403245,PubMed,1999,Yes,Classic pattern
+Condition,Metabolic Syndrome,3 of 5 criteria,ATP III criteria,Grundy et al.,16157765,PubMed,2005,Yes,
+Condition,Male Hypogonadism,T <264 ng/dL,Two AM samples,Bhasin et al.,29562364,PubMed,2018,Yes,Plus symptoms
