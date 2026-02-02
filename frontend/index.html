@@ -3,178 +3,305 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monitor Health - Cascade Inference Engine</title>
+    <title>MONITOR - Health Intelligence Engine</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        .gradient-bg { background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%); }
-        .card { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
-        .input-field { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); }
-        .input-field:focus { border-color: #3b82f6; outline: none; }
-        .risk-low { background: #10b981; }
-        .risk-moderate { background: #f59e0b; }
-        .risk-high { background: #ef4444; }
-        .risk-elevated { background: #f97316; }
-        .confidence-bar { background: linear-gradient(90deg, #3b82f6, #8b5cf6); }
+        * { font-family: 'Inter', sans-serif; }
+        body { background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%); min-height: 100vh; }
+        .glass { background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); }
+        .glass-dark { background: rgba(0,0,0,0.3); backdrop-filter: blur(10px); }
+        .input-field { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); transition: all 0.3s; }
+        .input-field:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.2); outline: none; }
+        .input-field:hover { background: rgba(255,255,255,0.12); }
+        .btn-primary { background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%); transition: all 0.3s; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 40px rgba(59,130,246,0.4); }
+        .metric-card { background: linear-gradient(135deg, rgba(59,130,246,0.1) 0%, rgba(139,92,246,0.1) 100%); }
+        .risk-low { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+        .risk-moderate { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
+        .risk-elevated { background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); }
+        .risk-high { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); }
+        .confidence-bar { background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%); }
+        .tab-active { background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%); }
+        .cascade-line { background: linear-gradient(180deg, #3b82f6, transparent); width: 2px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+        .animate-fade { animation: fadeIn 0.5s ease-out forwards; }
+        .animate-slide { animation: slideIn 0.3s ease-out forwards; }
         .loading { animation: pulse 1.5s infinite; }
+        .scroll-hidden::-webkit-scrollbar { display: none; }
+        .stat-glow { box-shadow: 0 0 60px rgba(59,130,246,0.3); }
     </style>
 </head>
-<body class="gradient-bg min-h-screen text-white">
-    <div class="container mx-auto px-4 py-8 max-w-7xl">
-        <!-- Header -->
-        <header class="text-center mb-12">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">
-                <span class="text-blue-400">Monitor</span> Health Engine
-            </h1>
-            <p class="text-xl text-gray-300 mb-2">CASCADE INFERENCE: Transform partial data into comprehensive insights</p>
-            <p class="text-sm text-gray-400">Every formula backed by peer-reviewed PMID citations</p>
-            <div class="mt-4 flex justify-center gap-4 text-sm">
-                <span class="bg-blue-900/50 px-3 py-1 rounded-full">94 Formulas</span>
-                <span class="bg-purple-900/50 px-3 py-1 rounded-full">28 Citations</span>
-                <span class="bg-green-900/50 px-3 py-1 rounded-full">93 Outputs</span>
-            </div>
-        </header>
-
-        <div class="grid lg:grid-cols-2 gap-8">
-            <!-- Input Panel -->
-            <div class="card rounded-2xl p-6">
-                <h2 class="text-2xl font-semibold mb-6 flex items-center gap-2">
-                    <span>📊</span> Enter Your Biomarkers
-                </h2>
-                
-                <!-- Category Tabs -->
-                <div class="flex flex-wrap gap-2 mb-6" id="categoryTabs">
-                    <button onclick="showCategory('lipid')" class="tab-btn active px-4 py-2 rounded-lg bg-blue-600 text-sm">Lipid Panel</button>
-                    <button onclick="showCategory('glycemic')" class="tab-btn px-4 py-2 rounded-lg bg-gray-700 text-sm">Glycemic</button>
-                    <button onclick="showCategory('kidney')" class="tab-btn px-4 py-2 rounded-lg bg-gray-700 text-sm">Kidney</button>
-                    <button onclick="showCategory('liver')" class="tab-btn px-4 py-2 rounded-lg bg-gray-700 text-sm">Liver</button>
-                    <button onclick="showCategory('inflammatory')" class="tab-btn px-4 py-2 rounded-lg bg-gray-700 text-sm">Inflammatory</button>
-                    <button onclick="showCategory('vitals')" class="tab-btn px-4 py-2 rounded-lg bg-gray-700 text-sm">Vitals</button>
-                    <button onclick="showCategory('body')" class="tab-btn px-4 py-2 rounded-lg bg-gray-700 text-sm">Body</button>
-                    <button onclick="showCategory('thyroid')" class="tab-btn px-4 py-2 rounded-lg bg-gray-700 text-sm">Thyroid</button>
+<body class="text-white">
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-dark">
+        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center font-bold text-lg">M</div>
+                <div>
+                    <h1 class="font-bold text-xl">MONITOR</h1>
+                    <p class="text-xs text-gray-400">Health Intelligence Engine</p>
                 </div>
-
-                <form id="biomarkerForm" class="space-y-4">
-                    <!-- Lipid Panel -->
-                    <div id="cat-lipid" class="category-panel grid grid-cols-2 gap-4">
-                        <div><label class="block text-sm text-gray-300 mb-1">Total Cholesterol (mg/dL)</label><input type="number" name="total_cholesterol" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="200"></div>
-                        <div><label class="block text-sm text-gray-300 mb-1">HDL (mg/dL)</label><input type="number" name="hdl" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="50"></div>
-                        <div><label class="block text-sm text-gray-300 mb-1">LDL (mg/dL) <span class="text-xs text-gray-500">(or we calculate)</span></label><input type="number" name="ldl" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="Auto"></div>
-                        <div><label class="block text-sm text-gray-300 mb-1">Triglycerides (mg/dL)</label><input type="number" name="triglycerides" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="150"></div>
-                    </div>
-
-                    <!-- Glycemic -->
-                    <div id="cat-glycemic" class="category-panel hidden grid grid-cols-2 gap-4">
-                        <div><label class="block text-sm text-gray-300 mb-1">Fasting Glucose (mg/dL)</label><input type="number" name="fasting_glucose" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="100"></div>
-                        <div><label class="block text-sm text-gray-300 mb-1">Fasting Insulin (µU/mL)</label><input type="number" name="fasting_insulin" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="10"></div>
-                        <div><label class="block text-sm text-gray-300 mb-1">HbA1c (%)</label><input type="number" step="0.1" name="hba1c" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="5.7"></div>
-                        <div><label class="block text-sm text-gray-300 mb-1">Mean Glucose (mg/dL)</label><input type="number" name="mean_glucose" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="CGM avg"></div>
-                    </div>
-
-                    <!-- Kidney -->
-                    <div id="cat-kidney" class="category-panel hidden grid grid-cols-2 gap-4">
-                        <div><label class="block text-sm text-gray-300 mb-1">Creatinine (mg/dL)</label><input type="number" step="0.1" name="creatinine" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="1.0"></div>
-                        <div><label class="block text-sm text-gray-300 mb-1">BUN (mg/dL)</label><input type="number" name="bun" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="15"></div>
-                        <div><label class="block text-sm text-gray-300 mb-1">Cystatin C (mg/L)</label><input type="number" step="0.1" name="cystatin_c" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="0.9"></div>
-                        <div><label class="block text-sm text-gray-300 mb-1">Age (years)</label><input type="number" name="age" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="45"></div>
-                    </div>
-
-                    <!-- Liver -->
-                    <div id="cat-liver" class="category-panel hidden grid grid-cols-2 gap-4">
-                        <div><label class="block text-sm text-gray-300 mb-1">AST (U/L)</label><input type="number" name="ast" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="25"></div>
-                        <div><label class="block text-sm text-gray-300 mb-1">ALT (U/L)</label><input type="number" name="alt" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="30"></div>
-                        <div><label class="block text-sm text-gray-300 mb-1">GGT (U/L)</label><input type="number" name="ggt" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="30"></div>
-                        <div><label class="block text-sm text-gray-300 mb-1">Bilirubin (mg/dL)</label><input type="number" step="0.1" name="bilirubin" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="1.0"></div>
-                        <div><label class="block text-sm text-gray-300 mb-1">Albumin (g/dL)</label><input type="number" step="0.1" name="albumin" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="4.0"></div>
-                        <div><label class="block text-sm text-gray-300 mb-1">Platelets (×10³/µL)</label><input type="number" name="platelets" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="250"></div>
-                    </div>
-
-                    <!-- Inflammatory -->
-                    <div id="cat-inflammatory" class="category-panel hidden grid grid-cols-2 gap-4">
-                        <div><label class="block text-sm text-gray-300 mb-1">Neutrophils (×10³/µL)</label><input type="number" step="0.1" name="neutrophils" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="4.5"></div>
-                        <div><label class="block text-sm text-gray-300 mb-1">Lymphocytes (×10³/µL)</label><input type="number" step="0.1" name="lymphocytes" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="2.0"></div>
-                        <div><label class="block text-sm text-gray-300 mb-1">Monocytes (×10³/µL)</label><input type="number" step="0.1" name="monocytes" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="0.5"></div>
-                        <div><label class="block text-sm text-gray-300 mb-1">hs-CRP (mg/L)</label><input type="number" step="0.1" name="hscrp" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="1.0"></div>
-                        <div><label class="block text-sm text-gray-300 mb-1">WBC (×10³/µL)</label><input type="number" step="0.1" name="wbc" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="7.0"></div>
-                    </div>
-
-                    <!-- Vitals -->
-                    <div id="cat-vitals" class="category-panel hidden grid grid-cols-2 gap-4">
-                        <div><label class="block text-sm text-gray-300 mb-1">Systolic BP (mmHg)</label><input type="number" name="sbp" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="120"></div>
-                        <div><label class="block text-sm text-gray-300 mb-1">Diastolic BP (mmHg)</label><input type="number" name="dbp" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="80"></div>
-                        <div><label class="block text-sm text-gray-300 mb-1">Heart Rate (bpm)</label><input type="number" name="heart_rate" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="72"></div>
-                    </div>
-
-                    <!-- Body Measurements -->
-                    <div id="cat-body" class="category-panel hidden grid grid-cols-2 gap-4">
-                        <div><label class="block text-sm text-gray-300 mb-1">Weight (kg)</label><input type="number" step="0.1" name="weight_kg" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="70"></div>
-                        <div><label class="block text-sm text-gray-300 mb-1">Height (cm)</label><input type="number" name="height_cm" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="170"></div>
-                        <div><label class="block text-sm text-gray-300 mb-1">Waist (cm)</label><input type="number" name="waist_cm" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="85"></div>
-                        <div><label class="block text-sm text-gray-300 mb-1">Hip (cm)</label><input type="number" name="hip_cm" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="95"></div>
-                        <div class="col-span-2"><label class="flex items-center gap-2 text-sm text-gray-300"><input type="checkbox" name="is_female" class="rounded"> Female (affects some calculations)</label></div>
-                    </div>
-
-                    <!-- Thyroid -->
-                    <div id="cat-thyroid" class="category-panel hidden grid grid-cols-2 gap-4">
-                        <div><label class="block text-sm text-gray-300 mb-1">TSH (mIU/L)</label><input type="number" step="0.01" name="tsh" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="2.0"></div>
-                        <div><label class="block text-sm text-gray-300 mb-1">Free T4 (ng/dL)</label><input type="number" step="0.1" name="ft4" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="1.2"></div>
-                        <div><label class="block text-sm text-gray-300 mb-1">Free T3 (pg/mL)</label><input type="number" step="0.1" name="ft3" class="input-field w-full px-3 py-2 rounded-lg text-white" placeholder="3.0"></div>
-                    </div>
-
-                    <button type="submit" id="analyzeBtn" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-xl transition-all text-lg mt-6">
-                        🔬 Analyze & Cascade
-                    </button>
-                </form>
-
-                <!-- Quick Demo -->
-                <button onclick="loadDemo()" class="w-full mt-4 bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded-lg text-sm transition-all">
-                    📋 Load Demo Data (12 inputs → 53 outputs)
-                </button>
             </div>
+            <div class="flex items-center gap-4">
+                <a href="https://monitor-api.abedelhamdan.workers.dev/citations" target="_blank" class="text-sm text-gray-400 hover:text-white transition">📚 Citations</a>
+                <a href="https://github.com/bob56565/monitor-backend" target="_blank" class="text-sm text-gray-400 hover:text-white transition">⚡ API</a>
+            </div>
+        </div>
+    </header>
 
-            <!-- Results Panel -->
-            <div class="card rounded-2xl p-6">
-                <h2 class="text-2xl font-semibold mb-6 flex items-center gap-2">
-                    <span>🧬</span> Cascade Results
-                </h2>
-                
-                <div id="resultsPanel" class="space-y-4">
-                    <div class="text-center text-gray-400 py-12">
-                        <p class="text-6xl mb-4">🔬</p>
-                        <p>Enter your biomarkers and click Analyze</p>
-                        <p class="text-sm mt-2">Or load demo data to see the cascade in action</p>
-                    </div>
+    <main class="container mx-auto px-4 pt-24 pb-12 max-w-7xl">
+        <!-- Hero Stats -->
+        <div class="text-center mb-12">
+            <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                <span class="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                    Cascade Inference Engine
+                </span>
+            </h2>
+            <p class="text-gray-400 text-lg mb-8">Transform partial biomarker data into comprehensive health insights</p>
+            
+            <div class="flex flex-wrap justify-center gap-4 mb-8">
+                <div class="glass rounded-2xl px-6 py-4 stat-glow">
+                    <div class="text-4xl font-bold text-blue-400">94</div>
+                    <div class="text-sm text-gray-400">Formulas</div>
+                </div>
+                <div class="glass rounded-2xl px-6 py-4">
+                    <div class="text-4xl font-bold text-purple-400">28</div>
+                    <div class="text-sm text-gray-400">PMID Citations</div>
+                </div>
+                <div class="glass rounded-2xl px-6 py-4">
+                    <div class="text-4xl font-bold text-pink-400">4.4x</div>
+                    <div class="text-sm text-gray-400">Data Multiplier</div>
+                </div>
+                <div class="glass rounded-2xl px-6 py-4">
+                    <div class="text-4xl font-bold text-green-400" id="apiStatus">●</div>
+                    <div class="text-sm text-gray-400">API Live</div>
                 </div>
             </div>
         </div>
 
-        <!-- Suggestions Panel -->
-        <div id="suggestionsPanel" class="hidden card rounded-2xl p-6 mt-8">
-            <h2 class="text-2xl font-semibold mb-4 flex items-center gap-2">
-                <span>💡</span> Suggested Next Tests
-            </h2>
-            <div id="suggestionsList" class="grid md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        <div class="grid lg:grid-cols-5 gap-6">
+            <!-- Input Panel - Takes 2 columns -->
+            <div class="lg:col-span-2 glass rounded-3xl p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-semibold flex items-center gap-2">
+                        <span class="text-2xl">🧬</span> Enter Biomarkers
+                    </h3>
+                    <button onclick="clearAll()" class="text-sm text-gray-400 hover:text-red-400 transition">Clear All</button>
+                </div>
+
+                <!-- Category Tabs -->
+                <div class="flex flex-wrap gap-2 mb-6 text-sm" id="categoryTabs">
+                    <button onclick="showCategory('lipid')" data-cat="lipid" class="cat-tab tab-active px-3 py-2 rounded-lg transition">Lipid</button>
+                    <button onclick="showCategory('glycemic')" data-cat="glycemic" class="cat-tab bg-gray-800 px-3 py-2 rounded-lg transition hover:bg-gray-700">Glycemic</button>
+                    <button onclick="showCategory('kidney')" data-cat="kidney" class="cat-tab bg-gray-800 px-3 py-2 rounded-lg transition hover:bg-gray-700">Kidney</button>
+                    <button onclick="showCategory('liver')" data-cat="liver" class="cat-tab bg-gray-800 px-3 py-2 rounded-lg transition hover:bg-gray-700">Liver</button>
+                    <button onclick="showCategory('inflammatory')" data-cat="inflammatory" class="cat-tab bg-gray-800 px-3 py-2 rounded-lg transition hover:bg-gray-700">Inflammatory</button>
+                    <button onclick="showCategory('vitals')" data-cat="vitals" class="cat-tab bg-gray-800 px-3 py-2 rounded-lg transition hover:bg-gray-700">Vitals</button>
+                    <button onclick="showCategory('body')" data-cat="body" class="cat-tab bg-gray-800 px-3 py-2 rounded-lg transition hover:bg-gray-700">Body</button>
+                    <button onclick="showCategory('thyroid')" data-cat="thyroid" class="cat-tab bg-gray-800 px-3 py-2 rounded-lg transition hover:bg-gray-700">Thyroid</button>
+                    <button onclick="showCategory('anemia')" data-cat="anemia" class="cat-tab bg-gray-800 px-3 py-2 rounded-lg transition hover:bg-gray-700">Anemia</button>
+                    <button onclick="showCategory('electrolytes')" data-cat="electrolytes" class="cat-tab bg-gray-800 px-3 py-2 rounded-lg transition hover:bg-gray-700">Electrolytes</button>
+                </div>
+
+                <form id="biomarkerForm" class="space-y-4 max-h-[500px] overflow-y-auto scroll-hidden pr-2">
+                    <!-- LIPID -->
+                    <div id="cat-lipid" class="category-panel grid grid-cols-2 gap-3">
+                        <div><label class="block text-xs text-gray-400 mb-1">Total Cholesterol <span class="text-gray-600">mg/dL</span></label><input type="number" name="total_cholesterol" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="200"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">HDL <span class="text-gray-600">mg/dL</span></label><input type="number" name="hdl" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="50"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">LDL <span class="text-gray-600">mg/dL</span></label><input type="number" name="ldl" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="(calculated)"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">Triglycerides <span class="text-gray-600">mg/dL</span></label><input type="number" name="triglycerides" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="150"></div>
+                    </div>
+
+                    <!-- GLYCEMIC -->
+                    <div id="cat-glycemic" class="category-panel hidden grid grid-cols-2 gap-3">
+                        <div><label class="block text-xs text-gray-400 mb-1">Fasting Glucose <span class="text-gray-600">mg/dL</span></label><input type="number" name="fasting_glucose" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="100"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">Fasting Insulin <span class="text-gray-600">µU/mL</span></label><input type="number" name="fasting_insulin" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="10"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">HbA1c <span class="text-gray-600">%</span></label><input type="number" step="0.1" name="hba1c" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="5.7"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">Mean Glucose <span class="text-gray-600">mg/dL</span></label><input type="number" name="mean_glucose" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="CGM avg"></div>
+                    </div>
+
+                    <!-- KIDNEY -->
+                    <div id="cat-kidney" class="category-panel hidden grid grid-cols-2 gap-3">
+                        <div><label class="block text-xs text-gray-400 mb-1">Creatinine <span class="text-gray-600">mg/dL</span></label><input type="number" step="0.1" name="creatinine" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="1.0"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">BUN <span class="text-gray-600">mg/dL</span></label><input type="number" name="bun" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="15"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">Cystatin C <span class="text-gray-600">mg/L</span></label><input type="number" step="0.1" name="cystatin_c" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="0.9"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">Age <span class="text-gray-600">years</span></label><input type="number" name="age" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="45"></div>
+                    </div>
+
+                    <!-- LIVER -->
+                    <div id="cat-liver" class="category-panel hidden grid grid-cols-2 gap-3">
+                        <div><label class="block text-xs text-gray-400 mb-1">AST <span class="text-gray-600">U/L</span></label><input type="number" name="ast" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="25"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">ALT <span class="text-gray-600">U/L</span></label><input type="number" name="alt" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="30"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">GGT <span class="text-gray-600">U/L</span></label><input type="number" name="ggt" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="30"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">Bilirubin <span class="text-gray-600">mg/dL</span></label><input type="number" step="0.1" name="bilirubin" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="1.0"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">Albumin <span class="text-gray-600">g/dL</span></label><input type="number" step="0.1" name="albumin" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="4.0"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">Platelets <span class="text-gray-600">×10³/µL</span></label><input type="number" name="platelets" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="250"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">INR</label><input type="number" step="0.1" name="inr" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="1.0"></div>
+                    </div>
+
+                    <!-- INFLAMMATORY -->
+                    <div id="cat-inflammatory" class="category-panel hidden grid grid-cols-2 gap-3">
+                        <div><label class="block text-xs text-gray-400 mb-1">Neutrophils <span class="text-gray-600">×10³/µL</span></label><input type="number" step="0.1" name="neutrophils" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="4.5"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">Lymphocytes <span class="text-gray-600">×10³/µL</span></label><input type="number" step="0.1" name="lymphocytes" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="2.0"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">Monocytes <span class="text-gray-600">×10³/µL</span></label><input type="number" step="0.1" name="monocytes" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="0.5"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">hs-CRP <span class="text-gray-600">mg/L</span></label><input type="number" step="0.1" name="hscrp" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="1.0"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">WBC <span class="text-gray-600">×10³/µL</span></label><input type="number" step="0.1" name="wbc" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="7.0"></div>
+                    </div>
+
+                    <!-- VITALS -->
+                    <div id="cat-vitals" class="category-panel hidden grid grid-cols-2 gap-3">
+                        <div><label class="block text-xs text-gray-400 mb-1">Systolic BP <span class="text-gray-600">mmHg</span></label><input type="number" name="sbp" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="120"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">Diastolic BP <span class="text-gray-600">mmHg</span></label><input type="number" name="dbp" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="80"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">Heart Rate <span class="text-gray-600">bpm</span></label><input type="number" name="heart_rate" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="72"></div>
+                    </div>
+
+                    <!-- BODY -->
+                    <div id="cat-body" class="category-panel hidden grid grid-cols-2 gap-3">
+                        <div><label class="block text-xs text-gray-400 mb-1">Weight <span class="text-gray-600">kg</span></label><input type="number" step="0.1" name="weight_kg" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="70"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">Height <span class="text-gray-600">cm</span></label><input type="number" name="height_cm" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="170"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">Waist <span class="text-gray-600">cm</span></label><input type="number" name="waist_cm" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="85"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">Hip <span class="text-gray-600">cm</span></label><input type="number" name="hip_cm" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="95"></div>
+                        <div class="col-span-2"><label class="flex items-center gap-2 text-xs text-gray-400 cursor-pointer"><input type="checkbox" name="is_female" class="rounded bg-gray-700 border-gray-600"> Female (affects some calculations)</label></div>
+                    </div>
+
+                    <!-- THYROID -->
+                    <div id="cat-thyroid" class="category-panel hidden grid grid-cols-2 gap-3">
+                        <div><label class="block text-xs text-gray-400 mb-1">TSH <span class="text-gray-600">mIU/L</span></label><input type="number" step="0.01" name="tsh" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="2.0"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">Free T4 <span class="text-gray-600">ng/dL</span></label><input type="number" step="0.1" name="ft4" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="1.2"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">Free T3 <span class="text-gray-600">pg/mL</span></label><input type="number" step="0.1" name="ft3" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="3.0"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">T3 <span class="text-gray-600">ng/dL</span></label><input type="number" name="t3" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="100"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">T4 <span class="text-gray-600">µg/dL</span></label><input type="number" step="0.1" name="t4" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="8.0"></div>
+                    </div>
+
+                    <!-- ANEMIA -->
+                    <div id="cat-anemia" class="category-panel hidden grid grid-cols-2 gap-3">
+                        <div><label class="block text-xs text-gray-400 mb-1">Hemoglobin <span class="text-gray-600">g/dL</span></label><input type="number" step="0.1" name="hemoglobin" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="14.0"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">Hematocrit <span class="text-gray-600">%</span></label><input type="number" step="0.1" name="hematocrit" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="42"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">RBC <span class="text-gray-600">×10⁶/µL</span></label><input type="number" step="0.1" name="rbc" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="4.8"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">MCV <span class="text-gray-600">fL</span></label><input type="number" step="0.1" name="mcv" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="88"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">RDW <span class="text-gray-600">%</span></label><input type="number" step="0.1" name="rdw" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="13"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">Ferritin <span class="text-gray-600">ng/mL</span></label><input type="number" name="ferritin" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="100"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">Serum Iron <span class="text-gray-600">µg/dL</span></label><input type="number" name="serum_iron" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="80"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">TIBC <span class="text-gray-600">µg/dL</span></label><input type="number" name="tibc" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="350"></div>
+                    </div>
+
+                    <!-- ELECTROLYTES -->
+                    <div id="cat-electrolytes" class="category-panel hidden grid grid-cols-2 gap-3">
+                        <div><label class="block text-xs text-gray-400 mb-1">Sodium <span class="text-gray-600">mEq/L</span></label><input type="number" name="sodium" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="140"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">Potassium <span class="text-gray-600">mEq/L</span></label><input type="number" step="0.1" name="potassium" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="4.0"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">Chloride <span class="text-gray-600">mEq/L</span></label><input type="number" name="chloride" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="100"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">Bicarbonate <span class="text-gray-600">mEq/L</span></label><input type="number" name="bicarbonate" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="24"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">Calcium <span class="text-gray-600">mg/dL</span></label><input type="number" step="0.1" name="calcium" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="9.5"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">Glucose <span class="text-gray-600">mg/dL</span></label><input type="number" name="glucose" class="input-field w-full px-3 py-2 rounded-xl text-white text-sm" placeholder="100"></div>
+                    </div>
+                </form>
+
+                <div class="mt-6 space-y-3">
+                    <button type="button" onclick="analyze()" id="analyzeBtn" class="w-full btn-primary text-white font-semibold py-4 px-6 rounded-xl text-lg flex items-center justify-center gap-2">
+                        <span>🔬</span> Analyze & Cascade
+                    </button>
+                    <button type="button" onclick="loadDemo()" class="w-full glass hover:bg-white/10 text-white py-3 px-4 rounded-xl text-sm transition flex items-center justify-center gap-2">
+                        <span>📋</span> Load Full Demo (12 inputs → 53 outputs)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results Panel - Takes 3 columns -->
+            <div class="lg:col-span-3 space-y-6">
+                <!-- Summary Stats -->
+                <div id="summaryPanel" class="glass rounded-3xl p-6 hidden">
+                    <div class="grid grid-cols-4 gap-4 text-center">
+                        <div class="metric-card rounded-2xl p-4">
+                            <div class="text-3xl font-bold text-blue-400" id="statInputs">0</div>
+                            <div class="text-xs text-gray-400">Inputs</div>
+                        </div>
+                        <div class="metric-card rounded-2xl p-4">
+                            <div class="text-3xl font-bold text-purple-400" id="statCalculated">0</div>
+                            <div class="text-xs text-gray-400">Calculated</div>
+                        </div>
+                        <div class="metric-card rounded-2xl p-4">
+                            <div class="text-3xl font-bold text-pink-400" id="statTotal">0</div>
+                            <div class="text-xs text-gray-400">Total</div>
+                        </div>
+                        <div class="metric-card rounded-2xl p-4">
+                            <div class="text-3xl font-bold text-green-400" id="statIterations">0</div>
+                            <div class="text-xs text-gray-400">Iterations</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results -->
+                <div class="glass rounded-3xl p-6">
+                    <h3 class="text-xl font-semibold mb-4 flex items-center gap-2">
+                        <span class="text-2xl">📊</span> Cascade Results
+                    </h3>
+                    <div id="resultsPanel" class="max-h-[600px] overflow-y-auto scroll-hidden pr-2">
+                        <div class="text-center py-16 text-gray-500">
+                            <div class="text-6xl mb-4">🧪</div>
+                            <p class="text-lg">Enter biomarkers and click Analyze</p>
+                            <p class="text-sm mt-2">Or load demo data to see the cascade in action</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Suggestions -->
+                <div id="suggestionsPanel" class="glass rounded-3xl p-6 hidden">
+                    <h3 class="text-xl font-semibold mb-4 flex items-center gap-2">
+                        <span class="text-2xl">💡</span> Recommended Next Tests
+                    </h3>
+                    <div id="suggestionsList" class="grid md:grid-cols-2 gap-3"></div>
+                </div>
+            </div>
         </div>
 
         <!-- Footer -->
-        <footer class="text-center mt-12 text-gray-400 text-sm">
+        <footer class="text-center mt-12 text-gray-500 text-sm">
             <p>All calculations backed by peer-reviewed literature with PMID citations</p>
-            <p class="mt-2">API: <a href="https://monitor-api.abedelhamdan.workers.dev" class="text-blue-400 hover:underline">monitor-api.abedelhamdan.workers.dev</a></p>
+            <p class="mt-2">
+                <a href="https://monitor-api.abedelhamdan.workers.dev" class="text-blue-400 hover:underline">API</a> •
+                <a href="https://monitor-api.abedelhamdan.workers.dev/citations" class="text-blue-400 hover:underline">Citations</a> •
+                <a href="https://github.com/bob56565/monitor-backend" class="text-blue-400 hover:underline">GitHub</a>
+            </p>
+            <p class="mt-4 text-xs text-gray-600">For informational purposes only. Consult a healthcare provider for medical decisions.</p>
         </footer>
-    </div>
+    </main>
 
     <script>
         const API_URL = 'https://monitor-api.abedelhamdan.workers.dev';
         
+        // Check API status on load
+        fetch(API_URL).then(r => r.json()).then(d => {
+            document.getElementById('apiStatus').style.color = '#10b981';
+        }).catch(() => {
+            document.getElementById('apiStatus').style.color = '#ef4444';
+        });
+
         function showCategory(cat) {
             document.querySelectorAll('.category-panel').forEach(p => p.classList.add('hidden'));
             document.getElementById('cat-' + cat).classList.remove('hidden');
-            document.querySelectorAll('.tab-btn').forEach(b => {
-                b.classList.remove('bg-blue-600');
-                b.classList.add('bg-gray-700');
+            document.querySelectorAll('.cat-tab').forEach(t => {
+                t.classList.remove('tab-active');
+                t.classList.add('bg-gray-800');
             });
-            event.target.classList.remove('bg-gray-700');
-            event.target.classList.add('bg-blue-600');
+            document.querySelector(`[data-cat="${cat}"]`).classList.add('tab-active');
+            document.querySelector(`[data-cat="${cat}"]`).classList.remove('bg-gray-800');
+        }
+
+        function clearAll() {
+            document.querySelectorAll('input[type="number"]').forEach(i => i.value = '');
+            document.querySelectorAll('input[type="checkbox"]').forEach(i => i.checked = false);
+            document.getElementById('summaryPanel').classList.add('hidden');
+            document.getElementById('suggestionsPanel').classList.add('hidden');
+            document.getElementById('resultsPanel').innerHTML = `
+                <div class="text-center py-16 text-gray-500">
+                    <div class="text-6xl mb-4">🧪</div>
+                    <p class="text-lg">Enter biomarkers and click Analyze</p>
+                    <p class="text-sm mt-2">Or load demo data to see the cascade in action</p>
+                </div>
+            `;
         }
 
         function loadDemo() {
@@ -191,132 +318,146 @@
                 if (input) input.value = value;
             }
             
-            document.getElementById('biomarkerForm').dispatchEvent(new Event('submit'));
+            analyze();
         }
 
-        document.getElementById('biomarkerForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
+        async function analyze() {
             const btn = document.getElementById('analyzeBtn');
             btn.innerHTML = '<span class="loading">Analyzing...</span>';
             btn.disabled = true;
-            
-            const formData = new FormData(e.target);
+
+            const form = document.getElementById('biomarkerForm');
+            const formData = new FormData(form);
             const data = {};
-            
+
             for (const [key, value] of formData.entries()) {
                 if (value && value !== '' && key !== 'is_female') {
                     data[key] = parseFloat(value);
                 }
-                if (key === 'is_female' && formData.get('is_female')) {
-                    data.is_female = true;
-                }
             }
-            
+            if (form.querySelector('[name="is_female"]')?.checked) {
+                data.is_female = true;
+            }
+
+            if (Object.keys(data).length === 0) {
+                alert('Please enter at least one biomarker value');
+                btn.innerHTML = '<span>🔬</span> Analyze & Cascade';
+                btn.disabled = false;
+                return;
+            }
+
             try {
                 const response = await fetch(`${API_URL}/analyze`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)
                 });
-                
                 const result = await response.json();
                 displayResults(result);
             } catch (error) {
                 document.getElementById('resultsPanel').innerHTML = `
-                    <div class="bg-red-900/50 p-4 rounded-lg">
+                    <div class="bg-red-900/30 p-4 rounded-xl border border-red-500/30">
                         <p class="text-red-400">Error: ${error.message}</p>
                     </div>
                 `;
             }
-            
-            btn.innerHTML = '🔬 Analyze & Cascade';
+
+            btn.innerHTML = '<span>🔬</span> Analyze & Cascade';
             btn.disabled = false;
-        });
+        }
 
         function displayResults(result) {
-            const panel = document.getElementById('resultsPanel');
+            // Show summary
+            document.getElementById('summaryPanel').classList.remove('hidden');
+            document.getElementById('statInputs').textContent = result.inputs;
+            document.getElementById('statCalculated').textContent = result.calculated;
+            document.getElementById('statTotal').textContent = result.total;
+            document.getElementById('statIterations').textContent = result.cascade_iterations;
+
+            // Build results HTML
+            let html = '';
             
-            // Summary stats
-            let html = `
-                <div class="bg-gradient-to-r from-blue-900/50 to-purple-900/50 p-4 rounded-xl mb-6">
-                    <div class="grid grid-cols-3 gap-4 text-center">
-                        <div>
-                            <div class="text-3xl font-bold text-blue-400">${result.inputs}</div>
-                            <div class="text-sm text-gray-400">Inputs</div>
-                        </div>
-                        <div>
-                            <div class="text-3xl font-bold text-purple-400">${result.calculated}</div>
-                            <div class="text-sm text-gray-400">Calculated</div>
-                        </div>
-                        <div>
-                            <div class="text-3xl font-bold text-green-400">${result.total}</div>
-                            <div class="text-sm text-gray-400">Total</div>
-                        </div>
-                    </div>
-                    <div class="text-center mt-4 text-sm text-gray-300">
-                        Cascade completed in ${result.cascade_iterations} iteration${result.cascade_iterations !== 1 ? 's' : ''}
-                    </div>
-                </div>
-            `;
-            
-            // Derived values
-            html += '<div class="space-y-3">';
-            
-            for (const item of result.derived) {
-                const riskClass = item.interpretation ? `risk-${item.interpretation.risk}` : 'bg-gray-700';
-                const confidenceWidth = Math.round(item.confidence * 100);
-                
-                html += `
-                    <div class="bg-gray-800/50 p-4 rounded-xl">
-                        <div class="flex justify-between items-start mb-2">
-                            <div>
-                                <span class="font-semibold text-white">${formatName(item.name)}</span>
-                                <span class="text-2xl font-bold ml-2 ${typeof item.value === 'number' ? 'text-blue-400' : 'text-purple-400'}">
-                                    ${typeof item.value === 'number' ? item.value.toFixed(2) : JSON.stringify(item.value)}
-                                </span>
+            // Group by category
+            const categories = {
+                'Lipid': ['ldl', 'vldl', 'non_hdl', 'remnant_cholesterol', 'castelli_1', 'castelli_2', 'atherogenic_index', 'tg_hdl_ratio', 'ldl_particle_risk', 'apob_estimated'],
+                'Glycemic': ['homa_ir', 'homa_beta', 'quicki', 'tyg_index', 'tyg_bmi', 'tyg_wc', 'mets_ir', 'hba1c_estimated', 'mean_glucose_estimated', 'prediabetes_indicator', 'diabetes_risk_score'],
+                'Kidney': ['egfr', 'egfr_cystatin', 'creatinine_clearance', 'bun_creatinine_ratio', 'ckd_stage'],
+                'Liver': ['fib4', 'ast_alt_ratio', 'nafld_fib_score', 'apri', 'meld_score', 'fatty_liver_index'],
+                'Inflammatory': ['nlr', 'plr', 'sii', 'mlr', 'aisi', 'chronic_inflammation_index', 'inflammation_risk_class'],
+                'Cardiac': ['map', 'pulse_pressure', 'ppi', 'hypertension_stage', 'arterial_stiffness_proxy'],
+                'Thyroid': ['tsh_ft4_ratio', 'tshi', 't3_t4_ratio', 'ft3_ft4_ratio', 'thyroid_resistance_index'],
+                'Anemia': ['mchc', 'mcv_calculated', 'mch_calculated', 'mentzer_index', 'rdw_mcv_ratio', 'anemia_type_indicator', 'tsat', 'iron_deficiency_probability'],
+                'Body': ['bmi', 'bmi_class', 'waist_height_ratio', 'waist_hip_ratio', 'bsa', 'ibw', 'absi', 'bri', 'visceral_fat_proxy'],
+                'Electrolytes': ['anion_gap', 'corrected_anion_gap', 'serum_osmolality', 'osmolar_gap', 'corrected_sodium', 'corrected_calcium'],
+                'Composite': ['metabolic_syndrome_atp3', 'metabolic_syndrome_idf', 'cardiometabolic_risk', 'overall_health_score']
+            };
+
+            for (const [cat, metrics] of Object.entries(categories)) {
+                const catResults = result.derived.filter(d => metrics.includes(d.name));
+                if (catResults.length === 0) continue;
+
+                html += `<div class="mb-6 animate-fade" style="animation-delay: ${Object.keys(categories).indexOf(cat) * 100}ms">
+                    <h4 class="text-sm font-semibold text-gray-400 mb-3 uppercase tracking-wider">${cat}</h4>
+                    <div class="space-y-2">`;
+
+                for (const item of catResults) {
+                    const riskClass = item.interpretation ? `risk-${item.interpretation.risk}` : 'bg-gray-700';
+                    const conf = Math.round(item.confidence * 100);
+                    const isObject = typeof item.value === 'object';
+                    const displayValue = isObject ? JSON.stringify(item.value) : 
+                                        (typeof item.value === 'number' ? item.value.toFixed(2) : item.value);
+
+                    html += `
+                        <div class="glass-dark rounded-xl p-4 hover:bg-white/5 transition">
+                            <div class="flex justify-between items-start mb-2">
+                                <div class="flex-1">
+                                    <span class="text-sm text-gray-300">${formatName(item.name)}</span>
+                                    <div class="text-xl font-bold ${typeof item.value === 'number' ? 'text-blue-400' : 'text-purple-400'}">
+                                        ${displayValue}
+                                    </div>
+                                </div>
+                                ${item.interpretation ? `<span class="px-2 py-1 rounded-lg text-xs font-semibold ${riskClass}">${item.interpretation.risk.toUpperCase()}</span>` : ''}
                             </div>
-                            ${item.interpretation ? `<span class="px-2 py-1 rounded text-xs font-semibold ${riskClass}">${item.interpretation.risk.toUpperCase()}</span>` : ''}
-                        </div>
-                        
-                        <div class="flex items-center gap-2 mb-2">
-                            <div class="flex-1 bg-gray-700 rounded-full h-2">
-                                <div class="confidence-bar h-2 rounded-full" style="width: ${confidenceWidth}%"></div>
+                            
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="flex-1 bg-gray-800 rounded-full h-1.5">
+                                    <div class="confidence-bar h-1.5 rounded-full" style="width: ${conf}%"></div>
+                                </div>
+                                <span class="text-xs text-gray-500">${conf}%</span>
                             </div>
-                            <span class="text-xs text-gray-400">${confidenceWidth}% conf</span>
+                            
+                            ${item.interpretation?.note ? `<p class="text-xs text-gray-500">${item.interpretation.note}</p>` : ''}
+                            
+                            ${item.citation ? `
+                                <div class="mt-2 text-xs text-gray-600">
+                                    📚 <a href="https://pubmed.ncbi.nlm.nih.gov/${item.citation.pmid}" target="_blank" class="text-blue-500 hover:underline">PMID: ${item.citation.pmid}</a>
+                                </div>
+                            ` : ''}
                         </div>
-                        
-                        ${item.interpretation?.note ? `<p class="text-sm text-gray-400">${item.interpretation.note}</p>` : ''}
-                        
-                        ${item.citation ? `
-                            <div class="mt-2 text-xs text-gray-500">
-                                📚 <a href="https://pubmed.ncbi.nlm.nih.gov/${item.citation.pmid}" target="_blank" class="text-blue-400 hover:underline">PMID: ${item.citation.pmid}</a>
-                                - ${item.citation.source}
-                            </div>
-                        ` : ''}
-                    </div>
-                `;
+                    `;
+                }
+
+                html += '</div></div>';
             }
-            
-            html += '</div>';
-            panel.innerHTML = html;
-            
+
+            document.getElementById('resultsPanel').innerHTML = html;
+
             // Suggestions
             if (result.suggestions && result.suggestions.length > 0) {
-                const sugPanel = document.getElementById('suggestionsPanel');
-                sugPanel.classList.remove('hidden');
-                
+                document.getElementById('suggestionsPanel').classList.remove('hidden');
                 let sugHtml = '';
-                for (const sug of result.suggestions) {
+                for (const sug of result.suggestions.slice(0, 6)) {
                     sugHtml += `
-                        <div class="bg-gray-800/50 p-4 rounded-xl">
-                            <div class="font-semibold text-yellow-400">Add: ${formatName(sug.missing)}</div>
-                            <div class="text-sm text-gray-400 mt-1">Enables: ${formatName(sug.target)}</div>
-                            <div class="text-xs text-gray-500 mt-2">${sug.confidence * 100}% confidence</div>
+                        <div class="glass-dark rounded-xl p-4">
+                            <div class="font-semibold text-yellow-400 text-sm">Add: ${formatName(sug.missing)}</div>
+                            <div class="text-xs text-gray-400 mt-1">Unlocks: ${formatName(sug.target)}</div>
+                            <div class="text-xs text-gray-600 mt-2">${Math.round(sug.confidence * 100)}% confidence</div>
                         </div>
                     `;
                 }
                 document.getElementById('suggestionsList').innerHTML = sugHtml;
+            } else {
+                document.getElementById('suggestionsPanel').classList.add('hidden');
             }
         }
 
