@@ -1,0 +1,8 @@
+name,value,unit,ref_low,ref_high
+tsh,2.5,mIU/L,0.4,4.0
+free_t4,1.2,ng/dL,0.8,1.8
+a1c,5.8,%,<5.7,
+vitamin_d,35.0,ng/mL,30,100
+b12,450.0,pg/mL,200,900
+crp,1.2,mg/L,<3.0,
+ferritin,85.0,ng/mL,30,400

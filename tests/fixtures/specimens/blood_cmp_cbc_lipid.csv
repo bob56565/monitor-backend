@@ -1,0 +1,16 @@
+name,value,unit,ref_low,ref_high,flag
+glucose,95.0,mg/dL,70,100,Normal
+sodium,140.0,mmol/L,135,145,Normal
+potassium,4.0,mmol/L,3.5,5.0,Normal
+chloride,100.0,mmol/L,96,106,Normal
+bun,15.0,mg/dL,7,20,Normal
+creatinine,1.0,mg/dL,0.7,1.3,Normal
+calcium,9.5,mg/dL,8.5,10.5,Normal
+total cholesterol,180.0,mg/dL,<200,,Normal
+ldl,110.0,mg/dL,<100,,Borderline
+hdl,55.0,mg/dL,>40,,Normal
+triglycerides,120.0,mg/dL,<150,,Normal
+wbc,6.5,k/uL,4.0,11.0,Normal
+hemoglobin,15.0,g/dL,13.5,17.5,Normal
+hematocrit,45.0,%,38.8,50.0,Normal
+platelets,250.0,k/uL,150,400,Normal

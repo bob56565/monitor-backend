@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at": "2026-01-29T00:00:00Z",
+  "builder_script": "scripts/build_priors_pack.py",
+  "artifacts": [
+    {
+      "artifact_id": "nhanes_vitals_percentiles",
+      "file": "nhanes_vitals_percentiles.csv",
+      "source": "CDC NHANES 2017-2020 Pre-Pandemic",
+      "source_url": "https://wwwn.cdc.gov/nchs/nhanes/continuousnhanes/default.aspx?Cycle=2017-2020",
+      "license": "Public Domain (U.S. Government Work)",
+      "retrieved_date": "2026-01-29",
+      "version": "2017-2020",
+      "checksum_sha256": "synthetic_for_dev_purposes_replace_with_real_build",
+      "schema": {
+        "columns": ["age_min", "age_max", "sex", "metric", "p5", "p10", "p25", "p50", "p75", "p90", "p95"],
+        "description": "Population percentiles for vital signs stratified by age and sex"
+      },
+      "transformations": "Extracted from examination files, computed percentiles per demographic stratum",
+      "intended_use": "Provide population context for resting HR, BP, BMI, waist circumference"
+    },
+    {
+      "artifact_id": "nhanes_lab_reference_intervals",
+      "file": "nhanes_lab_reference_intervals.csv",
+      "source": "CDC NHANES 2017-2020 Laboratory Data",
+      "source_url": "https://wwwn.cdc.gov/nchs/nhanes/continuousnhanes/labmethods.aspx?Cycle=2017-2020",
+      "license": "Public Domain (U.S. Government Work)",
+      "retrieved_date": "2026-01-29",
+      "version": "2017-2020",
+      "checksum_sha256": "synthetic_for_dev_purposes_replace_with_real_build",
+      "schema": {
+        "columns": ["analyte", "units", "age_min", "age_max", "sex", "ref_low", "ref_high", "critical_low", "critical_high"],
+        "description": "Reference intervals and critical thresholds for common lab analytes"
+      },
+      "transformations": "Extracted from laboratory data files, computed 2.5-97.5 percentiles as reference intervals",
+      "intended_use": "Validate uploaded lab values, provide fallback reference ranges when lab doesn't provide them"
+    },
+    {
+      "artifact_id": "calibration_constants",
+      "file": "calibration_constants.json",
+      "source": "Internal compilation from clinical guidelines",
+      "source_url": "Multiple sources: ADA guidelines, AHA/ACC, ESC, ACSM",
+      "license": "Derived facts (non-copyrightable clinical reference values)",
+      "retrieved_date": "2026-01-29",
+      "version": "1.0.0",
+      "checksum_sha256": "synthetic_for_dev_purposes_replace_with_real_build",
+      "schema": {
+        "structure": "Nested JSON with gating thresholds, confidence parameters, time windows",
+        "description": "Calibration constants for confidence stabilization and quality gating"
+      },
+      "transformations": "None - manually curated from guidelines",
+      "intended_use": "Configure gating engine and confidence engine with safe defaults"
+    }
+  ]
+}
