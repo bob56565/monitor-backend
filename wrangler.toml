@@ -1,0 +1,7 @@
+name = "monitor-api"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+account_id = "00c928ebfe2fa238306cfbd235ffd73e"
+
+[vars]
+ENVIRONMENT = "production"
