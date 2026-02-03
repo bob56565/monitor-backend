@@ -1938,7 +1938,7 @@ export default {
     if (url.pathname === "/" || url.pathname === "") {
       return new Response(JSON.stringify({
         name: "Monitor Health API",
-        version: "3.5.0 - ANTICIPATED LAB VALUES",
+        version: "3.5.0",
         differentiator: "CASCADE INFERENCE: Partial data → Comprehensive insights. EVERY formula has PMID citation.",
         total_formulas: Object.values(INFERENCE_RULES).reduce((a, r) => a + r.length, 0),
         total_citations: Object.keys(CITATIONS).length,
