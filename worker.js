@@ -813,7 +813,195 @@ function buildConfidence(params) {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// CASCADE ENGINE v3.1 (Enhanced)
+// POPULATION PRIORS v1.0
+// Age/sex stratified reference ranges
+// ═══════════════════════════════════════════════════════════════
+
+const POPULATION_PRIORS = {
+  total_cholesterol: { mean: 200, sd: 40 },
+  hdl: { male: { mean: 45, sd: 12 }, female: { mean: 55, sd: 14 } },
+  ldl: { mean: 120, sd: 35 },
+  triglycerides: { mean: 130, sd: 70 },
+  fasting_glucose: { mean: 95, sd: 15 },
+  fasting_insulin: { mean: 8, sd: 5 },
+  hba1c: { mean: 5.4, sd: 0.5 },
+  homa_ir: { mean: 1.5, sd: 1.2 },
+  creatinine: { male: { mean: 1.0, sd: 0.2 }, female: { mean: 0.8, sd: 0.15 } },
+  hscrp: { mean: 1.5, sd: 2 },
+  tsh: { mean: 2.0, sd: 1.2 },
+  bmi: { mean: 26, sd: 5 }
+};
+
+function getPrior(biomarker, isFemale) {
+  const p = POPULATION_PRIORS[biomarker];
+  if (!p) return null;
+  if (p.male && isFemale !== undefined) return isFemale ? p.female : p.male;
+  return p;
+}
+
+function calculateZScore(value, biomarker, isFemale) {
+  const prior = getPrior(biomarker, isFemale);
+  if (!prior) return null;
+  return (value - prior.mean) / prior.sd;
+}
+
+function adjustConfidenceWithPrior(baseConf, value, biomarker, isFemale) {
+  const z = calculateZScore(value, biomarker, isFemale);
+  if (z === null) return baseConf;
+  const absZ = Math.abs(z);
+  let adj = 1.0;
+  if (absZ > 3) adj = 0.7;
+  else if (absZ > 2.5) adj = 0.8;
+  else if (absZ > 2) adj = 0.9;
+  return Math.min(1, baseConf * adj);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PHYSIOLOGICAL STATE ENGINE v1.0
+// Signal → State → Action Framework
+// ═══════════════════════════════════════════════════════════════
+
+const PHYSIOLOGICAL_STATES = {
+  metabolic_health: {
+    name: "Metabolic Health",
+    states: ["optimal", "stable", "stressed", "dysregulated"],
+    required: ["homa_ir", "tg_hdl_ratio"],
+    supporting: ["fasting_glucose", "bmi", "hba1c"],
+    evaluate: (v) => {
+      let score = 100, factors = [];
+      if (v.homa_ir > 3) { score -= 30; factors.push("Elevated insulin resistance"); }
+      else if (v.homa_ir > 2) { score -= 15; factors.push("Borderline insulin resistance"); }
+      if (v.tg_hdl_ratio > 4) { score -= 25; factors.push("Elevated TG/HDL"); }
+      else if (v.tg_hdl_ratio > 3) { score -= 12; factors.push("Borderline TG/HDL"); }
+      if (v.fasting_glucose > 126) { score -= 25; factors.push("Diabetic-range glucose"); }
+      else if (v.fasting_glucose > 100) { score -= 10; factors.push("Prediabetic glucose"); }
+      if (v.bmi > 30) { score -= 8; factors.push("Obesity"); }
+      if (v.hba1c > 6.5) { score -= 20; factors.push("Elevated HbA1c"); }
+      const state = score > 80 ? "optimal" : score > 60 ? "stable" : score > 40 ? "stressed" : "dysregulated";
+      return { state, score, factors };
+    },
+    lab_anchors: { optimal: "HOMA-IR <1.5, HbA1c <5.7%", stressed: "HOMA-IR 2-3, Glucose 100-125", dysregulated: "HOMA-IR >3, HbA1c >6.5%" },
+    actions: { optimal: "Maintain lifestyle", stable: "Lifestyle optimization", stressed: "Dietary intervention, recheck 3mo", dysregulated: "Medical evaluation recommended" }
+  },
+  inflammatory_status: {
+    name: "Inflammatory Status",
+    states: ["quiescent", "low_grade", "moderate", "elevated"],
+    required: ["hscrp"],
+    supporting: ["nlr", "ferritin", "albumin"],
+    evaluate: (v) => {
+      let score = 100, factors = [];
+      if (v.hscrp > 10) { score -= 50; factors.push("Acute-phase CRP"); }
+      else if (v.hscrp > 3) { score -= 30; factors.push("Elevated hs-CRP"); }
+      else if (v.hscrp > 1) { score -= 15; factors.push("Moderate hs-CRP"); }
+      if (v.nlr > 6) { score -= 25; factors.push("Elevated NLR"); }
+      else if (v.nlr > 3) { score -= 10; factors.push("Borderline NLR"); }
+      if (v.ferritin > 500) { score -= 20; factors.push("Elevated ferritin"); }
+      if (v.albumin < 3.5) { score -= 15; factors.push("Low albumin"); }
+      const state = score > 85 ? "quiescent" : score > 65 ? "low_grade" : score > 45 ? "moderate" : "elevated";
+      return { state, score, factors };
+    },
+    lab_anchors: { quiescent: "hs-CRP <1 mg/L", low_grade: "hs-CRP 1-3 mg/L", elevated: "hs-CRP >3 mg/L" },
+    actions: { quiescent: "Routine monitoring", low_grade: "Assess lifestyle factors", moderate: "Identify inflammation source", elevated: "Urgent evaluation" }
+  },
+  cardiovascular_status: {
+    name: "Cardiovascular Risk",
+    states: ["optimal", "favorable", "moderate_risk", "elevated_risk"],
+    required: ["ldl", "hdl"],
+    supporting: ["sbp", "triglycerides", "hscrp"],
+    evaluate: (v) => {
+      let score = 100, factors = [];
+      if (v.ldl > 190) { score -= 35; factors.push("Very high LDL"); }
+      else if (v.ldl > 160) { score -= 25; factors.push("High LDL"); }
+      else if (v.ldl > 130) { score -= 15; factors.push("Borderline LDL"); }
+      if (v.hdl < 40) { score -= 25; factors.push("Low HDL"); }
+      if (v.sbp > 140) { score -= 20; factors.push("Hypertension"); }
+      else if (v.sbp > 130) { score -= 10; factors.push("Elevated BP"); }
+      if (v.triglycerides > 200) { score -= 15; factors.push("High triglycerides"); }
+      if (v.hscrp > 3) { score -= 15; factors.push("Inflammatory CV risk"); }
+      const state = score > 80 ? "optimal" : score > 60 ? "favorable" : score > 40 ? "moderate_risk" : "elevated_risk";
+      return { state, score, factors };
+    },
+    lab_anchors: { optimal: "LDL <100, HDL >60", moderate_risk: "LDL 130-160", elevated_risk: "LDL >160, consider ApoB" },
+    actions: { optimal: "Maintain lifestyle", favorable: "Lifestyle optimization", moderate_risk: "Statin consideration", elevated_risk: "Cardiology referral" }
+  },
+  liver_status: {
+    name: "Liver Health",
+    states: ["healthy", "mild_stress", "moderate_concern", "needs_evaluation"],
+    required: ["alt"],
+    supporting: ["ast", "fib4", "ggt"],
+    evaluate: (v) => {
+      let score = 100, factors = [];
+      if (v.alt > 80) { score -= 35; factors.push("Significantly elevated ALT"); }
+      else if (v.alt > 40) { score -= 20; factors.push("Elevated ALT"); }
+      if (v.ast > 80) { score -= 25; factors.push("Elevated AST"); }
+      else if (v.ast > 40) { score -= 12; factors.push("Mild AST elevation"); }
+      if (v.fib4 > 2.67) { score -= 30; factors.push("High fibrosis risk"); }
+      else if (v.fib4 > 1.3) { score -= 15; factors.push("Indeterminate fibrosis"); }
+      const state = score > 80 ? "healthy" : score > 60 ? "mild_stress" : score > 40 ? "moderate_concern" : "needs_evaluation";
+      return { state, score, factors };
+    },
+    lab_anchors: { healthy: "ALT <35, FIB-4 <1.3", needs_evaluation: "ALT >80, FIB-4 >2.67" },
+    actions: { healthy: "Routine monitoring", mild_stress: "Lifestyle modification", moderate_concern: "Hepatology consideration", needs_evaluation: "Hepatology referral" }
+  },
+  kidney_status: {
+    name: "Kidney Function",
+    states: ["normal", "mildly_reduced", "moderately_reduced", "significantly_reduced"],
+    required: ["egfr"],
+    supporting: ["creatinine", "albumin"],
+    evaluate: (v) => {
+      let score = 100, factors = [];
+      if (v.egfr < 30) { score -= 60; factors.push("Severely reduced GFR"); }
+      else if (v.egfr < 45) { score -= 40; factors.push("Moderately reduced GFR"); }
+      else if (v.egfr < 60) { score -= 25; factors.push("Mildly-moderately reduced GFR"); }
+      else if (v.egfr < 90) { score -= 10; factors.push("Mildly reduced GFR"); }
+      if (v.creatinine > 1.5) { score -= 15; factors.push("Elevated creatinine"); }
+      const state = score > 85 ? "normal" : score > 60 ? "mildly_reduced" : score > 35 ? "moderately_reduced" : "significantly_reduced";
+      return { state, score, factors };
+    },
+    lab_anchors: { normal: "eGFR >90", mildly_reduced: "eGFR 60-89", significantly_reduced: "eGFR <45" },
+    actions: { normal: "Routine monitoring", mildly_reduced: "Annual monitoring, BP control", moderately_reduced: "Nephrology referral", significantly_reduced: "Urgent nephrology" }
+  }
+};
+
+function evaluateStates(values) {
+  const results = {};
+  for (const [id, def] of Object.entries(PHYSIOLOGICAL_STATES)) {
+    const hasRequired = def.required.every(s => values[s] !== undefined);
+    if (!hasRequired) {
+      results[id] = { name: def.name, evaluated: false, missing: def.required.filter(s => values[s] === undefined) };
+      continue;
+    }
+    const supporting = def.supporting.filter(s => values[s] !== undefined).length;
+    const eval = def.evaluate(values);
+    results[id] = {
+      name: def.name,
+      evaluated: true,
+      state: eval.state,
+      score: Math.max(0, eval.score),
+      factors: eval.factors,
+      signal_coverage: `${def.required.length + supporting}/${def.required.length + def.supporting.length}`,
+      lab_anchors: def.lab_anchors[eval.state] || "",
+      recommended_action: def.actions[eval.state] || "",
+      confidence: Math.min(0.95, 0.7 + (supporting / def.supporting.length) * 0.2)
+    };
+  }
+  return results;
+}
+
+function generateStateSummary(states) {
+  const evaluated = Object.values(states).filter(s => s.evaluated);
+  const concerning = evaluated.filter(s => s.score < 50);
+  const attention = evaluated.filter(s => s.score >= 50 && s.score < 70);
+  return {
+    total_evaluated: evaluated.length,
+    concerning: concerning.map(s => ({ name: s.name, state: s.state, score: s.score, factor: s.factors[0], action: s.recommended_action })),
+    needs_attention: attention.map(s => ({ name: s.name, state: s.state })),
+    overall: concerning.length === 0 ? (attention.length === 0 ? "All systems stable" : "Some areas need attention") : `${concerning.length} area(s) of concern`
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CASCADE ENGINE v3.2 (Enhanced with Priors + States)
 // ═══════════════════════════════════════════════════════════════
 
 function runCascade(inputs) {
@@ -1175,7 +1363,7 @@ export default {
     if (url.pathname === "/" || url.pathname === "") {
       return new Response(JSON.stringify({
         name: "Monitor Health API",
-        version: "3.2.0 - A2 EXPERIENCE + DUAL MODES",
+        version: "3.3.0 - PHYSIOLOGICAL STATE ENGINE",
         differentiator: "CASCADE INFERENCE: Partial data → Comprehensive insights. EVERY formula has PMID citation.",
         total_formulas: Object.values(INFERENCE_RULES).reduce((a, r) => a + r.length, 0),
         total_citations: Object.keys(CITATIONS).length,
@@ -1204,14 +1392,20 @@ export default {
         const mode = url.searchParams.get("mode") || "standard"; // standard, a2, clinician, consumer
         const result = runCascade(body);
         
-        // A2-first mode: full coverage maps, unlocks, executive summary
+        // A2-first mode: full coverage maps, unlocks, executive summary, physiological states
         if (mode === "a2" || mode === "full") {
           const a2Report = generateA2Report(body, result);
           const categorized = categorizeOutputs(result.derived);
+          const states = evaluateStates(result.values);
+          const stateSummary = generateStateSummary(states);
           return new Response(JSON.stringify({
             status: "success",
             mode: "a2_experience",
+            version: "3.3.0",
             ...a2Report,
+            // Signal → State → Action Framework
+            physiological_states: states,
+            state_summary: stateSummary,
             cascade_result: {
               inputs: result.inputs,
               calculated: result.calculated,
@@ -1266,10 +1460,15 @@ export default {
           }), { headers: cors });
         }
         
-        // Standard mode (default)
+        // Standard mode (default) - includes states
+        const states = evaluateStates(result.values);
+        const stateSummary = generateStateSummary(states);
         return new Response(JSON.stringify({ 
-          status: "success", 
-          ...result, 
+          status: "success",
+          version: "3.3.0",
+          ...result,
+          physiological_states: states,
+          state_summary: stateSummary,
           suggestions: getSuggestions(result.values),
           coverage: getCoverageMap(body)
         }), { headers: cors });
