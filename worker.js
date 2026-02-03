@@ -972,16 +972,16 @@ function evaluateStates(values) {
       continue;
     }
     const supporting = def.supporting.filter(s => values[s] !== undefined).length;
-    const eval = def.evaluate(values);
+    const evaluation = def.evaluate(values);
     results[id] = {
       name: def.name,
       evaluated: true,
-      state: eval.state,
-      score: Math.max(0, eval.score),
-      factors: eval.factors,
+      state: evaluation.state,
+      score: Math.max(0, evaluation.score),
+      factors: evaluation.factors,
       signal_coverage: `${def.required.length + supporting}/${def.required.length + def.supporting.length}`,
-      lab_anchors: def.lab_anchors[eval.state] || "",
-      recommended_action: def.actions[eval.state] || "",
+      lab_anchors: def.lab_anchors[evaluation.state] || "",
+      recommended_action: def.actions[evaluation.state] || "",
       confidence: Math.min(0.95, 0.7 + (supporting / def.supporting.length) * 0.2)
     };
   }
