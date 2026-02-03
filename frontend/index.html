@@ -3,370 +3,810 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MONITOR — Health Intelligence</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>MONITOR — Health Intelligence Engine</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=SF+Pro+Display:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #FAFAFA;
-            --card: #FFFFFF;
-            --text: #1A1A1A;
-            --text-secondary: #6B7280;
-            --border: #E5E7EB;
-            --accent: #0066FF;
-            --accent-light: #EBF4FF;
-            --success: #10B981;
-            --success-light: #D1FAE5;
-            --warning: #F59E0B;
-            --warning-light: #FEF3C7;
-            --danger: #EF4444;
-            --danger-light: #FEE2E2;
-            --purple: #8B5CF6;
-            --purple-light: #EDE9FE;
+            --bg: #FAFBFC;
+            --bg-elevated: #FFFFFF;
+            --text-primary: #0D1117;
+            --text-secondary: #57606A;
+            --text-tertiary: #8B949E;
+            --border: #D0D7DE;
+            --border-subtle: #E8EAED;
+            --accent: #0969DA;
+            --accent-subtle: #DDF4FF;
+            --success: #1A7F37;
+            --success-subtle: #DAFBE1;
+            --warning: #9A6700;
+            --warning-subtle: #FFF8C5;
+            --danger: #CF222E;
+            --danger-subtle: #FFEBE9;
+            --purple: #8250DF;
+            --purple-subtle: #FBEFFF;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
-        }
-        .container { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
         
-        /* Header */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════ */
+        /* HEADER - Premium Minimal */
+        /* ═══════════════════════════════════════════════════════════════ */
+        
         header {
-            background: var(--card);
-            border-bottom: 1px solid var(--border);
+            background: var(--bg-elevated);
+            border-bottom: 1px solid var(--border-subtle);
             position: sticky;
             top: 0;
             z-index: 100;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
         }
+        
         .header-inner {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 32px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            height: 64px;
+            height: 72px;
         }
+        
         .logo {
             display: flex;
             align-items: center;
-            gap: 12px;
-            font-weight: 600;
-            font-size: 18px;
+            gap: 14px;
         }
+        
         .logo-mark {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, var(--accent) 0%, var(--purple) 100%);
-            border-radius: 8px;
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #0969DA 0%, #8250DF 100%);
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 15px;
+            color: white;
+            letter-spacing: -0.5px;
         }
-        .nav { display: flex; align-items: center; gap: 24px; }
-        .nav a { color: var(--text-secondary); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
-        .nav a:hover { color: var(--text); }
-        .status-badge {
+        
+        .logo-text {
+            font-weight: 600;
+            font-size: 20px;
+            letter-spacing: -0.5px;
+        }
+        
+        .nav {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 32px;
+        }
+        
+        .nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .nav a:hover { color: var(--text-primary); }
+        
+        .version-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             font-size: 12px;
+            font-weight: 500;
             color: var(--success);
-            background: var(--success-light);
-            padding: 4px 10px;
+            background: var(--success-subtle);
+            padding: 6px 12px;
             border-radius: 100px;
         }
-        .status-dot { width: 6px; height: 6px; background: var(--success); border-radius: 50%; }
-
-        /* Main Layout */
-        main { padding: 32px 0; }
-        .grid { display: grid; grid-template-columns: 320px 1fr; gap: 32px; }
-        @media (max-width: 1024px) { .grid { grid-template-columns: 1fr; } }
-
-        /* Cards */
-        .card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 24px;
+        
+        .version-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
         }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════ */
+        /* HERO SECTION */
+        /* ═══════════════════════════════════════════════════════════════ */
+        
+        .hero {
+            background: linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg) 100%);
+            padding: 64px 32px 48px;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 600;
+            letter-spacing: -1.5px;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════ */
+        /* MAIN LAYOUT */
+        /* ═══════════════════════════════════════════════════════════════ */
+        
+        main {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 32px;
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 32px;
+        }
+        
+        @media (max-width: 1100px) {
+            main { grid-template-columns: 1fr; }
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════ */
+        /* INPUT PANEL */
+        /* ═══════════════════════════════════════════════════════════════ */
+        
+        .input-panel {
+            position: sticky;
+            top: 104px;
+            height: fit-content;
+        }
+        
+        .card {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            box-shadow: var(--shadow-sm);
+        }
+        
         .card-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-subtle);
         }
+        
         .card-title {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.8px;
             color: var(--text-secondary);
         }
-
-        /* Input Panel */
-        .input-panel { position: sticky; top: 80px; }
-        .input-section { margin-bottom: 20px; }
+        
+        .input-section {
+            margin-bottom: 24px;
+        }
+        
+        .input-section:last-of-type {
+            margin-bottom: 0;
+        }
+        
         .input-section-title {
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            color: var(--text-secondary);
-            margin-bottom: 8px;
+            color: var(--text-tertiary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        .input-grid { display: grid; gap: 8px; }
+        
+        .input-section-title::before {
+            content: '';
+            width: 3px;
+            height: 12px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+        
+        .input-grid {
+            display: grid;
+            gap: 12px;
+        }
+        
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
         input[type="number"], input[type="text"] {
             width: 100%;
-            padding: 10px 12px;
+            padding: 14px 16px;
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: var(--radius-sm);
             font-size: 14px;
             font-family: inherit;
             transition: all 0.2s;
             background: var(--bg);
         }
+        
         input:focus {
             outline: none;
             border-color: var(--accent);
-            box-shadow: 0 0 0 3px var(--accent-light);
-            background: var(--card);
+            box-shadow: 0 0 0 3px var(--accent-subtle);
+            background: var(--bg-elevated);
         }
-        input::placeholder { color: #9CA3AF; }
+        
+        input::placeholder {
+            color: var(--text-tertiary);
+        }
+        
+        .checkbox-group {
+            display: flex;
+            gap: 16px;
+            margin-top: 8px;
+        }
+        
         .checkbox-label {
             display: flex;
             align-items: center;
             gap: 8px;
             font-size: 14px;
             cursor: pointer;
+            color: var(--text-secondary);
         }
+        
+        .checkbox-label input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--accent);
+        }
+        
         .btn {
             width: 100%;
-            padding: 14px 20px;
+            padding: 16px 24px;
             border: none;
-            border-radius: 10px;
+            border-radius: var(--radius-md);
             font-size: 15px;
             font-weight: 600;
             font-family: inherit;
             cursor: pointer;
             transition: all 0.2s;
+            margin-top: 24px;
         }
+        
         .btn-primary {
-            background: var(--text);
+            background: var(--text-primary);
             color: white;
         }
-        .btn-primary:hover { background: #333; transform: translateY(-1px); }
+        
+        .btn-primary:hover {
+            background: #24292F;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+        
         .btn-secondary {
             background: transparent;
-            color: var(--text);
+            color: var(--text-primary);
             border: 1px solid var(--border);
-            margin-top: 8px;
+            margin-top: 12px;
         }
-        .btn-secondary:hover { background: var(--bg); }
-
-        /* Results Panel */
-        .results-panel { display: flex; flex-direction: column; gap: 24px; }
-
-        /* State Cards */
-        .state-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 20px;
+        
+        .btn-secondary:hover {
+            background: var(--bg);
+            border-color: var(--text-tertiary);
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════ */
+        /* RESULTS PANEL */
+        /* ═══════════════════════════════════════════════════════════════ */
+        
+        .results-panel {
             display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
+            flex-direction: column;
+            gap: 24px;
         }
-        .state-info { flex: 1; }
-        .state-name {
-            font-size: 12px;
+        
+        /* State Summary Hero */
+        .state-hero {
+            background: linear-gradient(135deg, #F8FAFC 0%, #EFF6FF 50%, #F5F3FF 100%);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-xl);
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .state-hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 13px;
             font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
             color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+        
+        .state-hero h2 {
+            font-size: 32px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            margin-bottom: 12px;
+        }
+        
+        .state-hero p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        /* Physiological States Grid */
+        .states-section {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 4px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+        
+        .section-subtitle {
+            font-size: 13px;
+            color: var(--text-tertiary);
+        }
+        
+        .states-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+        
+        .state-card {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            transition: all 0.2s;
+        }
+        
+        .state-card:hover {
+            border-color: var(--border);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .state-card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        
+        .state-name {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-tertiary);
             margin-bottom: 6px;
         }
+        
         .state-value {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 600;
-            margin-bottom: 8px;
             text-transform: capitalize;
+            letter-spacing: -0.3px;
         }
+        
+        .state-badge {
+            padding: 6px 12px;
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        
+        .badge-optimal { background: var(--success-subtle); color: var(--success); }
+        .badge-stable { background: var(--accent-subtle); color: var(--accent); }
+        .badge-attention { background: var(--warning-subtle); color: var(--warning); }
+        .badge-concern { background: var(--danger-subtle); color: var(--danger); }
+        
         .state-factors {
             font-size: 13px;
             color: var(--text-secondary);
+            margin-bottom: 16px;
+            line-height: 1.5;
         }
-        .state-badge {
-            padding: 6px 14px;
-            border-radius: 100px;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-        .badge-optimal { background: var(--success-light); color: #047857; }
-        .badge-stable { background: var(--accent-light); color: var(--accent); }
-        .badge-stressed { background: var(--warning-light); color: #B45309; }
-        .badge-concern { background: var(--danger-light); color: #B91C1C; }
-
-        /* Summary Section */
-        .summary-hero {
-            background: linear-gradient(135deg, #F8FAFC 0%, #EFF6FF 100%);
-            border: 1px solid #DBEAFE;
-            border-radius: 20px;
-            padding: 32px;
-            text-align: center;
-        }
-        .summary-headline {
-            font-size: 28px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-        .summary-subtext {
-            font-size: 15px;
-            color: var(--text-secondary);
-        }
-
-        /* Metrics Grid */
-        .metrics-section { margin-top: 8px; }
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 12px;
-        }
-        .metric-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 16px;
-        }
-        .metric-label {
-            font-size: 11px;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-            color: var(--text-secondary);
-            margin-bottom: 4px;
-        }
-        .metric-value {
-            font-size: 22px;
-            font-weight: 600;
-        }
-        .metric-status {
-            display: inline-block;
-            margin-top: 6px;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-        .status-optimal { background: var(--success-light); color: #047857; }
-        .status-normal { background: #F3F4F6; color: #374151; }
-        .status-elevated { background: var(--warning-light); color: #B45309; }
-        .status-high { background: var(--danger-light); color: #B91C1C; }
-
-        /* Actions Panel */
-        .actions-card {
-            background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
-            border: 1px solid #FCD34D;
-            border-radius: 16px;
-            padding: 20px;
-        }
-        .actions-title {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 12px;
+        
+        .state-action {
             display: flex;
             align-items: center;
             gap: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--accent);
+            padding-top: 16px;
+            border-top: 1px solid var(--border-subtle);
         }
-        .action-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(0,0,0,0.06);
-            font-size: 14px;
+        
+        .state-action svg {
+            width: 16px;
+            height: 16px;
         }
-        .action-item:last-child { border-bottom: none; }
-        .action-icon { font-size: 16px; }
-
-        /* Unlock Suggestions */
-        .unlock-grid {
+        
+        .confidence-bar {
+            height: 4px;
+            background: var(--border-subtle);
+            border-radius: 2px;
+            margin-top: 12px;
+            overflow: hidden;
+        }
+        
+        .confidence-fill {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 2px;
+            transition: width 0.3s;
+        }
+        
+        /* Priority Findings */
+        .findings-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 12px;
         }
+        
+        .finding-card {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: all 0.2s;
+        }
+        
+        .finding-card:hover {
+            border-color: var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .finding-priority {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        
+        .priority-high { background: var(--danger-subtle); color: var(--danger); }
+        .priority-medium { background: var(--warning-subtle); color: var(--warning); }
+        .priority-normal { background: var(--accent-subtle); color: var(--accent); }
+        
+        .finding-content {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .finding-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .finding-value {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        .finding-meta {
+            text-align: right;
+            flex-shrink: 0;
+        }
+        
+        .finding-confidence {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+        
+        .finding-tier {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            color: var(--purple);
+            background: var(--purple-subtle);
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-top: 4px;
+            display: inline-block;
+        }
+        
+        /* Coverage & Unlock */
+        .coverage-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        
+        @media (max-width: 768px) {
+            .coverage-section { grid-template-columns: 1fr; }
+        }
+        
+        .coverage-card {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+        }
+        
+        .coverage-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        
+        .coverage-item:last-child {
+            border-bottom: none;
+        }
+        
+        .coverage-label {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .coverage-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--accent);
+        }
+        
+        .coverage-bar {
+            width: 60px;
+            height: 6px;
+            background: var(--border-subtle);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-left: 12px;
+        }
+        
+        .coverage-bar-fill {
+            height: 100%;
+            background: var(--success);
+            border-radius: 3px;
+        }
+        
+        .unlock-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
         .unlock-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
             background: var(--bg);
             border: 1px dashed var(--border);
-            border-radius: 10px;
-            padding: 14px;
+            border-radius: var(--radius-sm);
             font-size: 13px;
         }
+        
+        .unlock-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--accent-subtle);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+        
+        .unlock-text {
+            flex: 1;
+        }
+        
         .unlock-input {
             font-weight: 600;
             color: var(--accent);
         }
+        
         .unlock-count {
-            color: var(--text-secondary);
             font-size: 12px;
-            margin-top: 4px;
+            color: var(--text-tertiary);
         }
-
-        /* Lab Anchors */
-        .lab-anchor {
-            background: var(--purple-light);
-            border-radius: 8px;
-            padding: 12px;
-            margin-top: 12px;
-            font-size: 12px;
+        
+        /* Constraints */
+        .constraints-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 16px;
+            background: var(--success-subtle);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--success);
         }
-        .lab-anchor-title {
+        
+        .constraints-status.warning {
+            background: var(--warning-subtle);
+            color: var(--warning);
+        }
+        
+        .constraints-status svg {
+            width: 20px;
+            height: 20px;
+        }
+        
+        /* Executive Summary */
+        .executive-card {
+            background: linear-gradient(135deg, #0D1117 0%, #21262D 100%);
+            border-radius: var(--radius-xl);
+            padding: 32px;
+            color: white;
+        }
+        
+        .executive-headline {
+            font-size: 24px;
             font-weight: 600;
-            color: var(--purple);
-            margin-bottom: 4px;
+            letter-spacing: -0.3px;
+            margin-bottom: 20px;
         }
-
-        /* Coverage Bar */
-        .coverage-bar {
-            height: 6px;
-            background: var(--border);
-            border-radius: 3px;
-            overflow: hidden;
+        
+        .executive-findings {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
         }
-        .coverage-fill {
-            height: 100%;
+        
+        .executive-finding {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px;
+            background: rgba(255,255,255,0.08);
+            border-radius: var(--radius-md);
+        }
+        
+        .executive-finding-icon {
+            width: 8px;
+            height: 8px;
             background: var(--accent);
-            transition: width 0.3s;
+            border-radius: 50%;
+            margin-top: 6px;
+            flex-shrink: 0;
         }
-
+        
+        .executive-finding-text {
+            font-size: 14px;
+            line-height: 1.5;
+            opacity: 0.9;
+        }
+        
+        .executive-actions {
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .executive-actions-title {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.6;
+            margin-bottom: 12px;
+        }
+        
+        .executive-action {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            padding: 8px 0;
+            opacity: 0.9;
+        }
+        
+        .executive-action-priority {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.15);
+        }
+        
         /* Empty State */
         .empty-state {
             text-align: center;
             padding: 80px 40px;
         }
+        
         .empty-icon {
-            font-size: 64px;
-            margin-bottom: 16px;
+            font-size: 56px;
+            margin-bottom: 20px;
+            opacity: 0.5;
         }
+        
         .empty-title {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 600;
             margin-bottom: 8px;
         }
+        
         .empty-text {
             color: var(--text-secondary);
             font-size: 15px;
+            max-width: 400px;
+            margin: 0 auto;
         }
-
+        
         /* Loading */
-        .loading { opacity: 0.6; pointer-events: none; }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading { opacity: 0.5; pointer-events: none; }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
         .spinner {
             width: 20px;
             height: 20px;
@@ -377,344 +817,483 @@
             display: inline-block;
             margin-right: 8px;
         }
-
-        /* Confidence Ring */
-        .confidence-ring {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: conic-gradient(var(--accent) calc(var(--pct) * 1%), var(--border) 0);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-        .confidence-ring::before {
-            content: '';
-            position: absolute;
-            width: 36px;
-            height: 36px;
-            background: var(--card);
-            border-radius: 50%;
-        }
-        .confidence-value {
-            position: relative;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
+        
         /* Footer */
         footer {
             text-align: center;
-            padding: 40px 0;
-            color: var(--text-secondary);
+            padding: 48px 32px;
+            color: var(--text-tertiary);
             font-size: 13px;
+            border-top: 1px solid var(--border-subtle);
+            margin-top: 48px;
         }
-        footer a { color: var(--accent); text-decoration: none; }
+        
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        
         .disclaimer {
-            max-width: 600px;
-            margin: 16px auto 0;
+            max-width: 640px;
+            margin: 20px auto 0;
             font-size: 11px;
-            color: #9CA3AF;
+            line-height: 1.6;
+            color: var(--text-tertiary);
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 4px;
+            padding: 4px;
+            background: var(--bg);
+            border-radius: var(--radius-md);
+            margin-bottom: 24px;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 10px 16px;
+            border: none;
+            background: transparent;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: inherit;
+            color: var(--text-secondary);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .tab:hover {
+            color: var(--text-primary);
+        }
+        
+        .tab.active {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+            box-shadow: var(--shadow-sm);
         }
     </style>
 </head>
 <body>
     <header>
-        <div class="container header-inner">
+        <div class="header-inner">
             <div class="logo">
                 <div class="logo-mark">M</div>
-                <span>MONITOR</span>
+                <span class="logo-text">MONITOR</span>
             </div>
             <nav class="nav">
-                <a href="https://monitor-api.abedelhamdan.workers.dev/schema" target="_blank">Schema</a>
+                <a href="https://monitor-api.abedelhamdan.workers.dev/schema" target="_blank">API Schema</a>
                 <a href="https://monitor-api.abedelhamdan.workers.dev/citations" target="_blank">Citations</a>
-                <div class="status-badge">
-                    <div class="status-dot"></div>
-                    <span id="apiVersion">v3.3</span>
+                <a href="https://github.com/bob56565/monitor-backend" target="_blank">GitHub</a>
+                <div class="version-badge">
+                    <div class="version-dot"></div>
+                    <span>v3.3.0</span>
                 </div>
             </nav>
         </div>
     </header>
-
+    
+    <section class="hero">
+        <h1>Health Intelligence Engine</h1>
+        <p>Transform partial biomarker data into comprehensive physiological insights. Signal → State → Action.</p>
+    </section>
+    
     <main>
-        <div class="container grid">
-            <!-- Input Panel -->
-            <div class="input-panel">
-                <div class="card">
-                    <div class="card-header">
-                        <span class="card-title">Enter Biomarkers</span>
+        <div class="input-panel">
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">Biomarker Input</span>
+                </div>
+                
+                <form id="biomarkerForm">
+                    <div class="input-section">
+                        <div class="input-section-title">Lipid Panel</div>
+                        <div class="input-grid">
+                            <div class="input-row">
+                                <input name="total_cholesterol" type="number" placeholder="Total Cholesterol">
+                                <input name="hdl" type="number" placeholder="HDL">
+                            </div>
+                            <input name="triglycerides" type="number" placeholder="Triglycerides (mg/dL)">
+                        </div>
                     </div>
-                    <form id="biomarkerForm">
-                        <div class="input-section">
-                            <div class="input-section-title">Lipid Panel</div>
-                            <div class="input-grid">
-                                <input name="total_cholesterol" type="number" placeholder="Total Cholesterol (mg/dL)">
-                                <input name="hdl" type="number" placeholder="HDL (mg/dL)">
-                                <input name="triglycerides" type="number" placeholder="Triglycerides (mg/dL)">
+                    
+                    <div class="input-section">
+                        <div class="input-section-title">Metabolic</div>
+                        <div class="input-grid">
+                            <div class="input-row">
+                                <input name="fasting_glucose" type="number" placeholder="Fasting Glucose">
+                                <input name="fasting_insulin" type="number" step="0.1" placeholder="Fasting Insulin">
                             </div>
+                            <input name="hba1c" type="number" step="0.1" placeholder="HbA1c (%)">
                         </div>
-                        <div class="input-section">
-                            <div class="input-section-title">Metabolic</div>
-                            <div class="input-grid">
-                                <input name="fasting_glucose" type="number" placeholder="Fasting Glucose (mg/dL)">
-                                <input name="fasting_insulin" type="number" step="0.1" placeholder="Fasting Insulin (μIU/mL)">
-                                <input name="hba1c" type="number" step="0.1" placeholder="HbA1c (%)">
-                            </div>
-                        </div>
-                        <div class="input-section">
-                            <div class="input-section-title">Kidney & Liver</div>
-                            <div class="input-grid">
-                                <input name="creatinine" type="number" step="0.1" placeholder="Creatinine (mg/dL)">
-                                <input name="alt" type="number" placeholder="ALT (U/L)">
-                                <input name="ast" type="number" placeholder="AST (U/L)">
-                            </div>
-                        </div>
-                        <div class="input-section">
-                            <div class="input-section-title">Inflammatory</div>
-                            <div class="input-grid">
+                    </div>
+                    
+                    <div class="input-section">
+                        <div class="input-section-title">Inflammatory</div>
+                        <div class="input-grid">
+                            <div class="input-row">
                                 <input name="hscrp" type="number" step="0.1" placeholder="hs-CRP (mg/L)">
-                                <input name="ferritin" type="number" placeholder="Ferritin (ng/mL)">
+                                <input name="ferritin" type="number" placeholder="Ferritin">
                             </div>
                         </div>
-                        <div class="input-section">
-                            <div class="input-section-title">Vitals & Body</div>
-                            <div class="input-grid">
-                                <input name="sbp" type="number" placeholder="Systolic BP (mmHg)">
-                                <input name="dbp" type="number" placeholder="Diastolic BP (mmHg)">
+                    </div>
+                    
+                    <div class="input-section">
+                        <div class="input-section-title">Organ Function</div>
+                        <div class="input-grid">
+                            <div class="input-row">
+                                <input name="creatinine" type="number" step="0.01" placeholder="Creatinine">
+                                <input name="alt" type="number" placeholder="ALT">
+                            </div>
+                            <input name="ast" type="number" placeholder="AST (U/L)">
+                        </div>
+                    </div>
+                    
+                    <div class="input-section">
+                        <div class="input-section-title">Vitals & Body</div>
+                        <div class="input-grid">
+                            <div class="input-row">
+                                <input name="sbp" type="number" placeholder="Systolic BP">
+                                <input name="dbp" type="number" placeholder="Diastolic BP">
+                            </div>
+                            <div class="input-row">
                                 <input name="weight_kg" type="number" step="0.1" placeholder="Weight (kg)">
                                 <input name="height_cm" type="number" placeholder="Height (cm)">
-                                <input name="waist_cm" type="number" placeholder="Waist (cm)">
                             </div>
+                            <input name="waist_cm" type="number" placeholder="Waist Circumference (cm)">
                         </div>
-                        <div class="input-section">
-                            <div class="input-section-title">Demographics</div>
-                            <div class="input-grid">
-                                <input name="age" type="number" placeholder="Age (years)">
+                    </div>
+                    
+                    <div class="input-section">
+                        <div class="input-section-title">Demographics</div>
+                        <div class="input-grid">
+                            <input name="age" type="number" placeholder="Age (years)">
+                            <div class="checkbox-group">
                                 <label class="checkbox-label">
                                     <input name="is_female" type="checkbox"> Female
                                 </label>
                             </div>
                         </div>
-                    </form>
-                    <button class="btn btn-primary" onclick="analyze()" id="analyzeBtn">Analyze</button>
-                    <button class="btn btn-secondary" onclick="loadDemo()">Load Demo Data</button>
-                </div>
+                    </div>
+                </form>
+                
+                <button class="btn btn-primary" onclick="analyze()" id="analyzeBtn">
+                    Analyze Biomarkers
+                </button>
+                <button class="btn btn-secondary" onclick="loadDemo()">
+                    Load Demo Data
+                </button>
             </div>
-
-            <!-- Results Panel -->
-            <div class="results-panel" id="resultsPanel">
-                <div class="card empty-state" id="emptyState">
-                    <div class="empty-icon">🧬</div>
-                    <div class="empty-title">Enter your biomarkers</div>
-                    <div class="empty-text">Or load demo data to see the intelligence engine in action</div>
-                </div>
+        </div>
+        
+        <div class="results-panel" id="results">
+            <div class="empty-state">
+                <div class="empty-icon">🧬</div>
+                <div class="empty-title">Ready for Analysis</div>
+                <div class="empty-text">Enter your biomarker values or load demo data to see comprehensive health insights powered by the cascade inference engine.</div>
             </div>
         </div>
     </main>
-
+    
     <footer>
-        <div class="container">
-            <p>Powered by cascade inference with <a href="https://monitor-api.abedelhamdan.workers.dev/citations">peer-reviewed citations</a></p>
-            <p class="disclaimer">For informational purposes only. This tool provides health insights based on published research but does not constitute medical advice. Always consult a qualified healthcare provider for medical decisions.</p>
-        </div>
+        <p>MONITOR Health Intelligence Engine — <a href="https://monitor-api.abedelhamdan.workers.dev" target="_blank">API</a> — v3.3.0</p>
+        <p class="disclaimer">
+            This tool provides educational health insights based on peer-reviewed research. All outputs are informational proxies, not medical diagnoses. 
+            Consult a healthcare professional for medical decisions. Every calculation backed by PMID citations.
+        </p>
     </footer>
-
+    
     <script>
-        const API = 'https://monitor-api.abedelhamdan.workers.dev';
-
-        // Check API
-        fetch(API).then(r=>r.json()).then(d=>{
-            document.getElementById('apiVersion').textContent = d.version?.split(' ')[0] || 'v3.3';
-        });
-
-        function loadDemo() {
-            const demo = {
-                total_cholesterol: 220, hdl: 42, triglycerides: 185,
-                fasting_glucose: 108, fasting_insulin: 15, hba1c: 5.9,
-                creatinine: 1.1, alt: 35, ast: 28, hscrp: 2.5, ferritin: 180,
-                sbp: 138, dbp: 88, weight_kg: 85, height_cm: 175, waist_cm: 98, age: 45
-            };
-            Object.entries(demo).forEach(([k,v]) => {
-                const el = document.querySelector(`[name="${k}"]`);
-                if (el) el.value = v;
-            });
-            analyze();
+        const API_URL = "https://monitor-api.abedelhamdan.workers.dev";
+        
+        function formatName(name) {
+            return name.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
         }
-
-        async function analyze() {
-            const btn = document.getElementById('analyzeBtn');
-            btn.innerHTML = '<span class="spinner"></span>Analyzing...';
-            btn.disabled = true;
-
-            const data = {};
-            new FormData(document.getElementById('biomarkerForm')).forEach((v,k) => {
-                if (v && k !== 'is_female') data[k] = parseFloat(v);
+        
+        function getStateBadgeClass(state, score) {
+            if (score >= 80) return 'badge-optimal';
+            if (score >= 60) return 'badge-stable';
+            if (score >= 40) return 'badge-attention';
+            return 'badge-concern';
+        }
+        
+        function getPriorityClass(score) {
+            if (score >= 100) return 'priority-high';
+            if (score >= 70) return 'priority-medium';
+            return 'priority-normal';
+        }
+        
+        function renderResults(data) {
+            const resultsEl = document.getElementById('results');
+            
+            // Build state summary hero
+            const stateSum = data.state_summary || {};
+            const heroTitle = stateSum.overall || "Analysis Complete";
+            const concernCount = stateSum.concerning?.length || 0;
+            
+            // Build physiological states cards
+            const states = data.physiological_states || {};
+            let statesHTML = '';
+            for (const [id, s] of Object.entries(states)) {
+                if (!s.evaluated) continue;
+                const badgeClass = getStateBadgeClass(s.state, s.score);
+                statesHTML += `
+                    <div class="state-card">
+                        <div class="state-card-header">
+                            <div>
+                                <div class="state-name">${s.name}</div>
+                                <div class="state-value">${formatName(s.state)}</div>
+                            </div>
+                            <span class="state-badge ${badgeClass}">${s.score}/100</span>
+                        </div>
+                        <div class="state-factors">${s.factors.length ? s.factors.join(', ') : 'No concerns identified'}</div>
+                        <div class="state-action">
+                            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                            ${s.recommended_action}
+                        </div>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" style="width: ${Math.round(s.confidence * 100)}%"></div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Build priority findings
+            const priority = data.priority_findings || [];
+            let findingsHTML = '';
+            priority.slice(0, 8).forEach((f, i) => {
+                const prioClass = getPriorityClass(f.priority_score);
+                const value = typeof f.value === 'object' ? 
+                    (f.value.state || f.value.likelihood || JSON.stringify(f.value)) : 
+                    f.value;
+                const conf = typeof f.confidence === 'object' ? f.confidence.score : f.confidence;
+                findingsHTML += `
+                    <div class="finding-card">
+                        <div class="finding-priority ${prioClass}">${i + 1}</div>
+                        <div class="finding-content">
+                            <div class="finding-name">${formatName(f.name)}</div>
+                            <div class="finding-value">${typeof value === 'number' ? value.toFixed(2) : formatName(String(value))}</div>
+                        </div>
+                        <div class="finding-meta">
+                            <div class="finding-confidence">${Math.round((conf || 0.8) * 100)}% conf</div>
+                            <span class="finding-tier">${(f.tier || 'derived').replace(/_/g, ' ')}</span>
+                        </div>
+                    </div>
+                `;
             });
-            if (document.querySelector('[name="is_female"]')?.checked) data.is_female = true;
-
-            if (Object.keys(data).length === 0) {
-                alert('Please enter at least one biomarker');
-                btn.innerHTML = 'Analyze';
-                btn.disabled = false;
+            
+            // Build executive summary
+            const exec = data.executive_summary || {};
+            let execHTML = '';
+            if (exec.headline) {
+                let findingsListHTML = '';
+                (exec.key_findings || []).forEach(f => {
+                    findingsListHTML += `
+                        <div class="executive-finding">
+                            <div class="executive-finding-icon"></div>
+                            <div class="executive-finding-text">${f.finding || f}</div>
+                        </div>
+                    `;
+                });
+                
+                let actionsListHTML = '';
+                (exec.action_items || []).forEach(a => {
+                    actionsListHTML += `
+                        <div class="executive-action">
+                            <span class="executive-action-priority">${a.priority || 'moderate'}</span>
+                            ${a.action}
+                        </div>
+                    `;
+                });
+                
+                execHTML = `
+                    <div class="executive-card">
+                        <div class="executive-headline">${exec.headline}</div>
+                        <div class="executive-findings">${findingsListHTML}</div>
+                        <div class="executive-actions">
+                            <div class="executive-actions-title">Recommended Actions</div>
+                            ${actionsListHTML}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Build coverage
+            const coverage = data.coverage || {};
+            let coverageHTML = '';
+            for (const [cat, cov] of Object.entries(coverage)) {
+                if (typeof cov !== 'object') continue;
+                const pct = cov.provided && cov.total ? Math.round((cov.provided / cov.total) * 100) : 0;
+                coverageHTML += `
+                    <div class="coverage-item">
+                        <span class="coverage-label">${formatName(cat)}</span>
+                        <div style="display: flex; align-items: center;">
+                            <span class="coverage-value">${cov.provided || 0}/${cov.total || 0}</span>
+                            <div class="coverage-bar">
+                                <div class="coverage-bar-fill" style="width: ${pct}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Build unlock opportunities
+            const unlocks = data.unlock_opportunities || data.suggestions || [];
+            let unlocksHTML = '';
+            unlocks.slice(0, 5).forEach(u => {
+                const input = u.input || u.add || u;
+                const enables = u.enables || u.unlocks || [];
+                unlocksHTML += `
+                    <div class="unlock-item">
+                        <div class="unlock-icon">+</div>
+                        <div class="unlock-text">
+                            <span class="unlock-input">${formatName(String(input))}</span>
+                            <div class="unlock-count">Enables ${Array.isArray(enables) ? enables.length : 0}+ outputs</div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            // Constraints status
+            const constraints = data.constraints || {};
+            const constraintOK = constraints.status === 'valid' && !constraints.violations?.length;
+            const constraintHTML = `
+                <div class="constraints-status ${constraintOK ? '' : 'warning'}">
+                    <svg viewBox="0 0 20 20" fill="currentColor">
+                        ${constraintOK ? 
+                            '<path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>' :
+                            '<path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>'}
+                    </svg>
+                    ${constraintOK ? 'All physiological constraints validated' : `${constraints.violations?.length || 0} constraint warnings`}
+                </div>
+            `;
+            
+            // Cascade stats
+            const cascade = data.cascade_result || {};
+            const statsHTML = `
+                <div class="state-hero-badge">
+                    <span>🧬</span>
+                    <span>${cascade.inputs || data.inputs || 0} inputs → ${cascade.calculated || data.calculated || 0} derived → ${cascade.total || data.total || 0} total</span>
+                </div>
+            `;
+            
+            resultsEl.innerHTML = `
+                <div class="state-hero">
+                    ${statsHTML}
+                    <h2>${heroTitle}</h2>
+                    <p>${concernCount > 0 ? `${concernCount} area(s) require attention` : 'All physiological systems within normal parameters'}</p>
+                </div>
+                
+                ${execHTML}
+                
+                <div class="states-section">
+                    <div class="section-header">
+                        <div>
+                            <div class="section-title">Physiological States</div>
+                            <div class="section-subtitle">Signal → State → Action framework</div>
+                        </div>
+                    </div>
+                    <div class="states-grid">${statesHTML}</div>
+                </div>
+                
+                <div class="states-section">
+                    <div class="section-header">
+                        <div>
+                            <div class="section-title">Priority Findings</div>
+                            <div class="section-subtitle">Ranked by clinical significance</div>
+                        </div>
+                    </div>
+                    <div class="findings-grid">${findingsHTML}</div>
+                </div>
+                
+                <div class="coverage-section">
+                    <div class="coverage-card">
+                        <div class="card-header">
+                            <span class="card-title">Data Coverage</span>
+                        </div>
+                        ${coverageHTML || '<div class="coverage-item"><span class="coverage-label">Coverage data unavailable</span></div>'}
+                    </div>
+                    <div class="coverage-card">
+                        <div class="card-header">
+                            <span class="card-title">Unlock More Insights</span>
+                        </div>
+                        <div class="unlock-list">${unlocksHTML || '<div class="unlock-item">No additional suggestions</div>'}</div>
+                    </div>
+                </div>
+                
+                ${constraintHTML}
+            `;
+        }
+        
+        async function analyze() {
+            const form = document.getElementById('biomarkerForm');
+            const btn = document.getElementById('analyzeBtn');
+            const formData = new FormData(form);
+            const data = {};
+            
+            formData.forEach((v, k) => {
+                if (k === 'is_female') {
+                    data[k] = true;
+                } else if (v !== '') {
+                    data[k] = parseFloat(v);
+                }
+            });
+            
+            if (Object.keys(data).length < 3) {
+                alert('Please enter at least 3 biomarker values');
                 return;
             }
-
+            
+            btn.innerHTML = '<span class="spinner"></span>Analyzing...';
+            btn.disabled = true;
+            
             try {
-                const res = await fetch(`${API}/analyze?mode=a2`, {
+                const res = await fetch(`${API_URL}/analyze?mode=a2`, {
                     method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)
                 });
                 const result = await res.json();
                 renderResults(result);
-            } catch(e) {
-                alert('Error: ' + e.message);
+            } catch (e) {
+                alert('Analysis failed: ' + e.message);
+            } finally {
+                btn.innerHTML = 'Analyze Biomarkers';
+                btn.disabled = false;
             }
-
-            btn.innerHTML = 'Analyze';
-            btn.disabled = false;
         }
-
-        function renderResults(r) {
-            const panel = document.getElementById('resultsPanel');
-            document.getElementById('emptyState')?.remove();
-
-            const states = r.physiological_states || {};
-            const summary = r.state_summary || {};
-            const coverage = r.coverage || {};
-            const derived = r.derived || r.cascade_result?.derived || [];
-            const unlocks = r.unlock_opportunities || [];
-
-            let html = '';
-
-            // Hero Summary
-            html += `
-                <div class="summary-hero">
-                    <div class="summary-headline">${summary.overall || 'Analysis Complete'}</div>
-                    <div class="summary-subtext">${summary.total_evaluated || 0} physiological systems evaluated</div>
-                </div>
-            `;
-
-            // Physiological States
-            const evaluatedStates = Object.entries(states).filter(([_,s]) => s.evaluated);
-            if (evaluatedStates.length > 0) {
-                html += `<div class="card"><div class="card-header"><span class="card-title">Physiological States</span></div>`;
-                evaluatedStates.forEach(([id, s]) => {
-                    const badgeClass = s.score > 80 ? 'badge-optimal' : s.score > 60 ? 'badge-stable' : s.score > 40 ? 'badge-stressed' : 'badge-concern';
-                    html += `
-                        <div class="state-card" style="margin-bottom: 12px;">
-                            <div class="state-info">
-                                <div class="state-name">${s.name}</div>
-                                <div class="state-value">${s.state.replace(/_/g, ' ')}</div>
-                                <div class="state-factors">${s.factors?.slice(0,2).join(' • ') || 'No concerns'}</div>
-                                ${s.lab_anchors ? `<div class="lab-anchor"><div class="lab-anchor-title">🔬 Lab Correlation</div>${s.lab_anchors}</div>` : ''}
-                            </div>
-                            <div style="text-align: right;">
-                                <span class="state-badge ${badgeClass}">${s.state.replace(/_/g, ' ')}</span>
-                                <div style="margin-top: 12px; display: flex; align-items: center; gap: 8px; justify-content: flex-end;">
-                                    <div class="confidence-ring" style="--pct: ${Math.round((s.confidence || 0.7) * 100)}">
-                                        <span class="confidence-value">${Math.round((s.confidence || 0.7) * 100)}%</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                });
-                html += `</div>`;
-            }
-
-            // Actions
-            const actions = summary.concerning || [];
-            if (actions.length > 0) {
-                html += `
-                    <div class="actions-card">
-                        <div class="actions-title">⚡ Recommended Actions</div>
-                        ${actions.map(a => `
-                            <div class="action-item">
-                                <span class="action-icon">→</span>
-                                <span><strong>${a.name}:</strong> ${a.action}</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-            }
-
-            // Derived Metrics
-            const proxies = derived.filter(d => d.name?.includes('proxy') || d.name?.includes('likelihood'));
-            const metrics = derived.filter(d => !d.name?.includes('proxy') && !d.name?.includes('likelihood'));
+        
+        async function loadDemo() {
+            const btn = document.getElementById('analyzeBtn');
+            btn.innerHTML = '<span class="spinner"></span>Loading Demo...';
+            btn.disabled = true;
             
-            if (proxies.length > 0) {
-                html += `<div class="card"><div class="card-header"><span class="card-title">Proxy Insights</span></div><div class="metrics-grid">`;
-                proxies.forEach(p => {
-                    const val = p.value;
-                    const state = typeof val === 'object' ? (val.state || val.likelihood || 'calculated') : val;
-                    html += `
-                        <div class="metric-card">
-                            <div class="metric-label">${formatName(p.name)}</div>
-                            <div class="metric-value" style="font-size: 16px; text-transform: capitalize;">${state}</div>
-                            ${val?.lab_anchor ? `<div style="font-size: 11px; color: var(--purple); margin-top: 6px;">🔬 ${val.lab_anchor.test || ''}</div>` : ''}
-                        </div>
-                    `;
-                });
-                html += `</div></div>`;
+            // Fill form with demo values
+            const demoData = {
+                total_cholesterol: 220, hdl: 42, triglycerides: 185,
+                fasting_glucose: 108, fasting_insulin: 15,
+                hscrp: 2.8, alt: 35, ast: 28,
+                creatinine: 1.1, sbp: 138, dbp: 88,
+                weight_kg: 85, height_cm: 175, waist_cm: 98, age: 45
+            };
+            
+            Object.entries(demoData).forEach(([k, v]) => {
+                const input = document.querySelector(`[name="${k}"]`);
+                if (input) input.value = v;
+            });
+            
+            try {
+                const res = await fetch(`${API_URL}/demo`);
+                const result = await res.json();
+                renderResults(result);
+            } catch (e) {
+                alert('Demo load failed: ' + e.message);
+            } finally {
+                btn.innerHTML = 'Analyze Biomarkers';
+                btn.disabled = false;
             }
-
-            if (metrics.length > 0) {
-                html += `<div class="card"><div class="card-header"><span class="card-title">Derived Metrics</span></div><div class="metrics-grid">`;
-                metrics.slice(0, 15).forEach(m => {
-                    const val = typeof m.value === 'object' ? JSON.stringify(m.value).substring(0,20) : (typeof m.value === 'number' ? m.value.toFixed(2) : m.value);
-                    const risk = m.interpretation?.risk;
-                    const statusClass = risk === 'high' ? 'status-high' : risk === 'elevated' ? 'status-elevated' : risk === 'low' || risk === 'optimal' ? 'status-optimal' : 'status-normal';
-                    html += `
-                        <div class="metric-card">
-                            <div class="metric-label">${formatName(m.name)}</div>
-                            <div class="metric-value">${val}</div>
-                            ${risk ? `<span class="metric-status ${statusClass}">${risk}</span>` : ''}
-                        </div>
-                    `;
-                });
-                html += `</div></div>`;
-            }
-
-            // Coverage
-            if (coverage.by_category) {
-                html += `<div class="card"><div class="card-header"><span class="card-title">Data Coverage</span><span style="font-size: 13px; color: var(--accent);">${coverage.completeness || 0}% Complete</span></div>`;
-                Object.entries(coverage.by_category).forEach(([cat, data]) => {
-                    const pct = Math.round((data.completeness || 0) * 100);
-                    html += `
-                        <div style="margin-bottom: 12px;">
-                            <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px;">
-                                <span style="text-transform: capitalize;">${cat}</span>
-                                <span style="color: var(--text-secondary);">${pct}%</span>
-                            </div>
-                            <div class="coverage-bar"><div class="coverage-fill" style="width: ${pct}%"></div></div>
-                        </div>
-                    `;
-                });
-                html += `</div>`;
-            }
-
-            // Unlock Opportunities
-            if (unlocks.length > 0) {
-                html += `<div class="card"><div class="card-header"><span class="card-title">Add to Unlock More</span></div><div class="unlock-grid">`;
-                unlocks.slice(0, 6).forEach(u => {
-                    html += `
-                        <div class="unlock-item">
-                            <div class="unlock-input">+ ${formatName(u.input || u.missing)}</div>
-                            <div class="unlock-count">Unlocks ${u.unlocks_count || 1} more insight(s)</div>
-                        </div>
-                    `;
-                });
-                html += `</div></div>`;
-            }
-
-            panel.innerHTML = html;
-        }
-
-        function formatName(n) {
-            if (!n) return '';
-            return n.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
         }
     </script>
 </body>

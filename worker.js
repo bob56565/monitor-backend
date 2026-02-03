@@ -1001,6 +1001,53 @@ function generateStateSummary(states) {
 }
 
 // ═══════════════════════════════════════════════════════════════
+// OUTPUT PRIORITIZATION ENGINE
+// Rank outputs by: novelty, confidence, actionability, clinical significance
+// ═══════════════════════════════════════════════════════════════
+
+function prioritizeOutputs(derived, values) {
+  const HIGH_VALUE_OUTPUTS = new Set([
+    'insulin_sensitivity_proxy', 'inflammatory_burden_proxy', 'cv_resilience_proxy',
+    'metabolic_syndrome_atp3', 'metabolic_syndrome_idf', 'mets_likelihood',
+    'liver_fibrosis_proxy', 'kidney_stress', 'arterial_health_proxy',
+    'homa_ir', 'egfr', 'fib4', 'diabetes_risk_score'
+  ]);
+  
+  const NOVEL_OUTPUTS = new Set([
+    'insulin_sensitivity_proxy', 'inflammatory_burden_proxy', 'cv_resilience_proxy',
+    'metabolic_stress_state', 'chronic_inflammation_state', 'hepatic_stress',
+    'thyroid_func_proxy', 'micronut_proxy', 'anemia_type_proxy'
+  ]);
+  
+  return derived
+    .map(d => {
+      let priority = 0;
+      
+      // Novelty score (proxy/state outputs score higher)
+      if (NOVEL_OUTPUTS.has(d.name)) priority += 40;
+      if (typeof d.value === 'object' && d.value.state) priority += 30;
+      
+      // Clinical significance (high-value outputs)
+      if (HIGH_VALUE_OUTPUTS.has(d.name)) priority += 25;
+      
+      // Confidence score
+      const conf = typeof d.confidence === 'object' ? d.confidence.score : d.confidence;
+      priority += (conf || 0.5) * 20;
+      
+      // Actionability (outputs with concerning values)
+      if (d.interpretation?.risk === 'high' || d.interpretation?.risk === 'elevated') priority += 35;
+      if (typeof d.value === 'object' && ['elevated', 'stressed', 'dysregulated', 'likely_resistant'].includes(d.value.state)) priority += 35;
+      
+      // Citation backing
+      if (d.citation) priority += 10;
+      
+      return { ...d, priority_score: Math.round(priority) };
+    })
+    .sort((a, b) => b.priority_score - a.priority_score)
+    .slice(0, 15); // Top 15 most important findings
+}
+
+// ═══════════════════════════════════════════════════════════════
 // CASCADE ENGINE v3.2 (Enhanced with Priors + States)
 // ═══════════════════════════════════════════════════════════════
 
@@ -1382,8 +1429,40 @@ export default {
     }
     
     if (url.pathname === "/demo") {
-      const result = runCascade({ total_cholesterol: 220, hdl: 42, triglycerides: 185, fasting_glucose: 108, fasting_insulin: 15, age: 45, creatinine: 1.1, weight_kg: 85, height_cm: 175, waist_cm: 98, sbp: 138, dbp: 88 });
-      return new Response(JSON.stringify({ status: "success", demo_note: `From ${result.inputs} inputs → ${result.calculated} calculated → ${result.total} total values`, ...result, suggestions: getSuggestions(result.values) }), { headers: cors });
+      const demoInputs = { total_cholesterol: 220, hdl: 42, triglycerides: 185, fasting_glucose: 108, fasting_insulin: 15, age: 45, creatinine: 1.1, weight_kg: 85, height_cm: 175, waist_cm: 98, sbp: 138, dbp: 88, hscrp: 2.8, alt: 35, ast: 28 };
+      const result = runCascade(demoInputs);
+      const mode = url.searchParams.get("mode") || "a2";
+      
+      // Always return full A2 experience for demo
+      const a2Report = generateA2Report(demoInputs, result);
+      const categorized = categorizeOutputs(result.derived);
+      const states = evaluateStates(result.values);
+      const stateSummary = generateStateSummary(states);
+      const prioritized = prioritizeOutputs(result.derived, result.values);
+      
+      return new Response(JSON.stringify({ 
+        status: "success", 
+        mode: "a2_experience",
+        version: "3.3.0",
+        demo_note: `From ${result.inputs} inputs → ${result.calculated} calculated → ${result.total} total values`,
+        ...a2Report,
+        // PHYSIOLOGICAL STATES - The key differentiator
+        physiological_states: states,
+        state_summary: stateSummary,
+        // PRIORITIZED OUTPUTS - What matters most
+        priority_findings: prioritized,
+        // Full data
+        cascade_result: {
+          inputs: result.inputs,
+          calculated: result.calculated,
+          total: result.total,
+          iterations: result.cascade_iterations
+        },
+        derived_by_tier: categorized,
+        constraints: result.constraints,
+        values: result.values,
+        suggestions: getSuggestions(result.values)
+      }), { headers: cors });
     }
     
     if (url.pathname === "/analyze" && request.method === "POST") {
