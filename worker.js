@@ -506,6 +506,24 @@ const LAB_ANCHORING = {
       { test: "TIBC", expected_range: "250-400 μg/dL (normal), >400 μg/dL (elevated in deficiency)", direction: "↑ elevated when deficient" },
       { test: "Transferrin Saturation", expected_range: "20-50% (normal), <20% (low)", direction: "↓ low when deficient" }
     ],
+    anticipated_lab_values: {
+      deficient: [
+        { test: "Ferritin", anticipated: "<30 ng/mL", interpretation: "Depleted iron stores" },
+        { test: "Transferrin Saturation", anticipated: "<20%", interpretation: "Low circulating iron" },
+        { test: "TIBC", anticipated: ">400 μg/dL", interpretation: "Compensatory increase" }
+      ],
+      depleted: [
+        { test: "Ferritin", anticipated: "30-50 ng/mL", interpretation: "Low-normal stores" },
+        { test: "Transferrin Saturation", anticipated: "15-20%", interpretation: "Borderline availability" }
+      ],
+      adequate: [
+        { test: "Ferritin", anticipated: "50-150 ng/mL", interpretation: "Sufficient stores" },
+        { test: "Transferrin Saturation", anticipated: "20-50%", interpretation: "Normal availability" }
+      ],
+      elevated: [
+        { test: "Ferritin", anticipated: ">300 ng/mL", interpretation: "Inflammation or iron overload" }
+      ]
+    },
     clinical_insight: "Iron deficiency is the most common nutritional deficiency worldwide, affecting ~25% of the global population. Ferritin alone can be misleading with inflammation.",
     recommended_confirmation: "Full iron panel: ferritin + serum iron + TIBC + transferrin saturation",
     actionable_guidance: "Iron-rich foods (red meat, spinach, legumes) with vitamin C; avoid tea/coffee with meals"
