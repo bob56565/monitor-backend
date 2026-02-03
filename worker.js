@@ -2105,7 +2105,7 @@ export default {
     if (url.pathname === "/" || url.pathname === "") {
       return new Response(JSON.stringify({
         name: "Monitor Health API",
-        version: "3.6.0",
+        version: "3.7.0",
         differentiator: "CASCADE INFERENCE: Partial data → Comprehensive insights. EVERY formula has PMID citation.",
         total_formulas: Object.values(INFERENCE_RULES).reduce((a, r) => a + r.length, 0),
         total_citations: Object.keys(CITATIONS).length,
@@ -2156,7 +2156,7 @@ export default {
       return new Response(JSON.stringify({ 
         status: "success", 
         mode: "a2_experience",
-        version: "3.6.0",
+        version: "3.7.0",
         demo_note: `From ${result.inputs} inputs → ${result.calculated} calculated → ${result.total} total values`,
         ...a2Report,
         // PHYSIOLOGICAL STATES - The key differentiator
@@ -2198,7 +2198,7 @@ export default {
           return new Response(JSON.stringify({
             status: "success",
             mode: "a2_experience",
-            version: "3.6.0",
+            version: "3.7.0",
             ...a2Report,
             // Signal → State → Action Framework
             physiological_states: states,
@@ -2262,7 +2262,7 @@ export default {
         const stateSummary = generateStateSummary(states);
         return new Response(JSON.stringify({ 
           status: "success",
-          version: "3.6.0",
+          version: "3.7.0",
           ...result,
           physiological_states: states,
           state_summary: stateSummary,
