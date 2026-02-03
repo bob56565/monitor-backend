@@ -1499,21 +1499,188 @@ function evaluateStates(values) {
       results[id] = { name: def.name, evaluated: false, missing: def.required.filter(s => values[s] === undefined) };
       continue;
     }
-    const supporting = def.supporting.filter(s => values[s] !== undefined).length;
+    const supportingPresent = def.supporting.filter(s => values[s] !== undefined);
     const evaluation = def.evaluate(values);
+    
+    // Collect actual input values used (required + supporting that were present)
+    const inputsUsed = {};
+    for (const biomarker of def.required) {
+      if (values[biomarker] !== undefined) {
+        inputsUsed[biomarker] = {
+          value: typeof values[biomarker] === 'number' ? Math.round(values[biomarker] * 100) / 100 : values[biomarker],
+          unit: getBiomarkerUnit(biomarker),
+          role: 'required'
+        };
+      }
+    }
+    for (const biomarker of supportingPresent) {
+      inputsUsed[biomarker] = {
+        value: typeof values[biomarker] === 'number' ? Math.round(values[biomarker] * 100) / 100 : values[biomarker],
+        unit: getBiomarkerUnit(biomarker),
+        role: 'supporting'
+      };
+    }
+    
+    // Collect derived outputs that contributed to this state
+    const derivedOutputs = {};
+    const relevantDerived = getRelevantDerivedForState(id, values);
+    for (const [name, val] of Object.entries(relevantDerived)) {
+      derivedOutputs[name] = {
+        value: typeof val === 'number' ? Math.round(val * 100) / 100 : val,
+        interpretation: interpretRisk(name, val)
+      };
+    }
+    
+    // Get anticipated lab findings from lab_anchoring system
+    const anticipatedLabs = getAnticipatedLabsForState(id, evaluation.state, values);
+    
     results[id] = {
       name: def.name,
       evaluated: true,
       state: evaluation.state,
       score: Math.max(0, evaluation.score),
       factors: evaluation.factors,
-      signal_coverage: `${def.required.length + supporting}/${def.required.length + def.supporting.length}`,
+      signal_coverage: `${def.required.length + supportingPresent.length}/${def.required.length + def.supporting.length}`,
       lab_anchors: def.lab_anchors[evaluation.state] || "",
       recommended_action: def.actions[evaluation.state] || "",
-      confidence: Math.min(0.95, 0.7 + (supporting / def.supporting.length) * 0.2)
+      confidence: Math.min(0.95, 0.7 + (supportingPresent.length / def.supporting.length) * 0.2),
+      // NEW: Expanded data for state cards
+      inputs_used: inputsUsed,
+      derived_outputs: derivedOutputs,
+      anticipated_labs: anticipatedLabs
     };
   }
   return results;
+}
+
+// Helper: Get biomarker units for display
+function getBiomarkerUnit(biomarker) {
+  const units = {
+    // Lipids
+    total_cholesterol: 'mg/dL', hdl: 'mg/dL', ldl: 'mg/dL', triglycerides: 'mg/dL', vldl: 'mg/dL',
+    // Glycemic
+    fasting_glucose: 'mg/dL', fasting_insulin: 'μIU/mL', hba1c: '%',
+    homa_ir: '', tg_hdl_ratio: '', tyg_index: '',
+    // Inflammatory
+    hscrp: 'mg/L', ferritin: 'ng/mL', nlr: '', albumin: 'g/dL',
+    // Liver
+    alt: 'U/L', ast: 'U/L', ggt: 'U/L', fib4: '', platelets: 'K/μL',
+    // Kidney
+    creatinine: 'mg/dL', egfr: 'mL/min/1.73m²', bun: 'mg/dL',
+    // Cardiac/BP
+    sbp: 'mmHg', dbp: 'mmHg', pulse_pressure: 'mmHg', map: 'mmHg',
+    // Body composition
+    bmi: 'kg/m²', waist_cm: 'cm', weight_kg: 'kg', height_cm: 'cm',
+    // Thyroid
+    tsh: 'mIU/L', ft4: 'ng/dL', ft3: 'pg/mL',
+    // Hematology
+    hemoglobin: 'g/dL', hematocrit: '%', rbc: 'M/μL', wbc: 'K/μL',
+    // Age
+    age: 'years'
+  };
+  return units[biomarker] || '';
+}
+
+// Helper: Get relevant derived values for a state
+function getRelevantDerivedForState(stateId, values) {
+  const stateToDerivatives = {
+    metabolic_health: ['homa_ir', 'tg_hdl_ratio', 'tyg_index', 'quicki', 'insulin_sensitivity_proxy'],
+    inflammatory_status: ['nlr', 'plr', 'sii', 'inflammatory_burden_proxy'],
+    cardiovascular_status: ['castelli_1', 'castelli_2', 'atherogenic_index', 'non_hdl', 'cv_resilience_proxy'],
+    liver_status: ['fib4', 'ast_alt_ratio', 'nafld_fib_score', 'hepatic_stress_proxy'],
+    kidney_status: ['egfr', 'bun_creatinine_ratio', 'creatinine_clearance', 'kidney_stress_proxy']
+  };
+  
+  const relevant = stateToDerivatives[stateId] || [];
+  const result = {};
+  for (const name of relevant) {
+    if (values[name] !== undefined) {
+      result[name] = values[name];
+    }
+  }
+  return result;
+}
+
+// Helper: Get anticipated lab findings based on state
+function getAnticipatedLabsForState(stateId, stateValue, values) {
+  // Map state IDs to relevant proxy names for lab anchoring
+  const stateToProxy = {
+    metabolic_health: 'insulin_sensitivity_proxy',
+    inflammatory_status: 'inflammatory_burden_proxy',
+    cardiovascular_status: 'cv_resilience_proxy',
+    liver_status: 'hepatic_stress_proxy',
+    kidney_status: 'kidney_stress_proxy'
+  };
+  
+  // Map state values to proxy states
+  const stateMapping = {
+    metabolic_health: {
+      optimal: 'likely_sensitive', stable: 'likely_sensitive',
+      stressed: 'possibly_resistant', dysregulated: 'likely_resistant'
+    },
+    inflammatory_status: {
+      quiescent: 'low', low_grade: 'moderate',
+      moderate: 'moderate', elevated: 'elevated'
+    },
+    cardiovascular_status: {
+      optimal: 'robust', favorable: 'robust',
+      moderate_risk: 'moderate', elevated_risk: 'strained'
+    },
+    liver_status: {
+      healthy: 'minimal', mild_stress: 'mild',
+      moderate_concern: 'moderate', needs_evaluation: 'elevated'
+    },
+    kidney_status: {
+      normal: 'normal', mildly_reduced: 'mild_stress',
+      moderately_reduced: 'moderate_stress', significantly_reduced: 'elevated_stress'
+    }
+  };
+  
+  const proxyName = stateToProxy[stateId];
+  if (!proxyName || !LAB_ANCHORING[proxyName]) {
+    // Fallback: return basic anticipated findings from state definition
+    return getBasicAnticipatedLabs(stateId, stateValue);
+  }
+  
+  const anchor = LAB_ANCHORING[proxyName];
+  const mappedState = stateMapping[stateId]?.[stateValue] || stateValue;
+  
+  // Get anticipated lab values for this state
+  let anticipated = anchor.anticipated_lab_values?.[mappedState] ||
+                    anchor.anticipated_lab_values?.[stateValue] ||
+                    [];
+  
+  // If no match, try to get from any available state
+  if (anticipated.length === 0 && anchor.anticipated_lab_values) {
+    const availableStates = Object.keys(anchor.anticipated_lab_values);
+    if (availableStates.length > 0) {
+      anticipated = anchor.anticipated_lab_values[availableStates[0]] || [];
+    }
+  }
+  
+  return {
+    proxy_source: anchor.display_name,
+    pattern: anchor.pattern_statement?.[mappedState] || anchor.pattern_statement?.[stateValue] || '',
+    findings: anticipated.slice(0, 5).map(f => ({
+      test: f.test,
+      anticipated: f.anticipated,
+      interpretation: f.interpretation
+    })),
+    confirmation: anchor.recommended_confirmation || ''
+  };
+}
+
+// Fallback: Basic anticipated labs from state definitions
+function getBasicAnticipatedLabs(stateId, stateValue) {
+  const def = PHYSIOLOGICAL_STATES[stateId];
+  if (!def) return { findings: [] };
+  
+  return {
+    proxy_source: def.name,
+    pattern: def.lab_anchors?.[stateValue] || '',
+    findings: [],
+    confirmation: ''
+  };
 }
 
 function generateStateSummary(states) {

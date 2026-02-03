@@ -139,6 +139,61 @@
     .state-factors { font-size: 13px; color: var(--muted); }
     .state-score { display: inline-block; margin-top: 8px; padding: 5px 12px; background: var(--bg); border-radius: 8px; font-size: 12px; font-weight: 600; }
 
+    /* EXPANDED STATE CARD SECTIONS */
+    .state-card { padding: 22px !important; display: block !important; }
+    .state-header { display: flex; gap: 16px; margin-bottom: 16px; }
+    .state-body { border-top: 1px solid var(--line); padding-top: 16px; }
+    
+    .state-section { margin-bottom: 14px; }
+    .state-section:last-child { margin-bottom: 0; }
+    .state-section-title {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .state-section-title .icon { font-size: 12px; }
+    
+    /* Inputs used grid */
+    .inputs-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+    .input-chip {
+      background: var(--sage-light); border-radius: 8px; padding: 6px 10px;
+      font-size: 12px; display: flex; align-items: center; gap: 4px;
+    }
+    .input-chip .name { font-weight: 600; color: var(--sage); }
+    .input-chip .val { color: var(--text); }
+    .input-chip.supporting { background: var(--bg); }
+    .input-chip.supporting .name { color: var(--muted); }
+    
+    /* Derived outputs */
+    .derived-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+    .derived-chip {
+      background: linear-gradient(135deg, #F0F4FF 0%, #E8EEFF 100%);
+      border: 1px solid rgba(74,124,200,0.2);
+      border-radius: 8px; padding: 6px 10px; font-size: 12px;
+    }
+    .derived-chip .name { font-weight: 600; color: #4A6FA5; }
+    .derived-chip .val { color: var(--text); margin-left: 4px; }
+    .derived-chip.warn { background: var(--coral-light); border-color: rgba(224,122,95,0.3); }
+    .derived-chip.warn .name { color: #A4513E; }
+    
+    /* Lab correlation section */
+    .lab-correlation {
+      background: linear-gradient(135deg, #FFF8F5 0%, #FFFAF8 100%);
+      border: 1px solid rgba(224,122,95,0.2);
+      border-radius: 10px; padding: 12px 14px;
+    }
+    .lab-correlation-header {
+      font-size: 11px; font-weight: 700; color: var(--coral);
+      margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
+    }
+    .lab-findings { display: flex; flex-direction: column; gap: 4px; }
+    .lab-finding {
+      font-size: 11px; line-height: 1.4; color: var(--text);
+      display: flex; align-items: baseline; gap: 6px;
+    }
+    .lab-finding .test { font-weight: 600; color: #A4513E; min-width: 70px; }
+    .lab-finding .expected { color: var(--muted); }
+
     /* LAB ANCHORING - THE KEY SECTION */
     .lab-section h3 { font-size: 22px; font-weight: 600; margin-bottom: 8px; }
     .lab-section > p { color: var(--muted); margin-bottom: 24px; }
@@ -405,21 +460,81 @@
         </div>
       `;
       
-      // States
+      // States (EXPANDED)
       if (data.physiological_states) {
         html += '<div class="states-grid fade-in" style="animation-delay:0.1s">';
         for (const [k, s] of Object.entries(data.physiological_states)) {
           if (!s.evaluated) continue;
           const cls = s.score > 70 ? 'ok' : 'warn';
           const ico = s.score > 70 ? '✓' : '!';
+          
+          // Build inputs chips
+          let inputsHtml = '';
+          if (s.inputs_used && Object.keys(s.inputs_used).length > 0) {
+            inputsHtml = '<div class="inputs-grid">';
+            for (const [name, info] of Object.entries(s.inputs_used)) {
+              const chipCls = info.role === 'supporting' ? 'supporting' : '';
+              const unit = info.unit || '';
+              const val = typeof info.value === 'object' ? JSON.stringify(info.value) : info.value;
+              inputsHtml += `<div class="input-chip ${chipCls}"><span class="name">${formatName(name)}:</span><span class="val">${val}${unit ? ' ' + unit : ''}</span></div>`;
+            }
+            inputsHtml += '</div>';
+          }
+          
+          // Build derived outputs chips
+          let derivedHtml = '';
+          if (s.derived_outputs && Object.keys(s.derived_outputs).length > 0) {
+            derivedHtml = '<div class="derived-grid">';
+            for (const [name, info] of Object.entries(s.derived_outputs)) {
+              const isWarn = info.interpretation?.risk === 'high' || info.interpretation?.risk === 'elevated';
+              const val = typeof info.value === 'object' ? (info.value.state || JSON.stringify(info.value)) : info.value;
+              derivedHtml += `<div class="derived-chip ${isWarn ? 'warn' : ''}"><span class="name">${formatName(name)}:</span><span class="val">${val}</span></div>`;
+            }
+            derivedHtml += '</div>';
+          }
+          
+          // Build lab correlation section
+          let labHtml = '';
+          if (s.anticipated_labs?.findings?.length > 0) {
+            labHtml = `
+              <div class="lab-correlation">
+                <div class="lab-correlation-header">🔬 Anticipated Traditional Labs</div>
+                <div class="lab-findings">
+                  ${s.anticipated_labs.findings.slice(0, 4).map(f => `
+                    <div class="lab-finding">
+                      <span class="test">${f.test}:</span>
+                      <span class="expected">${f.anticipated}</span>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            `;
+          } else if (s.lab_anchors) {
+            labHtml = `
+              <div class="lab-correlation">
+                <div class="lab-correlation-header">🔬 Lab Reference</div>
+                <div class="lab-findings">
+                  <div class="lab-finding"><span class="expected">${s.lab_anchors}</span></div>
+                </div>
+              </div>
+            `;
+          }
+          
           html += `
             <div class="card state-card">
-              <div class="state-icon ${cls}">${ico}</div>
-              <div>
-                <div class="state-name">${s.name}</div>
-                <div class="state-value">${(s.state||'').replace(/_/g,' ')}</div>
-                <div class="state-factors">${(s.factors||[]).slice(0,2).join(' • ')||'No concerns'}</div>
-                <div class="state-score">Score: ${s.score}/100</div>
+              <div class="state-header">
+                <div class="state-icon ${cls}">${ico}</div>
+                <div>
+                  <div class="state-name">${s.name}</div>
+                  <div class="state-value">${(s.state||'').replace(/_/g,' ')}</div>
+                  <div class="state-factors">${(s.factors||[]).slice(0,2).join(' • ')||'No concerns'}</div>
+                  <div class="state-score">Score: ${s.score}/100</div>
+                </div>
+              </div>
+              <div class="state-body">
+                ${inputsHtml ? `<div class="state-section"><div class="state-section-title"><span class="icon">📊</span>Inputs Used</div>${inputsHtml}</div>` : ''}
+                ${derivedHtml ? `<div class="state-section"><div class="state-section-title"><span class="icon">⚡</span>Calculated Values</div>${derivedHtml}</div>` : ''}
+                ${labHtml ? `<div class="state-section"><div class="state-section-title"><span class="icon">🧪</span>Traditional Lab Correlation</div>${labHtml}</div>` : ''}
               </div>
             </div>
           `;
