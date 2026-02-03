@@ -3,311 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MONITOR — Health Intelligence Engine</title>
+    <title>MONITOR — Health Intelligence Platform</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=SF+Pro+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;450;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #FAFBFC;
-            --bg-elevated: #FFFFFF;
-            --text-primary: #0D1117;
-            --text-secondary: #57606A;
-            --text-tertiary: #8B949E;
-            --border: #D0D7DE;
-            --border-subtle: #E8EAED;
-            --accent: #0969DA;
-            --accent-subtle: #DDF4FF;
-            --success: #1A7F37;
-            --success-subtle: #DAFBE1;
-            --warning: #9A6700;
-            --warning-subtle: #FFF8C5;
-            --danger: #CF222E;
-            --danger-subtle: #FFEBE9;
-            --purple: #8250DF;
-            --purple-subtle: #FBEFFF;
-            --radius-sm: 8px;
-            --radius-md: 12px;
+            --bg-primary: #FAFAFA;
+            --bg-secondary: #FFFFFF;
+            --bg-tertiary: #F5F5F7;
+            --text-primary: #1D1D1F;
+            --text-secondary: #6E6E73;
+            --text-tertiary: #86868B;
+            --accent: #0071E3;
+            --accent-light: #E8F4FD;
+            --success: #34C759;
+            --success-bg: #E8F9ED;
+            --warning: #FF9500;
+            --warning-bg: #FFF4E5;
+            --danger: #FF3B30;
+            --danger-bg: #FFEBE9;
+            --border: rgba(0,0,0,0.08);
+            --shadow: 0 2px 12px rgba(0,0,0,0.08);
+            --radius: 12px;
             --radius-lg: 16px;
-            --radius-xl: 24px;
-            --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
-            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
-            --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
-            background: var(--bg);
+            font-family: var(--font);
+            background: var(--bg-primary);
             color: var(--text-primary);
-            line-height: 1.6;
+            line-height: 1.5;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
         
-        /* ═══════════════════════════════════════════════════════════════ */
-        /* HEADER - Premium Minimal */
-        /* ═══════════════════════════════════════════════════════════════ */
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
         
+        /* Header */
         header {
-            background: var(--bg-elevated);
-            border-bottom: 1px solid var(--border-subtle);
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
             position: sticky;
             top: 0;
             z-index: 100;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
         }
         
         .header-inner {
-            max-width: 1440px;
-            margin: 0 auto;
-            padding: 0 32px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            height: 72px;
+            height: 60px;
         }
         
         .logo {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 17px;
         }
         
         .logo-mark {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, #0969DA 0%, #8250DF 100%);
-            border-radius: 10px;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 700;
-            font-size: 15px;
             color: white;
-            letter-spacing: -0.5px;
-        }
-        
-        .logo-text {
-            font-weight: 600;
-            font-size: 20px;
-            letter-spacing: -0.5px;
-        }
-        
-        .nav {
-            display: flex;
-            align-items: center;
-            gap: 32px;
-        }
-        
-        .nav a {
-            color: var(--text-secondary);
-            text-decoration: none;
+            font-weight: 700;
             font-size: 14px;
-            font-weight: 500;
-            transition: color 0.2s;
         }
         
+        .nav { display: flex; align-items: center; gap: 20px; }
+        .nav a { color: var(--text-secondary); text-decoration: none; font-size: 14px; font-weight: 500; }
         .nav a:hover { color: var(--text-primary); }
         
         .version-badge {
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 8px;
-            font-size: 12px;
-            font-weight: 500;
+            gap: 6px;
+            padding: 5px 10px;
+            background: var(--success-bg);
             color: var(--success);
-            background: var(--success-subtle);
-            padding: 6px 12px;
-            border-radius: 100px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
         }
         
-        .version-dot {
+        .version-badge::before {
+            content: '';
             width: 6px;
             height: 6px;
-            background: var(--success);
+            background: currentColor;
             border-radius: 50%;
-            animation: pulse 2s infinite;
         }
         
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        
-        /* ═══════════════════════════════════════════════════════════════ */
-        /* HERO SECTION */
-        /* ═══════════════════════════════════════════════════════════════ */
-        
+        /* Hero */
         .hero {
-            background: linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg) 100%);
-            padding: 64px 32px 48px;
+            padding: 60px 0 40px;
             text-align: center;
+            background: linear-gradient(180deg, #fff 0%, var(--bg-primary) 100%);
+        }
+        
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--accent-light);
+            color: var(--accent);
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 20px;
         }
         
         .hero h1 {
-            font-size: 48px;
+            font-size: 44px;
             font-weight: 600;
-            letter-spacing: -1.5px;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
             margin-bottom: 16px;
-            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
         
         .hero p {
             font-size: 18px;
             color: var(--text-secondary);
-            max-width: 600px;
-            margin: 0 auto;
+            max-width: 520px;
+            margin: 0 auto 28px;
         }
         
-        /* ═══════════════════════════════════════════════════════════════ */
-        /* MAIN LAYOUT */
-        /* ═══════════════════════════════════════════════════════════════ */
-        
-        main {
-            max-width: 1440px;
-            margin: 0 auto;
-            padding: 32px;
-            display: grid;
-            grid-template-columns: 380px 1fr;
-            gap: 32px;
-        }
-        
-        @media (max-width: 1100px) {
-            main { grid-template-columns: 1fr; }
-        }
-        
-        /* ═══════════════════════════════════════════════════════════════ */
-        /* INPUT PANEL */
-        /* ═══════════════════════════════════════════════════════════════ */
-        
-        .input-panel {
-            position: sticky;
-            top: 104px;
-            height: fit-content;
-        }
-        
-        .card {
-            background: var(--bg-elevated);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-lg);
-            padding: 28px;
-            box-shadow: var(--shadow-sm);
-        }
-        
-        .card-header {
+        .hero-actions {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 24px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--border-subtle);
-        }
-        
-        .card-title {
-            font-size: 13px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            color: var(--text-secondary);
-        }
-        
-        .input-section {
-            margin-bottom: 24px;
-        }
-        
-        .input-section:last-of-type {
-            margin-bottom: 0;
-        }
-        
-        .input-section-title {
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--text-tertiary);
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .input-section-title::before {
-            content: '';
-            width: 3px;
-            height: 12px;
-            background: var(--accent);
-            border-radius: 2px;
-        }
-        
-        .input-grid {
-            display: grid;
             gap: 12px;
+            justify-content: center;
         }
         
-        .input-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-        
-        input[type="number"], input[type="text"] {
-            width: 100%;
-            padding: 14px 16px;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            font-size: 14px;
-            font-family: inherit;
-            transition: all 0.2s;
-            background: var(--bg);
-        }
-        
-        input:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px var(--accent-subtle);
-            background: var(--bg-elevated);
-        }
-        
-        input::placeholder {
-            color: var(--text-tertiary);
-        }
-        
-        .checkbox-group {
-            display: flex;
-            gap: 16px;
-            margin-top: 8px;
-        }
-        
-        .checkbox-label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-            cursor: pointer;
-            color: var(--text-secondary);
-        }
-        
-        .checkbox-label input {
-            width: 18px;
-            height: 18px;
-            accent-color: var(--accent);
-        }
-        
+        /* Buttons */
         .btn {
-            width: 100%;
-            padding: 16px 24px;
-            border: none;
-            border-radius: var(--radius-md);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 28px;
+            border-radius: 30px;
             font-size: 15px;
             font-weight: 600;
-            font-family: inherit;
+            text-decoration: none;
             cursor: pointer;
             transition: all 0.2s;
-            margin-top: 24px;
+            border: none;
+            font-family: inherit;
         }
         
         .btn-primary {
@@ -316,984 +168,1222 @@
         }
         
         .btn-primary:hover {
-            background: #24292F;
             transform: translateY(-1px);
-            box-shadow: var(--shadow-md);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
         
         .btn-secondary {
             background: transparent;
             color: var(--text-primary);
             border: 1px solid var(--border);
+        }
+        
+        .btn-secondary:hover { background: var(--bg-tertiary); }
+        
+        /* Main Grid */
+        main { padding: 32px 0 64px; }
+        
+        .main-grid {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 32px;
+            align-items: start;
+        }
+        
+        @media (max-width: 1024px) {
+            .main-grid { grid-template-columns: 1fr; }
+            .input-panel { position: static !important; }
+        }
+        
+        /* Cards */
+        .card {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+        
+        .card-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .card-title {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-tertiary);
+        }
+        
+        .card-body { padding: 20px; }
+        
+        /* Input Panel */
+        .input-panel { position: sticky; top: 76px; }
+        
+        .input-section { margin-bottom: 20px; }
+        
+        .input-section-title {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-tertiary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .input-section-title .count {
+            background: var(--bg-tertiary);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+        }
+        
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        
+        .input-grid.single { grid-template-columns: 1fr; }
+        
+        .input-field input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            background: var(--bg-tertiary);
+            transition: all 0.2s;
+        }
+        
+        .input-field input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: white;
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+        
+        .input-field input::placeholder { color: var(--text-tertiary); font-size: 13px; }
+        
+        .checkbox-field {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 12px 14px;
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+        
+        .expand-inputs {
+            font-size: 13px;
+            color: var(--accent);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
             margin-top: 12px;
         }
         
-        .btn-secondary:hover {
-            background: var(--bg);
-            border-color: var(--text-tertiary);
-        }
+        .expand-inputs:hover { text-decoration: underline; }
         
-        /* ═══════════════════════════════════════════════════════════════ */
-        /* RESULTS PANEL */
-        /* ═══════════════════════════════════════════════════════════════ */
+        .advanced-inputs { display: none; margin-top: 16px; }
+        .advanced-inputs.show { display: block; }
         
+        /* Results */
         .results-panel {
             display: flex;
             flex-direction: column;
             gap: 24px;
         }
         
-        /* State Summary Hero */
-        .state-hero {
-            background: linear-gradient(135deg, #F8FAFC 0%, #EFF6FF 50%, #F5F3FF 100%);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-xl);
-            padding: 40px;
+        /* Executive Summary */
+        .summary-card {
+            background: linear-gradient(135deg, #F8FAFF 0%, #EEF2FF 100%);
+            border: 1px solid rgba(102, 126, 234, 0.15);
+            border-radius: var(--radius-lg);
+            padding: 32px;
             text-align: center;
         }
         
-        .state-hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--bg-elevated);
-            border: 1px solid var(--border);
-            padding: 8px 16px;
-            border-radius: 100px;
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text-secondary);
-            margin-bottom: 20px;
-        }
-        
-        .state-hero h2 {
-            font-size: 32px;
+        .summary-card h2 {
+            font-size: 26px;
             font-weight: 600;
-            letter-spacing: -0.5px;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
         
-        .state-hero p {
-            font-size: 16px;
+        .summary-card p {
             color: var(--text-secondary);
-            max-width: 500px;
-            margin: 0 auto;
+            font-size: 15px;
         }
         
-        /* Physiological States Grid */
-        .states-section {
+        .summary-stats {
             display: flex;
-            flex-direction: column;
-            gap: 16px;
+            justify-content: center;
+            gap: 32px;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(102, 126, 234, 0.15);
         }
         
-        .section-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 4px;
+        .stat-item {
+            text-align: center;
         }
         
-        .section-title {
-            font-size: 18px;
+        .stat-value {
+            font-size: 28px;
             font-weight: 600;
-            letter-spacing: -0.3px;
+            color: var(--accent);
         }
         
-        .section-subtitle {
-            font-size: 13px;
-            color: var(--text-tertiary);
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
         }
         
+        /* Physiological States */
         .states-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 16px;
         }
         
         .state-card {
-            background: var(--bg-elevated);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-lg);
-            padding: 24px;
-            transition: all 0.2s;
-        }
-        
-        .state-card:hover {
-            border-color: var(--border);
-            box-shadow: var(--shadow-md);
-        }
-        
-        .state-card-header {
+            padding: 20px;
             display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            margin-bottom: 16px;
+            gap: 16px;
         }
+        
+        .state-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        
+        .state-icon.optimal { background: var(--success-bg); }
+        .state-icon.moderate { background: var(--warning-bg); }
+        .state-icon.concern { background: var(--danger-bg); }
+        
+        .state-content { flex: 1; }
         
         .state-name {
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            font-size: 12px;
             color: var(--text-tertiary);
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
         
         .state-value {
-            font-size: 22px;
+            font-size: 18px;
             font-weight: 600;
             text-transform: capitalize;
-            letter-spacing: -0.3px;
+            margin-bottom: 4px;
         }
-        
-        .state-badge {
-            padding: 6px 12px;
-            border-radius: 100px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-        
-        .badge-optimal { background: var(--success-subtle); color: var(--success); }
-        .badge-stable { background: var(--accent-subtle); color: var(--accent); }
-        .badge-attention { background: var(--warning-subtle); color: var(--warning); }
-        .badge-concern { background: var(--danger-subtle); color: var(--danger); }
         
         .state-factors {
             font-size: 13px;
             color: var(--text-secondary);
-            margin-bottom: 16px;
-            line-height: 1.5;
         }
         
-        .state-action {
+        .state-score {
+            margin-top: 8px;
+            padding: 4px 10px;
+            background: var(--bg-tertiary);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        /* Lab Anchoring - THE KEY SECTION */
+        .lab-section {
+            margin-top: 8px;
+        }
+        
+        .lab-intro {
+            background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .lab-intro h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--accent);
-            padding-top: 16px;
-            border-top: 1px solid var(--border-subtle);
         }
         
-        .state-action svg {
-            width: 16px;
-            height: 16px;
+        .lab-intro p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
         }
         
-        .confidence-bar {
-            height: 4px;
-            background: var(--border-subtle);
-            border-radius: 2px;
-            margin-top: 12px;
-            overflow: hidden;
+        .lab-card {
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: box-shadow 0.2s;
         }
         
-        .confidence-fill {
-            height: 100%;
-            background: var(--accent);
-            border-radius: 2px;
-            transition: width 0.3s;
+        .lab-card:hover {
+            box-shadow: var(--shadow);
         }
         
-        /* Priority Findings */
-        .findings-grid {
-            display: grid;
-            gap: 12px;
-        }
-        
-        .finding-card {
-            background: var(--bg-elevated);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-md);
-            padding: 20px;
+        .lab-header {
+            padding: 16px 20px;
             display: flex;
             align-items: center;
-            gap: 16px;
-            transition: all 0.2s;
+            justify-content: space-between;
         }
         
-        .finding-card:hover {
-            border-color: var(--border);
-            box-shadow: var(--shadow-sm);
+        .lab-title {
+            display: flex;
+            align-items: center;
+            gap: 14px;
         }
         
-        .finding-priority {
+        .lab-icon {
             width: 40px;
             height: 40px;
-            border-radius: var(--radius-sm);
+            border-radius: 10px;
+            background: var(--bg-tertiary);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
-            font-weight: 700;
-            flex-shrink: 0;
+            font-size: 18px;
         }
         
-        .priority-high { background: var(--danger-subtle); color: var(--danger); }
-        .priority-medium { background: var(--warning-subtle); color: var(--warning); }
-        .priority-normal { background: var(--accent-subtle); color: var(--accent); }
-        
-        .finding-content {
-            flex: 1;
-            min-width: 0;
-        }
-        
-        .finding-name {
-            font-size: 14px;
+        .lab-name h4 {
+            font-size: 15px;
             font-weight: 600;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
         
-        .finding-value {
+        .lab-name p {
             font-size: 13px;
             color: var(--text-secondary);
         }
         
-        .finding-meta {
-            text-align: right;
-            flex-shrink: 0;
-        }
-        
-        .finding-confidence {
-            font-size: 12px;
-            color: var(--text-tertiary);
-        }
-        
-        .finding-tier {
-            font-size: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-            color: var(--purple);
-            background: var(--purple-subtle);
-            padding: 3px 8px;
-            border-radius: 4px;
-            margin-top: 4px;
-            display: inline-block;
-        }
-        
-        /* Coverage & Unlock */
-        .coverage-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
-        
-        @media (max-width: 768px) {
-            .coverage-section { grid-template-columns: 1fr; }
-        }
-        
-        .coverage-card {
-            background: var(--bg-elevated);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-lg);
-            padding: 24px;
-        }
-        
-        .coverage-item {
+        .lab-status {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--border-subtle);
+            gap: 10px;
         }
         
-        .coverage-item:last-child {
-            border-bottom: none;
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: capitalize;
         }
         
-        .coverage-label {
+        .status-badge.optimal { background: var(--success-bg); color: #15803D; }
+        .status-badge.moderate { background: var(--warning-bg); color: #B45309; }
+        .status-badge.concern { background: var(--danger-bg); color: #DC2626; }
+        
+        .expand-arrow {
+            color: var(--text-tertiary);
+            transition: transform 0.2s;
+        }
+        
+        .lab-card.expanded .expand-arrow { transform: rotate(180deg); }
+        
+        .lab-details {
+            display: none;
+            padding: 0 20px 20px;
+        }
+        
+        .lab-card.expanded .lab-details { display: block; }
+        
+        /* Pattern Alignment - THE KEY VALUE */
+        .pattern-box {
+            background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .pattern-box h5 {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .pattern-box p {
             font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-primary);
+        }
+        
+        /* Lab Correlations Table */
+        .correlations-box {
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .correlations-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 12px;
+        }
+        
+        .correlation-item {
+            display: grid;
+            grid-template-columns: 140px 1fr auto;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+            align-items: start;
+        }
+        
+        .correlation-item:last-child { border-bottom: none; }
+        
+        .test-name {
             font-weight: 500;
         }
         
-        .coverage-value {
+        .test-direction {
+            color: var(--text-secondary);
+        }
+        
+        .test-range {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            background: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            max-width: 200px;
+        }
+        
+        /* Context & Actions */
+        .context-box {
+            background: var(--accent-light);
+            border-radius: 10px;
+            padding: 14px 16px;
             font-size: 14px;
-            font-weight: 600;
             color: var(--accent);
+            margin-bottom: 16px;
+        }
+        
+        .context-box strong { font-weight: 600; }
+        
+        .action-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .action-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px;
+        }
+        
+        .action-card h5 {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+        
+        .action-card p {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .disclaimer-box {
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 12px 14px;
+            font-size: 12px;
+            color: var(--text-tertiary);
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+        
+        /* Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
+        }
+        
+        .metric-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+        }
+        
+        .metric-label {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-bottom: 6px;
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        
+        .metric-status {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .metric-status.optimal { background: var(--success-bg); color: #15803D; }
+        .metric-status.normal { background: var(--bg-tertiary); color: var(--text-secondary); }
+        .metric-status.elevated { background: var(--warning-bg); color: #B45309; }
+        .metric-status.high { background: var(--danger-bg); color: #DC2626; }
+        
+        /* Coverage */
+        .coverage-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .coverage-grid { grid-template-columns: 1fr; }
         }
         
         .coverage-bar {
-            width: 60px;
-            height: 6px;
-            background: var(--border-subtle);
-            border-radius: 3px;
-            overflow: hidden;
-            margin-left: 12px;
+            margin-bottom: 12px;
         }
         
-        .coverage-bar-fill {
+        .coverage-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+        
+        .coverage-track {
+            height: 8px;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .coverage-fill {
             height: 100%;
-            background: var(--success);
-            border-radius: 3px;
+            background: var(--accent);
+            border-radius: 4px;
+            transition: width 0.5s ease;
         }
         
         .unlock-list {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
         }
         
         .unlock-item {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 12px;
-            background: var(--bg);
+            padding: 12px 14px;
+            background: var(--bg-tertiary);
             border: 1px dashed var(--border);
-            border-radius: var(--radius-sm);
-            font-size: 13px;
+            border-radius: 10px;
         }
         
         .unlock-icon {
-            width: 32px;
-            height: 32px;
-            background: var(--accent-subtle);
+            width: 28px;
+            height: 28px;
+            background: var(--accent-light);
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
-        }
-        
-        .unlock-text {
-            flex: 1;
-        }
-        
-        .unlock-input {
-            font-weight: 600;
             color: var(--accent);
-        }
-        
-        .unlock-count {
-            font-size: 12px;
-            color: var(--text-tertiary);
-        }
-        
-        /* Constraints */
-        .constraints-status {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 16px;
-            background: var(--success-subtle);
-            border-radius: var(--radius-md);
             font-size: 14px;
-            font-weight: 500;
-            color: var(--success);
         }
         
-        .constraints-status.warning {
-            background: var(--warning-subtle);
-            color: var(--warning);
-        }
-        
-        .constraints-status svg {
-            width: 20px;
-            height: 20px;
-        }
-        
-        /* Executive Summary */
-        .executive-card {
-            background: linear-gradient(135deg, #0D1117 0%, #21262D 100%);
-            border-radius: var(--radius-xl);
-            padding: 32px;
-            color: white;
-        }
-        
-        .executive-headline {
-            font-size: 24px;
-            font-weight: 600;
-            letter-spacing: -0.3px;
-            margin-bottom: 20px;
-        }
-        
-        .executive-findings {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-        
-        .executive-finding {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            padding: 16px;
-            background: rgba(255,255,255,0.08);
-            border-radius: var(--radius-md);
-        }
-        
-        .executive-finding-icon {
-            width: 8px;
-            height: 8px;
-            background: var(--accent);
-            border-radius: 50%;
-            margin-top: 6px;
-            flex-shrink: 0;
-        }
-        
-        .executive-finding-text {
-            font-size: 14px;
-            line-height: 1.5;
-            opacity: 0.9;
-        }
-        
-        .executive-actions {
-            padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        .executive-actions-title {
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            opacity: 0.6;
-            margin-bottom: 12px;
-        }
-        
-        .executive-action {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 14px;
-            padding: 8px 0;
-            opacity: 0.9;
-        }
-        
-        .executive-action-priority {
-            font-size: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-            padding: 2px 6px;
-            border-radius: 4px;
-            background: rgba(255,255,255,0.15);
-        }
+        .unlock-text h4 { font-size: 14px; font-weight: 600; }
+        .unlock-text p { font-size: 12px; color: var(--text-secondary); }
         
         /* Empty State */
         .empty-state {
             text-align: center;
-            padding: 80px 40px;
+            padding: 60px 32px;
         }
         
-        .empty-icon {
-            font-size: 56px;
-            margin-bottom: 20px;
-            opacity: 0.5;
-        }
-        
-        .empty-title {
-            font-size: 22px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-        
-        .empty-text {
-            color: var(--text-secondary);
-            font-size: 15px;
-            max-width: 400px;
-            margin: 0 auto;
-        }
-        
-        /* Loading */
-        .loading { opacity: 0.5; pointer-events: none; }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        .spinner {
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--border);
-            border-top-color: var(--accent);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            display: inline-block;
-            margin-right: 8px;
-        }
+        .empty-icon { font-size: 56px; margin-bottom: 16px; opacity: 0.5; }
+        .empty-title { font-size: 20px; font-weight: 600; margin-bottom: 8px; }
+        .empty-text { color: var(--text-secondary); max-width: 360px; margin: 0 auto; }
         
         /* Footer */
         footer {
+            padding: 40px 0;
             text-align: center;
-            padding: 48px 32px;
-            color: var(--text-tertiary);
-            font-size: 13px;
-            border-top: 1px solid var(--border-subtle);
-            margin-top: 48px;
+            border-top: 1px solid var(--border);
         }
         
-        footer a {
-            color: var(--accent);
-            text-decoration: none;
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 16px;
         }
+        
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .footer-links a:hover { color: var(--text-primary); }
         
         .disclaimer {
             max-width: 640px;
-            margin: 20px auto 0;
-            font-size: 11px;
-            line-height: 1.6;
+            margin: 0 auto;
+            font-size: 12px;
             color: var(--text-tertiary);
+            line-height: 1.6;
         }
         
-        /* Tabs */
-        .tabs {
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.4s ease forwards;
+        }
+        
+        .hidden { display: none !important; }
+        
+        /* Section headers */
+        .section-header {
             display: flex;
-            gap: 4px;
-            padding: 4px;
-            background: var(--bg);
-            border-radius: var(--radius-md);
-            margin-bottom: 24px;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
         }
         
-        .tab {
-            flex: 1;
-            padding: 10px 16px;
-            border: none;
-            background: transparent;
-            font-size: 13px;
-            font-weight: 500;
-            font-family: inherit;
-            color: var(--text-secondary);
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .tab:hover {
-            color: var(--text-primary);
-        }
-        
-        .tab.active {
-            background: var(--bg-elevated);
-            color: var(--text-primary);
-            box-shadow: var(--shadow-sm);
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
         }
     </style>
 </head>
 <body>
     <header>
-        <div class="header-inner">
+        <div class="container header-inner">
             <div class="logo">
                 <div class="logo-mark">M</div>
-                <span class="logo-text">MONITOR</span>
+                <span>MONITOR</span>
             </div>
             <nav class="nav">
-                <a href="https://monitor-api.abedelhamdan.workers.dev/schema" target="_blank">API Schema</a>
+                <a href="https://monitor-api.abedelhamdan.workers.dev/schema" target="_blank">Schema</a>
                 <a href="https://monitor-api.abedelhamdan.workers.dev/citations" target="_blank">Citations</a>
-                <a href="https://github.com/bob56565/monitor-backend" target="_blank">GitHub</a>
-                <div class="version-badge">
-                    <div class="version-dot"></div>
-                    <span>v3.3.0</span>
-                </div>
+                <span class="version-badge">v3.4.0</span>
             </nav>
         </div>
     </header>
-    
+
     <section class="hero">
-        <h1>Health Intelligence Engine</h1>
-        <p>Transform partial biomarker data into comprehensive physiological insights. Signal → State → Action.</p>
-    </section>
-    
-    <main>
-        <div class="input-panel">
-            <div class="card">
-                <div class="card-header">
-                    <span class="card-title">Biomarker Input</span>
-                </div>
-                
-                <form id="biomarkerForm">
-                    <div class="input-section">
-                        <div class="input-section-title">Lipid Panel</div>
-                        <div class="input-grid">
-                            <div class="input-row">
-                                <input name="total_cholesterol" type="number" placeholder="Total Cholesterol">
-                                <input name="hdl" type="number" placeholder="HDL">
-                            </div>
-                            <input name="triglycerides" type="number" placeholder="Triglycerides (mg/dL)">
-                        </div>
-                    </div>
-                    
-                    <div class="input-section">
-                        <div class="input-section-title">Metabolic</div>
-                        <div class="input-grid">
-                            <div class="input-row">
-                                <input name="fasting_glucose" type="number" placeholder="Fasting Glucose">
-                                <input name="fasting_insulin" type="number" step="0.1" placeholder="Fasting Insulin">
-                            </div>
-                            <input name="hba1c" type="number" step="0.1" placeholder="HbA1c (%)">
-                        </div>
-                    </div>
-                    
-                    <div class="input-section">
-                        <div class="input-section-title">Inflammatory</div>
-                        <div class="input-grid">
-                            <div class="input-row">
-                                <input name="hscrp" type="number" step="0.1" placeholder="hs-CRP (mg/L)">
-                                <input name="ferritin" type="number" placeholder="Ferritin">
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="input-section">
-                        <div class="input-section-title">Organ Function</div>
-                        <div class="input-grid">
-                            <div class="input-row">
-                                <input name="creatinine" type="number" step="0.01" placeholder="Creatinine">
-                                <input name="alt" type="number" placeholder="ALT">
-                            </div>
-                            <input name="ast" type="number" placeholder="AST (U/L)">
-                        </div>
-                    </div>
-                    
-                    <div class="input-section">
-                        <div class="input-section-title">Vitals & Body</div>
-                        <div class="input-grid">
-                            <div class="input-row">
-                                <input name="sbp" type="number" placeholder="Systolic BP">
-                                <input name="dbp" type="number" placeholder="Diastolic BP">
-                            </div>
-                            <div class="input-row">
-                                <input name="weight_kg" type="number" step="0.1" placeholder="Weight (kg)">
-                                <input name="height_cm" type="number" placeholder="Height (cm)">
-                            </div>
-                            <input name="waist_cm" type="number" placeholder="Waist Circumference (cm)">
-                        </div>
-                    </div>
-                    
-                    <div class="input-section">
-                        <div class="input-section-title">Demographics</div>
-                        <div class="input-grid">
-                            <input name="age" type="number" placeholder="Age (years)">
-                            <div class="checkbox-group">
-                                <label class="checkbox-label">
-                                    <input name="is_female" type="checkbox"> Female
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-                
-                <button class="btn btn-primary" onclick="analyze()" id="analyzeBtn">
-                    Analyze Biomarkers
-                </button>
-                <button class="btn btn-secondary" onclick="loadDemo()">
-                    Load Demo Data
-                </button>
+        <div class="container">
+            <span class="hero-badge">🧬 Cascade Inference Engine</span>
+            <h1>Your biomarkers,<br>intelligently decoded</h1>
+            <p>Transform partial lab data into comprehensive physiological insights with transparent lab correlations</p>
+            <div class="hero-actions">
+                <button class="btn btn-primary" onclick="loadDemo()">Load Demo Data</button>
+                <a href="https://monitor-api.abedelhamdan.workers.dev/" target="_blank" class="btn btn-secondary">API Docs</a>
             </div>
         </div>
-        
-        <div class="results-panel" id="results">
-            <div class="empty-state">
-                <div class="empty-icon">🧬</div>
-                <div class="empty-title">Ready for Analysis</div>
-                <div class="empty-text">Enter your biomarker values or load demo data to see comprehensive health insights powered by the cascade inference engine.</div>
+    </section>
+
+    <main>
+        <div class="container">
+            <div class="main-grid">
+                <!-- Input Panel -->
+                <div class="input-panel">
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">Enter Biomarkers</span>
+                        </div>
+                        <div class="card-body">
+                            <form id="biomarkerForm">
+                                <!-- Lipid Panel -->
+                                <div class="input-section">
+                                    <div class="input-section-title">
+                                        <span>Lipid Panel</span>
+                                        <span class="count">4 tests</span>
+                                    </div>
+                                    <div class="input-grid">
+                                        <div class="input-field"><input name="total_cholesterol" type="number" placeholder="Total Cholesterol (mg/dL)"></div>
+                                        <div class="input-field"><input name="hdl" type="number" placeholder="HDL (mg/dL)"></div>
+                                        <div class="input-field"><input name="ldl" type="number" placeholder="LDL (mg/dL)"></div>
+                                        <div class="input-field"><input name="triglycerides" type="number" placeholder="Triglycerides (mg/dL)"></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Metabolic -->
+                                <div class="input-section">
+                                    <div class="input-section-title">
+                                        <span>Metabolic Panel</span>
+                                        <span class="count">4 tests</span>
+                                    </div>
+                                    <div class="input-grid">
+                                        <div class="input-field"><input name="fasting_glucose" type="number" placeholder="Fasting Glucose (mg/dL)"></div>
+                                        <div class="input-field"><input name="fasting_insulin" type="number" step="0.1" placeholder="Fasting Insulin (μIU/mL)"></div>
+                                        <div class="input-field"><input name="hba1c" type="number" step="0.1" placeholder="HbA1c (%)"></div>
+                                        <div class="input-field"><input name="uric_acid" type="number" step="0.1" placeholder="Uric Acid (mg/dL)"></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Liver -->
+                                <div class="input-section">
+                                    <div class="input-section-title">
+                                        <span>Liver Panel</span>
+                                        <span class="count">5 tests</span>
+                                    </div>
+                                    <div class="input-grid">
+                                        <div class="input-field"><input name="alt" type="number" placeholder="ALT (U/L)"></div>
+                                        <div class="input-field"><input name="ast" type="number" placeholder="AST (U/L)"></div>
+                                        <div class="input-field"><input name="ggt" type="number" placeholder="GGT (U/L)"></div>
+                                        <div class="input-field"><input name="alp" type="number" placeholder="Alk Phos (U/L)"></div>
+                                        <div class="input-field"><input name="bilirubin" type="number" step="0.1" placeholder="Bilirubin (mg/dL)"></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Kidney -->
+                                <div class="input-section">
+                                    <div class="input-section-title">
+                                        <span>Kidney Panel</span>
+                                        <span class="count">3 tests</span>
+                                    </div>
+                                    <div class="input-grid">
+                                        <div class="input-field"><input name="creatinine" type="number" step="0.1" placeholder="Creatinine (mg/dL)"></div>
+                                        <div class="input-field"><input name="bun" type="number" placeholder="BUN (mg/dL)"></div>
+                                        <div class="input-field"><input name="cystatin_c" type="number" step="0.01" placeholder="Cystatin C (mg/L)"></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Inflammatory -->
+                                <div class="input-section">
+                                    <div class="input-section-title">
+                                        <span>Inflammatory Markers</span>
+                                        <span class="count">4 tests</span>
+                                    </div>
+                                    <div class="input-grid">
+                                        <div class="input-field"><input name="hscrp" type="number" step="0.1" placeholder="hs-CRP (mg/L)"></div>
+                                        <div class="input-field"><input name="ferritin" type="number" placeholder="Ferritin (ng/mL)"></div>
+                                        <div class="input-field"><input name="esr" type="number" placeholder="ESR (mm/hr)"></div>
+                                        <div class="input-field"><input name="homocysteine" type="number" step="0.1" placeholder="Homocysteine (μmol/L)"></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Body Metrics -->
+                                <div class="input-section">
+                                    <div class="input-section-title">
+                                        <span>Body & Vitals</span>
+                                        <span class="count">5 measures</span>
+                                    </div>
+                                    <div class="input-grid">
+                                        <div class="input-field"><input name="weight_kg" type="number" step="0.1" placeholder="Weight (kg)"></div>
+                                        <div class="input-field"><input name="height_cm" type="number" placeholder="Height (cm)"></div>
+                                        <div class="input-field"><input name="waist_cm" type="number" placeholder="Waist (cm)"></div>
+                                        <div class="input-field"><input name="sbp" type="number" placeholder="Systolic BP (mmHg)"></div>
+                                        <div class="input-field"><input name="dbp" type="number" placeholder="Diastolic BP (mmHg)"></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Demographics -->
+                                <div class="input-section">
+                                    <div class="input-section-title">
+                                        <span>Demographics</span>
+                                    </div>
+                                    <div class="input-grid">
+                                        <div class="input-field"><input name="age" type="number" placeholder="Age (years)"></div>
+                                        <label class="checkbox-field">
+                                            <input name="is_female" type="checkbox">
+                                            <span>Female</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <!-- Advanced Inputs Toggle -->
+                                <div class="expand-inputs" onclick="toggleAdvanced()">
+                                    <span id="advancedToggle">+ Show Advanced Inputs</span>
+                                </div>
+                                
+                                <!-- Advanced Inputs -->
+                                <div class="advanced-inputs" id="advancedInputs">
+                                    <!-- CBC -->
+                                    <div class="input-section">
+                                        <div class="input-section-title">
+                                            <span>Complete Blood Count</span>
+                                            <span class="count">6 tests</span>
+                                        </div>
+                                        <div class="input-grid">
+                                            <div class="input-field"><input name="hemoglobin" type="number" step="0.1" placeholder="Hemoglobin (g/dL)"></div>
+                                            <div class="input-field"><input name="hematocrit" type="number" step="0.1" placeholder="Hematocrit (%)"></div>
+                                            <div class="input-field"><input name="rbc" type="number" step="0.1" placeholder="RBC (M/μL)"></div>
+                                            <div class="input-field"><input name="wbc" type="number" step="0.1" placeholder="WBC (K/μL)"></div>
+                                            <div class="input-field"><input name="platelets" type="number" placeholder="Platelets (K/μL)"></div>
+                                            <div class="input-field"><input name="mcv" type="number" step="0.1" placeholder="MCV (fL)"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Thyroid -->
+                                    <div class="input-section">
+                                        <div class="input-section-title">
+                                            <span>Thyroid Panel</span>
+                                            <span class="count">4 tests</span>
+                                        </div>
+                                        <div class="input-grid">
+                                            <div class="input-field"><input name="tsh" type="number" step="0.01" placeholder="TSH (mIU/L)"></div>
+                                            <div class="input-field"><input name="ft4" type="number" step="0.1" placeholder="Free T4 (ng/dL)"></div>
+                                            <div class="input-field"><input name="ft3" type="number" step="0.1" placeholder="Free T3 (pg/mL)"></div>
+                                            <div class="input-field"><input name="tpo_antibodies" type="number" placeholder="TPO Antibodies (IU/mL)"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Iron Panel -->
+                                    <div class="input-section">
+                                        <div class="input-section-title">
+                                            <span>Iron Panel</span>
+                                            <span class="count">3 tests</span>
+                                        </div>
+                                        <div class="input-grid">
+                                            <div class="input-field"><input name="serum_iron" type="number" placeholder="Serum Iron (μg/dL)"></div>
+                                            <div class="input-field"><input name="tibc" type="number" placeholder="TIBC (μg/dL)"></div>
+                                            <div class="input-field"><input name="transferrin_sat" type="number" step="0.1" placeholder="Transferrin Sat (%)"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Vitamins -->
+                                    <div class="input-section">
+                                        <div class="input-section-title">
+                                            <span>Vitamins</span>
+                                            <span class="count">3 tests</span>
+                                        </div>
+                                        <div class="input-grid">
+                                            <div class="input-field"><input name="vitamin_d" type="number" placeholder="Vitamin D (ng/mL)"></div>
+                                            <div class="input-field"><input name="b12" type="number" placeholder="Vitamin B12 (pg/mL)"></div>
+                                            <div class="input-field"><input name="folate" type="number" step="0.1" placeholder="Folate (ng/mL)"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Cardiac -->
+                                    <div class="input-section">
+                                        <div class="input-section-title">
+                                            <span>Cardiac Markers</span>
+                                            <span class="count">3 tests</span>
+                                        </div>
+                                        <div class="input-grid">
+                                            <div class="input-field"><input name="apob" type="number" placeholder="ApoB (mg/dL)"></div>
+                                            <div class="input-field"><input name="lpa" type="number" placeholder="Lp(a) (nmol/L)"></div>
+                                            <div class="input-field"><input name="nt_probnp" type="number" placeholder="NT-proBNP (pg/mL)"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            
+                            <button class="btn btn-primary" style="width: 100%; margin-top: 16px;" onclick="analyze()" id="analyzeBtn">
+                                Analyze Biomarkers
+                            </button>
+                            <button class="btn btn-secondary" style="width: 100%; margin-top: 8px;" onclick="loadDemo()">
+                                Load Demo Data
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Panel -->
+                <div class="results-panel" id="resultsPanel">
+                    <div class="empty-state" id="emptyState">
+                        <div class="empty-icon">🧪</div>
+                        <h3 class="empty-title">Enter your biomarkers</h3>
+                        <p class="empty-text">Input your lab values to receive comprehensive health insights with transparent lab correlations</p>
+                    </div>
+                    <div id="resultsContent" class="hidden"></div>
+                </div>
             </div>
         </div>
     </main>
-    
+
     <footer>
-        <p>MONITOR Health Intelligence Engine — <a href="https://monitor-api.abedelhamdan.workers.dev" target="_blank">API</a> — v3.3.0</p>
-        <p class="disclaimer">
-            This tool provides educational health insights based on peer-reviewed research. All outputs are informational proxies, not medical diagnoses. 
-            Consult a healthcare professional for medical decisions. Every calculation backed by PMID citations.
-        </p>
+        <div class="container">
+            <div class="footer-links">
+                <a href="https://monitor-api.abedelhamdan.workers.dev/schema">API Schema</a>
+                <a href="https://monitor-api.abedelhamdan.workers.dev/citations">Scientific Citations</a>
+                <a href="https://github.com/bob56565/monitor-backend">GitHub</a>
+            </div>
+            <p class="disclaimer">
+                <strong>For educational and informational purposes only.</strong> This tool provides physiological pattern inferences based on biomarker analysis. 
+                It is not a medical device and does not provide diagnosis, treatment recommendations, or medical advice. 
+                Always consult with qualified healthcare providers for medical decisions.
+            </p>
+        </div>
     </footer>
-    
+
     <script>
-        const API_URL = "https://monitor-api.abedelhamdan.workers.dev";
+        const API_URL = 'https://monitor-api.abedelhamdan.workers.dev';
         
-        function formatName(name) {
-            return name.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        function toggleAdvanced() {
+            const inputs = document.getElementById('advancedInputs');
+            const toggle = document.getElementById('advancedToggle');
+            inputs.classList.toggle('show');
+            toggle.textContent = inputs.classList.contains('show') ? '− Hide Advanced Inputs' : '+ Show Advanced Inputs';
         }
         
-        function getStateBadgeClass(state, score) {
-            if (score >= 80) return 'badge-optimal';
-            if (score >= 60) return 'badge-stable';
-            if (score >= 40) return 'badge-attention';
-            return 'badge-concern';
-        }
-        
-        function getPriorityClass(score) {
-            if (score >= 100) return 'priority-high';
-            if (score >= 70) return 'priority-medium';
-            return 'priority-normal';
-        }
-        
-        function renderResults(data) {
-            const resultsEl = document.getElementById('results');
+        function loadDemo() {
+            const demoData = {
+                total_cholesterol: 220, hdl: 42, triglycerides: 185,
+                fasting_glucose: 108, fasting_insulin: 15, hba1c: 5.9,
+                age: 45, creatinine: 1.1, weight_kg: 85, height_cm: 175,
+                waist_cm: 98, sbp: 138, dbp: 88, hscrp: 2.8, alt: 35,
+                ast: 28, ferritin: 180, hemoglobin: 14.5
+            };
             
-            // Build state summary hero
-            const stateSum = data.state_summary || {};
-            const heroTitle = stateSum.overall || "Analysis Complete";
-            const concernCount = stateSum.concerning?.length || 0;
-            
-            // Build physiological states cards
-            const states = data.physiological_states || {};
-            let statesHTML = '';
-            for (const [id, s] of Object.entries(states)) {
-                if (!s.evaluated) continue;
-                const badgeClass = getStateBadgeClass(s.state, s.score);
-                statesHTML += `
-                    <div class="state-card">
-                        <div class="state-card-header">
-                            <div>
-                                <div class="state-name">${s.name}</div>
-                                <div class="state-value">${formatName(s.state)}</div>
-                            </div>
-                            <span class="state-badge ${badgeClass}">${s.score}/100</span>
-                        </div>
-                        <div class="state-factors">${s.factors.length ? s.factors.join(', ') : 'No concerns identified'}</div>
-                        <div class="state-action">
-                            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
-                            ${s.recommended_action}
-                        </div>
-                        <div class="confidence-bar">
-                            <div class="confidence-fill" style="width: ${Math.round(s.confidence * 100)}%"></div>
-                        </div>
-                    </div>
-                `;
+            for (const [key, value] of Object.entries(demoData)) {
+                const input = document.querySelector(`[name="${key}"]`);
+                if (input) input.value = value;
             }
-            
-            // Build priority findings
-            const priority = data.priority_findings || [];
-            let findingsHTML = '';
-            priority.slice(0, 8).forEach((f, i) => {
-                const prioClass = getPriorityClass(f.priority_score);
-                const value = typeof f.value === 'object' ? 
-                    (f.value.state || f.value.likelihood || JSON.stringify(f.value)) : 
-                    f.value;
-                const conf = typeof f.confidence === 'object' ? f.confidence.score : f.confidence;
-                findingsHTML += `
-                    <div class="finding-card">
-                        <div class="finding-priority ${prioClass}">${i + 1}</div>
-                        <div class="finding-content">
-                            <div class="finding-name">${formatName(f.name)}</div>
-                            <div class="finding-value">${typeof value === 'number' ? value.toFixed(2) : formatName(String(value))}</div>
-                        </div>
-                        <div class="finding-meta">
-                            <div class="finding-confidence">${Math.round((conf || 0.8) * 100)}% conf</div>
-                            <span class="finding-tier">${(f.tier || 'derived').replace(/_/g, ' ')}</span>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            // Build executive summary
-            const exec = data.executive_summary || {};
-            let execHTML = '';
-            if (exec.headline) {
-                let findingsListHTML = '';
-                (exec.key_findings || []).forEach(f => {
-                    findingsListHTML += `
-                        <div class="executive-finding">
-                            <div class="executive-finding-icon"></div>
-                            <div class="executive-finding-text">${f.finding || f}</div>
-                        </div>
-                    `;
-                });
-                
-                let actionsListHTML = '';
-                (exec.action_items || []).forEach(a => {
-                    actionsListHTML += `
-                        <div class="executive-action">
-                            <span class="executive-action-priority">${a.priority || 'moderate'}</span>
-                            ${a.action}
-                        </div>
-                    `;
-                });
-                
-                execHTML = `
-                    <div class="executive-card">
-                        <div class="executive-headline">${exec.headline}</div>
-                        <div class="executive-findings">${findingsListHTML}</div>
-                        <div class="executive-actions">
-                            <div class="executive-actions-title">Recommended Actions</div>
-                            ${actionsListHTML}
-                        </div>
-                    </div>
-                `;
-            }
-            
-            // Build coverage
-            const coverage = data.coverage || {};
-            let coverageHTML = '';
-            for (const [cat, cov] of Object.entries(coverage)) {
-                if (typeof cov !== 'object') continue;
-                const pct = cov.provided && cov.total ? Math.round((cov.provided / cov.total) * 100) : 0;
-                coverageHTML += `
-                    <div class="coverage-item">
-                        <span class="coverage-label">${formatName(cat)}</span>
-                        <div style="display: flex; align-items: center;">
-                            <span class="coverage-value">${cov.provided || 0}/${cov.total || 0}</span>
-                            <div class="coverage-bar">
-                                <div class="coverage-bar-fill" style="width: ${pct}%"></div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-            
-            // Build unlock opportunities
-            const unlocks = data.unlock_opportunities || data.suggestions || [];
-            let unlocksHTML = '';
-            unlocks.slice(0, 5).forEach(u => {
-                const input = u.input || u.add || u;
-                const enables = u.enables || u.unlocks || [];
-                unlocksHTML += `
-                    <div class="unlock-item">
-                        <div class="unlock-icon">+</div>
-                        <div class="unlock-text">
-                            <span class="unlock-input">${formatName(String(input))}</span>
-                            <div class="unlock-count">Enables ${Array.isArray(enables) ? enables.length : 0}+ outputs</div>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            // Constraints status
-            const constraints = data.constraints || {};
-            const constraintOK = constraints.status === 'valid' && !constraints.violations?.length;
-            const constraintHTML = `
-                <div class="constraints-status ${constraintOK ? '' : 'warning'}">
-                    <svg viewBox="0 0 20 20" fill="currentColor">
-                        ${constraintOK ? 
-                            '<path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>' :
-                            '<path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>'}
-                    </svg>
-                    ${constraintOK ? 'All physiological constraints validated' : `${constraints.violations?.length || 0} constraint warnings`}
-                </div>
-            `;
-            
-            // Cascade stats
-            const cascade = data.cascade_result || {};
-            const statsHTML = `
-                <div class="state-hero-badge">
-                    <span>🧬</span>
-                    <span>${cascade.inputs || data.inputs || 0} inputs → ${cascade.calculated || data.calculated || 0} derived → ${cascade.total || data.total || 0} total</span>
-                </div>
-            `;
-            
-            resultsEl.innerHTML = `
-                <div class="state-hero">
-                    ${statsHTML}
-                    <h2>${heroTitle}</h2>
-                    <p>${concernCount > 0 ? `${concernCount} area(s) require attention` : 'All physiological systems within normal parameters'}</p>
-                </div>
-                
-                ${execHTML}
-                
-                <div class="states-section">
-                    <div class="section-header">
-                        <div>
-                            <div class="section-title">Physiological States</div>
-                            <div class="section-subtitle">Signal → State → Action framework</div>
-                        </div>
-                    </div>
-                    <div class="states-grid">${statesHTML}</div>
-                </div>
-                
-                <div class="states-section">
-                    <div class="section-header">
-                        <div>
-                            <div class="section-title">Priority Findings</div>
-                            <div class="section-subtitle">Ranked by clinical significance</div>
-                        </div>
-                    </div>
-                    <div class="findings-grid">${findingsHTML}</div>
-                </div>
-                
-                <div class="coverage-section">
-                    <div class="coverage-card">
-                        <div class="card-header">
-                            <span class="card-title">Data Coverage</span>
-                        </div>
-                        ${coverageHTML || '<div class="coverage-item"><span class="coverage-label">Coverage data unavailable</span></div>'}
-                    </div>
-                    <div class="coverage-card">
-                        <div class="card-header">
-                            <span class="card-title">Unlock More Insights</span>
-                        </div>
-                        <div class="unlock-list">${unlocksHTML || '<div class="unlock-item">No additional suggestions</div>'}</div>
-                    </div>
-                </div>
-                
-                ${constraintHTML}
-            `;
+            analyze();
         }
         
         async function analyze() {
-            const form = document.getElementById('biomarkerForm');
             const btn = document.getElementById('analyzeBtn');
+            const form = document.getElementById('biomarkerForm');
             const formData = new FormData(form);
-            const data = {};
             
-            formData.forEach((v, k) => {
-                if (k === 'is_female') {
-                    data[k] = true;
-                } else if (v !== '') {
-                    data[k] = parseFloat(v);
+            const data = {};
+            for (const [key, value] of formData.entries()) {
+                if (key === 'is_female') {
+                    data[key] = document.querySelector('[name="is_female"]').checked;
+                } else if (value) {
+                    data[key] = parseFloat(value);
                 }
-            });
+            }
             
             if (Object.keys(data).length < 3) {
-                alert('Please enter at least 3 biomarker values');
+                alert('Please enter at least 3 biomarkers');
                 return;
             }
             
-            btn.innerHTML = '<span class="spinner"></span>Analyzing...';
+            btn.textContent = 'Analyzing...';
             btn.disabled = true;
             
             try {
-                const res = await fetch(`${API_URL}/analyze?mode=a2`, {
+                const response = await fetch(`${API_URL}/analyze?mode=a2`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)
                 });
-                const result = await res.json();
+                
+                const result = await response.json();
                 renderResults(result);
-            } catch (e) {
-                alert('Analysis failed: ' + e.message);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Analysis failed. Please try again.');
             } finally {
-                btn.innerHTML = 'Analyze Biomarkers';
+                btn.textContent = 'Analyze Biomarkers';
                 btn.disabled = false;
             }
         }
         
-        async function loadDemo() {
-            const btn = document.getElementById('analyzeBtn');
-            btn.innerHTML = '<span class="spinner"></span>Loading Demo...';
-            btn.disabled = true;
+        function renderResults(data) {
+            document.getElementById('emptyState').classList.add('hidden');
+            const content = document.getElementById('resultsContent');
+            content.classList.remove('hidden');
             
-            // Fill form with demo values
-            const demoData = {
-                total_cholesterol: 220, hdl: 42, triglycerides: 185,
-                fasting_glucose: 108, fasting_insulin: 15,
-                hscrp: 2.8, alt: 35, ast: 28,
-                creatinine: 1.1, sbp: 138, dbp: 88,
-                weight_kg: 85, height_cm: 175, waist_cm: 98, age: 45
-            };
+            let html = '';
             
-            Object.entries(demoData).forEach(([k, v]) => {
-                const input = document.querySelector(`[name="${k}"]`);
-                if (input) input.value = v;
-            });
+            // Executive Summary
+            html += `
+                <div class="summary-card fade-in">
+                    <h2>${data.executive_summary?.headline || 'Analysis Complete'}</h2>
+                    <p>Comprehensive physiological assessment based on your biomarker profile</p>
+                    <div class="summary-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">${data.cascade_result?.inputs || Object.keys(data.values || {}).filter(k => !k.includes('_')).length}</div>
+                            <div class="stat-label">Inputs Provided</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${data.cascade_result?.calculated || 0}</div>
+                            <div class="stat-label">Values Calculated</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${data.cascade_result?.total || Object.keys(data.values || {}).length}</div>
+                            <div class="stat-label">Total Insights</div>
+                        </div>
+                    </div>
+                </div>
+            `;
             
-            try {
-                const res = await fetch(`${API_URL}/demo`);
-                const result = await res.json();
-                renderResults(result);
-            } catch (e) {
-                alert('Demo load failed: ' + e.message);
-            } finally {
-                btn.innerHTML = 'Analyze Biomarkers';
-                btn.disabled = false;
+            // Physiological States
+            if (data.physiological_states) {
+                html += `
+                    <div class="fade-in" style="animation-delay: 0.1s;">
+                        <div class="section-header">
+                            <h3 class="section-title">Physiological States</h3>
+                        </div>
+                        <div class="states-grid">
+                `;
+                
+                for (const [key, state] of Object.entries(data.physiological_states)) {
+                    if (state.evaluated) {
+                        const iconClass = state.score > 70 ? 'optimal' : state.score > 40 ? 'moderate' : 'concern';
+                        const icon = state.score > 70 ? '✓' : state.score > 40 ? '○' : '!';
+                        
+                        html += `
+                            <div class="card state-card">
+                                <div class="state-icon ${iconClass}">${icon}</div>
+                                <div class="state-content">
+                                    <p class="state-name">${state.name}</p>
+                                    <p class="state-value">${(state.state || '').replace(/_/g, ' ')}</p>
+                                    <p class="state-factors">${(state.factors || []).slice(0, 2).join(' • ') || 'No concerns'}</p>
+                                    <span class="state-score">Score: ${state.score}/100</span>
+                                </div>
+                            </div>
+                        `;
+                    }
+                }
+                html += `</div></div>`;
             }
+            
+            // LAB ANCHORING - THE KEY SECTION
+            if (data.lab_anchoring?.detailed_correlations) {
+                html += `
+                    <div class="lab-section fade-in" style="animation-delay: 0.2s;">
+                        <div class="section-header">
+                            <h3 class="section-title">Lab Correlation Guide</h3>
+                        </div>
+                        
+                        <div class="lab-intro">
+                            <h3>🔬 Understanding Your Results</h3>
+                            <p>Each finding below shows what <strong>traditional laboratory tests</strong> would be expected to show if this physiological pattern is accurate. This establishes <strong>expected alignment</strong>, not diagnostic equivalence. Click any card to see detailed correlations.</p>
+                        </div>
+                `;
+                
+                for (const [proxyName, anchoring] of Object.entries(data.lab_anchoring.detailed_correlations)) {
+                    const result = anchoring.your_result || 'unknown';
+                    const statusClass = result.includes('concern') || result.includes('elevated') || result.includes('resistant') || result.includes('strained') ? 'concern' : 
+                                       result.includes('moderate') || result.includes('borderline') || result.includes('possibly') ? 'moderate' : 'optimal';
+                    
+                    html += `
+                        <div class="card lab-card" onclick="this.classList.toggle('expanded')">
+                            <div class="lab-header">
+                                <div class="lab-title">
+                                    <div class="lab-icon">🧬</div>
+                                    <div class="lab-name">
+                                        <h4>${anchoring.proxy}</h4>
+                                        <p>${anchoring.interpretation}</p>
+                                    </div>
+                                </div>
+                                <div class="lab-status">
+                                    <span class="status-badge ${statusClass}">${result.replace(/_/g, ' ')}</span>
+                                    <span class="expand-arrow">▼</span>
+                                </div>
+                            </div>
+                            
+                            <div class="lab-details">
+                                <div class="pattern-box">
+                                    <h5>⚡ Pattern Alignment Statement</h5>
+                                    <p>${anchoring.pattern_alignment || 'This finding reflects patterns in ' + anchoring.proxy.toLowerCase() + ' based on your biomarker profile.'}</p>
+                                </div>
+                                
+                                <div class="correlations-box">
+                                    <div class="correlations-title">If This Finding Is Accurate, Traditional Labs Would Show:</div>
+                                    ${(anchoring.expected_traditional_labs || []).map(lab => `
+                                        <div class="correlation-item">
+                                            <span class="test-name">${lab.test_name}</span>
+                                            <span class="test-direction">${lab.direction_when_abnormal}</span>
+                                            ${lab.expected_ranges ? `<span class="test-range">${lab.expected_ranges}</span>` : ''}
+                                        </div>
+                                    `).join('')}
+                                </div>
+                                
+                                <div class="context-box">
+                                    <strong>Clinical Context:</strong> ${anchoring.clinical_context}
+                                </div>
+                                
+                                <div class="action-grid">
+                                    <div class="action-card">
+                                        <h5>To Confirm This Finding</h5>
+                                        <p>${anchoring.to_confirm_this_finding}</p>
+                                    </div>
+                                    <div class="action-card">
+                                        <h5>What You Can Do</h5>
+                                        <p>${anchoring.what_you_can_do}</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="disclaimer-box">
+                                    <span>⚠️</span>
+                                    <span>${anchoring.important_note}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                html += `</div>`;
+            }
+            
+            // Key Metrics
+            if (data.values) {
+                const keyMetrics = ['bmi', 'homa_ir', 'egfr', 'ldl', 'hdl', 'triglycerides', 'fasting_glucose', 'hba1c'];
+                const displayMetrics = keyMetrics.filter(m => data.values[m] !== undefined && typeof data.values[m] === 'number');
+                
+                if (displayMetrics.length > 0) {
+                    html += `
+                        <div class="fade-in" style="animation-delay: 0.3s;">
+                            <div class="section-header">
+                                <h3 class="section-title">Key Metrics</h3>
+                            </div>
+                            <div class="metrics-grid">
+                    `;
+                    
+                    for (const metric of displayMetrics) {
+                        const value = data.values[metric];
+                        const displayValue = typeof value === 'number' ? (value > 100 ? Math.round(value) : value.toFixed(1)) : value;
+                        const interp = getMetricInterpretation(metric, value);
+                        
+                        html += `
+                            <div class="metric-card">
+                                <p class="metric-label">${formatMetricName(metric)}</p>
+                                <p class="metric-value">${displayValue}</p>
+                                <span class="metric-status ${interp.status}">${interp.label}</span>
+                            </div>
+                        `;
+                    }
+                    
+                    html += `</div></div>`;
+                }
+            }
+            
+            // Coverage & Unlocks
+            if (data.coverage_map || data.suggestions) {
+                html += `
+                    <div class="coverage-grid fade-in" style="animation-delay: 0.4s;">
+                `;
+                
+                if (data.coverage_map) {
+                    html += `
+                        <div class="card">
+                            <div class="card-header"><span class="card-title">Data Coverage</span></div>
+                            <div class="card-body">
+                    `;
+                    
+                    for (const [category, coverage] of Object.entries(data.coverage_map)) {
+                        if (typeof coverage === 'object' && coverage.percentage !== undefined) {
+                            html += `
+                                <div class="coverage-bar">
+                                    <div class="coverage-header">
+                                        <span>${category.replace(/_/g, ' ')}</span>
+                                        <span>${Math.round(coverage.percentage)}%</span>
+                                    </div>
+                                    <div class="coverage-track">
+                                        <div class="coverage-fill" style="width: ${coverage.percentage}%"></div>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                    }
+                    
+                    html += `</div></div>`;
+                }
+                
+                if (data.suggestions?.length) {
+                    html += `
+                        <div class="card">
+                            <div class="card-header"><span class="card-title">Unlock More Insights</span></div>
+                            <div class="card-body">
+                                <div class="unlock-list">
+                    `;
+                    
+                    for (const suggestion of data.suggestions.slice(0, 5)) {
+                        const input = typeof suggestion === 'string' ? suggestion : suggestion.input;
+                        const enables = typeof suggestion === 'object' ? suggestion.enables : null;
+                        
+                        html += `
+                            <div class="unlock-item">
+                                <div class="unlock-icon">+</div>
+                                <div class="unlock-text">
+                                    <h4>${formatMetricName(input)}</h4>
+                                    <p>${enables ? `Enables: ${enables.slice(0, 3).join(', ')}` : 'Additional insights available'}</p>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    
+                    html += `</div></div></div>`;
+                }
+                
+                html += `</div>`;
+            }
+            
+            content.innerHTML = html;
+        }
+        
+        function formatMetricName(name) {
+            const names = {
+                bmi: 'BMI', homa_ir: 'HOMA-IR', egfr: 'eGFR', ldl: 'LDL',
+                hdl: 'HDL', triglycerides: 'Triglycerides', fasting_glucose: 'Fasting Glucose',
+                hba1c: 'HbA1c', hscrp: 'hs-CRP', alt: 'ALT', ast: 'AST',
+                tsh: 'TSH', ft4: 'Free T4', apob: 'ApoB', vitamin_d: 'Vitamin D'
+            };
+            return names[name] || name.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+        }
+        
+        function getMetricInterpretation(metric, value) {
+            const rules = {
+                bmi: v => v < 18.5 ? {status:'elevated',label:'Underweight'} : v < 25 ? {status:'optimal',label:'Normal'} : v < 30 ? {status:'elevated',label:'Overweight'} : {status:'high',label:'Obese'},
+                homa_ir: v => v < 1.5 ? {status:'optimal',label:'Optimal'} : v < 2.5 ? {status:'normal',label:'Normal'} : v < 4 ? {status:'elevated',label:'Elevated'} : {status:'high',label:'High'},
+                egfr: v => v > 90 ? {status:'optimal',label:'Normal'} : v > 60 ? {status:'normal',label:'Mild ↓'} : v > 30 ? {status:'elevated',label:'Moderate ↓'} : {status:'high',label:'Severe ↓'},
+                ldl: v => v < 100 ? {status:'optimal',label:'Optimal'} : v < 130 ? {status:'normal',label:'Near Optimal'} : v < 160 ? {status:'elevated',label:'Borderline'} : {status:'high',label:'High'},
+                hdl: v => v > 60 ? {status:'optimal',label:'Optimal'} : v > 40 ? {status:'normal',label:'Normal'} : {status:'high',label:'Low'},
+                triglycerides: v => v < 100 ? {status:'optimal',label:'Optimal'} : v < 150 ? {status:'normal',label:'Normal'} : v < 200 ? {status:'elevated',label:'Borderline'} : {status:'high',label:'High'},
+                fasting_glucose: v => v < 100 ? {status:'optimal',label:'Normal'} : v < 126 ? {status:'elevated',label:'Prediabetic'} : {status:'high',label:'Diabetic'},
+                hba1c: v => v < 5.7 ? {status:'optimal',label:'Normal'} : v < 6.5 ? {status:'elevated',label:'Prediabetic'} : {status:'high',label:'Diabetic'}
+            };
+            return rules[metric]?.(value) || {status:'normal',label:'Measured'};
         }
     </script>
 </body>

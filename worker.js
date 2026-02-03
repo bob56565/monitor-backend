@@ -56,6 +56,263 @@ const CITATIONS = {
 };
 
 /**
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * LAB ANCHORING LAYER v1.0
+ * Every proxy MUST answer: "If this is real, what traditional tests would move?"
+ * This establishes EXPECTED ALIGNMENT, not equivalence.
+ * ═══════════════════════════════════════════════════════════════════════════════
+ */
+const LAB_ANCHORING = {
+  insulin_sensitivity_proxy: {
+    display_name: "Insulin Sensitivity",
+    what_it_means: "How effectively your cells respond to insulin to regulate blood sugar",
+    pattern_statement: {
+      likely_resistant: "This finding aligns with physiological patterns often seen when HOMA-IR measures ≥2.5 (typically 3.0-6.0+ range) and fasting insulin is elevated above 15-25 μIU/mL.",
+      possibly_resistant: "This finding aligns with patterns often seen when HOMA-IR measures in the 1.5-2.9 borderline range, suggesting early insulin resistance.",
+      likely_sensitive: "This finding aligns with patterns typically seen when HOMA-IR measures <1.5 and fasting insulin remains in the optimal 2-10 μIU/mL range."
+    },
+    expected_lab_correlations: [
+      { test: "Fasting Insulin", expected_range: "2-10 μIU/mL (optimal), 10-25 μIU/mL (borderline), >25 μIU/mL (elevated)", direction: "↑ elevated when sensitivity is LOW" },
+      { test: "HOMA-IR", expected_range: "<1.5 (optimal), 1.5-2.9 (borderline), ≥3.0 (insulin resistant)", direction: "↑ elevated when sensitivity is LOW" },
+      { test: "Fasting Glucose", expected_range: "70-99 mg/dL (normal), 100-125 mg/dL (prediabetic), ≥126 mg/dL (diabetic)", direction: "↑ elevated when sensitivity is LOW" },
+      { test: "HbA1c", expected_range: "<5.7% (normal), 5.7-6.4% (prediabetic), ≥6.5% (diabetic)", direction: "↑ elevated with chronic resistance" },
+      { test: "Triglycerides", expected_range: "<100 mg/dL (optimal), <150 mg/dL (normal), ≥150 mg/dL (elevated)", direction: "↑ often elevated with resistance" },
+      { test: "HDL Cholesterol", expected_range: ">60 mg/dL (optimal), 40-60 mg/dL (acceptable), <40 mg/dL (low)", direction: "↓ often low with resistance" }
+    ],
+    clinical_insight: "Insulin resistance often precedes type 2 diabetes by 10-15 years. Early detection through these patterns allows lifestyle intervention before disease onset.",
+    recommended_confirmation: "Fasting insulin + HOMA-IR calculation, or oral glucose tolerance test (OGTT)",
+    actionable_guidance: "Mediterranean diet, 150+ min/week exercise, 7-8 hours sleep can significantly improve sensitivity"
+  },
+  
+  metabolic_stress_state: {
+    display_name: "Metabolic Stress Level",
+    what_it_means: "Overall burden on your body's energy and metabolic regulatory systems",
+    pattern_statement: {
+      elevated: "This finding aligns with physiological patterns often seen when hs-CRP measures >3 mg/L, fasting insulin >15 μIU/mL, and/or morning cortisol shows flattened diurnal rhythm.",
+      moderate: "This finding aligns with patterns seen when hs-CRP measures 1-3 mg/L and metabolic markers show borderline elevation.",
+      low: "This finding aligns with patterns typically seen when hs-CRP <1 mg/L and metabolic markers are within optimal ranges."
+    },
+    expected_lab_correlations: [
+      { test: "Fasting Insulin", expected_range: "2-10 μIU/mL (optimal), 10-25 μIU/mL (borderline), >25 μIU/mL (elevated)", direction: "↑ elevated when stress is HIGH" },
+      { test: "Cortisol (morning)", expected_range: "10-20 μg/dL (normal AM), <10 or >25 μg/dL (dysregulated)", direction: "↑ elevated or flattened with chronic stress" },
+      { test: "hs-CRP", expected_range: "<1 mg/L (low risk), 1-3 mg/L (moderate), >3 mg/L (high risk)", direction: "↑ elevated with metabolic inflammation" },
+      { test: "Uric Acid", expected_range: "3.5-7.2 mg/dL (normal), >7.2 mg/dL (elevated)", direction: "↑ elevated with metabolic stress" },
+      { test: "ALT", expected_range: "<35 U/L (normal), 35-80 U/L (mild elevation), >80 U/L (significant)", direction: "↑ mildly elevated with hepatic stress" }
+    ],
+    clinical_insight: "Metabolic stress reflects the combined burden of inflammation, insulin resistance, and cellular oxidative stress.",
+    recommended_confirmation: "Comprehensive metabolic panel + fasting insulin + hs-CRP + morning cortisol",
+    actionable_guidance: "Stress management, sleep optimization (7-9 hrs), anti-inflammatory diet, regular movement"
+  },
+
+  inflammatory_burden_proxy: {
+    display_name: "Inflammatory Burden",
+    what_it_means: "Level of systemic inflammation circulating in your body",
+    pattern_statement: {
+      elevated: "This finding aligns with physiological patterns often seen when hs-CRP measures >3 mg/L, ESR >20 mm/hr, and/or ferritin is elevated above 300 ng/mL as an acute phase reactant.",
+      moderate: "This finding aligns with patterns seen when hs-CRP measures in the 1-3 mg/L range, indicating low-grade chronic inflammation.",
+      low: "This finding aligns with patterns typically seen when hs-CRP measures <1 mg/L, indicating minimal systemic inflammation."
+    },
+    expected_lab_correlations: [
+      { test: "hs-CRP", expected_range: "<1 mg/L (low risk), 1-3 mg/L (moderate risk), >3 mg/L (high risk), >10 mg/L (acute)", direction: "↑ elevated when inflammation is HIGH" },
+      { test: "ESR (Sed Rate)", expected_range: "0-15 mm/hr (men), 0-20 mm/hr (women), >30 mm/hr (elevated)", direction: "↑ elevated with chronic inflammation" },
+      { test: "Ferritin", expected_range: "20-200 ng/mL (normal), 200-300 ng/mL (borderline), >300 ng/mL (elevated)", direction: "↑ elevated as acute phase reactant" },
+      { test: "Fibrinogen", expected_range: "200-400 mg/dL (normal), >400 mg/dL (elevated)", direction: "↑ elevated with inflammatory state" },
+      { test: "Albumin", expected_range: "3.5-5.0 g/dL (normal), <3.5 g/dL (low)", direction: "↓ decreased with chronic inflammation" }
+    ],
+    clinical_insight: "Chronic low-grade inflammation (hs-CRP 1-3 mg/L) is independently associated with 2-3x increased cardiovascular disease risk and accelerated biological aging.",
+    recommended_confirmation: "hs-CRP (most accessible), add ESR + ferritin + fibrinogen for comprehensive picture",
+    actionable_guidance: "Anti-inflammatory diet (omega-3s, colorful vegetables, turmeric), 150+ min/week exercise, stress reduction, 7-9 hours sleep"
+  },
+
+  cv_resilience_proxy: {
+    display_name: "Cardiovascular Resilience",
+    what_it_means: "Your heart and blood vessel health, and capacity to handle stress",
+    pattern_statement: {
+      strained: "This finding aligns with physiological patterns often seen when Coronary Calcium Score is >100, NT-proBNP >125 pg/mL, and/or ApoB >100 mg/dL indicating elevated atherogenic burden.",
+      moderate: "This finding aligns with patterns seen when cardiovascular markers are borderline: CAC 1-100, ApoB 90-100 mg/dL, suggesting early risk accumulation.",
+      robust: "This finding aligns with patterns typically seen when CAC score is 0, NT-proBNP <50 pg/mL, and ApoB <90 mg/dL, indicating excellent cardiovascular reserve."
+    },
+    expected_lab_correlations: [
+      { test: "Coronary Calcium Score", expected_range: "0 (optimal), 1-100 (low), 101-400 (moderate), >400 (high risk)", direction: "↑ elevated when resilience is REDUCED" },
+      { test: "NT-proBNP", expected_range: "<50 pg/mL (optimal), 50-125 pg/mL (normal), >125 pg/mL (elevated)", direction: "↑ elevated with cardiac stress/strain" },
+      { test: "ApoB", expected_range: "<80 mg/dL (optimal), 80-100 mg/dL (borderline), >100 mg/dL (elevated)", direction: "↑ elevated with atherogenic risk" },
+      { test: "Lp(a)", expected_range: "<30 mg/dL (normal), 30-50 mg/dL (borderline), >50 mg/dL (high risk)", direction: "Genetically determined; elevated = independent CV risk" },
+      { test: "Blood Pressure", expected_range: "<120/80 (optimal), 120-129/<80 (elevated), ≥130/80 (hypertension)", direction: "↑ elevated indicates cardiovascular strain" }
+    ],
+    clinical_insight: "Cardiovascular resilience reflects your heart's functional reserve. CAC score of 0 is associated with <1% 10-year CV event risk regardless of other factors.",
+    recommended_confirmation: "Coronary calcium score (best risk stratification), ApoB (lipid particle burden), NT-proBNP if symptoms present",
+    actionable_guidance: "150+ min/week cardio exercise, BP <130/80, LDL <100 (or ApoB <90), smoking cessation, Mediterranean diet"
+  },
+
+  arterial_health_proxy: {
+    display_name: "Arterial Health",
+    what_it_means: "Flexibility and structural integrity of your blood vessel walls",
+    if_this_proxy_is_accurate: "We would expect these traditional tests to show specific patterns:",
+    expected_lab_correlations: [
+      { test: "Pulse Wave Velocity", direction: "↑ increased", when: "arteries are STIFF", reference: { note: "Gold standard for arterial stiffness" }},
+      { test: "Carotid IMT", direction: "↑ thickened", when: "early atherosclerosis", reference: { normal: "<0.9 mm" }},
+      { test: "Pulse Pressure", direction: "↑ widened", when: "arterial stiffness present", reference: { normal: "<50 mmHg", concerning: ">60 mmHg" }},
+      { test: "Ankle-Brachial Index", direction: "↓ decreased", when: "peripheral artery disease", reference: { normal: "1.0-1.4", abnormal: "<0.9" }}
+    ],
+    clinical_insight: "Arterial stiffness increases naturally with age but accelerates dramatically with hypertension, diabetes, and smoking.",
+    recommended_confirmation: "Blood pressure (note pulse pressure); pulse wave velocity if available",
+    actionable_guidance: "Blood pressure control, sodium reduction, regular aerobic exercise, smoking cessation"
+  },
+
+  hepatic_stress_proxy: {
+    display_name: "Liver Stress",
+    what_it_means: "Level of stress or injury to your liver cells",
+    if_this_proxy_is_accurate: "We would expect these traditional lab values to show specific patterns:",
+    expected_lab_correlations: [
+      { test: "ALT", direction: "↑ elevated", when: "liver cell injury present", reference: { normal: "<35 U/L", elevated: ">40 U/L", concerning: ">80 U/L" }},
+      { test: "AST", direction: "↑ elevated", when: "liver (or muscle) injury", reference: { normal: "<35 U/L" }},
+      { test: "GGT", direction: "↑ elevated", when: "liver stress/alcohol use", reference: { normal: "<50 U/L" }},
+      { test: "Alkaline Phosphatase", direction: "↑ elevated", when: "bile duct involvement", reference: { normal: "44-147 U/L" }},
+      { test: "Bilirubin", direction: "↑ elevated", when: "liver dysfunction significant", reference: { normal: "0.1-1.2 mg/dL" }}
+    ],
+    clinical_insight: "Liver enzymes are sensitive markers of hepatocyte health. ALT is more liver-specific; AST can also indicate muscle damage.",
+    recommended_confirmation: "Comprehensive hepatic panel; ultrasound if persistently elevated",
+    actionable_guidance: "Limit alcohol, maintain healthy weight, avoid unnecessary medications, consider milk thistle"
+  },
+
+  fatty_liver_likelihood: {
+    display_name: "Fatty Liver Likelihood",
+    what_it_means: "Probability of excess fat accumulation in your liver (NAFLD/MASLD)",
+    if_this_proxy_is_accurate: "We would expect these traditional tests to show specific patterns:",
+    expected_lab_correlations: [
+      { test: "Liver Ultrasound", direction: "Shows increased echogenicity", when: "fatty liver present", reference: { note: "First-line imaging for hepatic steatosis" }},
+      { test: "FibroScan CAP", direction: "↑ elevated", when: "liver fat increased", reference: { normal: "<238 dB/m", steatosis: ">260 dB/m" }},
+      { test: "ALT", direction: "↑ mildly elevated (often ALT > AST)", when: "NAFLD pattern", reference: { note: "Typically 1.5-2x upper limit" }},
+      { test: "Triglycerides", direction: "↑ elevated", when: "metabolic component present", reference: { normal: "<150 mg/dL" }},
+      { test: "FIB-4 Score", direction: "Calculated from age, AST, ALT, platelets", when: "assessing fibrosis risk", reference: { low_risk: "<1.3", high_risk: ">2.67" }}
+    ],
+    clinical_insight: "NAFLD affects ~25% of adults globally and can progress silently to cirrhosis. Weight loss of 5-10% can reverse early steatosis.",
+    recommended_confirmation: "Liver ultrasound is non-invasive and widely available; FibroScan adds fibrosis assessment",
+    actionable_guidance: "Weight loss (even 5-10%), reduced sugar and refined carbs, regular exercise, limit alcohol"
+  },
+
+  kidney_stress_proxy: {
+    display_name: "Kidney Stress",
+    what_it_means: "Level of strain on your kidney filtration function",
+    if_this_proxy_is_accurate: "We would expect these traditional lab values to show specific patterns:",
+    expected_lab_correlations: [
+      { test: "eGFR", direction: "↓ decreased", when: "kidney function reduced", reference: { normal: ">90", mild: "60-89", moderate: "30-59", severe: "<30" }},
+      { test: "Creatinine", direction: "↑ elevated", when: "filtration reduced", reference: { normal: "0.7-1.3 mg/dL" }},
+      { test: "Cystatin C", direction: "↑ elevated", when: "kidney function impaired", reference: { note: "More accurate than creatinine alone" }},
+      { test: "Urine Albumin/Creatinine", direction: "↑ elevated", when: "kidney damage present", reference: { normal: "<30 mg/g", microalbuminuria: "30-300", macroalbuminuria: ">300" }},
+      { test: "BUN", direction: "↑ elevated", when: "kidney function reduced or dehydration", reference: { normal: "7-20 mg/dL" }}
+    ],
+    clinical_insight: "Kidney function naturally declines with age (~1 mL/min/year after 40), but accelerated loss suggests underlying disease requiring intervention.",
+    recommended_confirmation: "eGFR with cystatin C for accuracy; urine albumin for early damage detection",
+    actionable_guidance: "Blood pressure control, adequate hydration, avoid NSAIDs, manage diabetes if present"
+  },
+
+  thyroid_function_proxy: {
+    display_name: "Thyroid Function",
+    what_it_means: "How well your thyroid gland regulates your metabolism",
+    if_this_proxy_is_accurate: "We would expect these traditional lab values to show specific patterns:",
+    expected_lab_correlations: [
+      { test: "TSH", direction: "↑ elevated in hypothyroid, ↓ decreased in hyperthyroid", when: "thyroid dysfunction", reference: { normal: "0.4-4.0 mIU/L", optimal: "1.0-2.5 mIU/L" }},
+      { test: "Free T4", direction: "↓ low in hypothyroid, ↑ high in hyperthyroid", when: "overt dysfunction", reference: { normal: "0.8-1.8 ng/dL" }},
+      { test: "Free T3", direction: "Reflects active hormone level", when: "conversion issues suspected", reference: { normal: "2.3-4.2 pg/mL" }},
+      { test: "TPO Antibodies", direction: "↑ elevated", when: "Hashimoto's thyroiditis", reference: { normal: "<35 IU/mL" }}
+    ],
+    clinical_insight: "Thyroid dysfunction is extremely common (especially in women) and often missed because symptoms overlap with stress, depression, and aging.",
+    recommended_confirmation: "Full thyroid panel: TSH, free T4, free T3, TPO antibodies",
+    actionable_guidance: "Ensure adequate iodine and selenium; manage stress; work with endocrinologist if abnormal"
+  },
+
+  mets_likelihood: {
+    display_name: "Metabolic Syndrome Likelihood",
+    what_it_means: "Probability of having metabolic syndrome (a cluster of cardiovascular risk factors)",
+    pattern_statement: {
+      high: "This finding aligns with physiological patterns seen when ≥3 of 5 ATP-III criteria are met: waist >102cm (M)/>88cm (F), TG ≥150, HDL <40 (M)/<50 (F), BP ≥130/85, glucose ≥100.",
+      moderate: "This finding aligns with patterns seen when 2 of 5 metabolic syndrome criteria are met, indicating elevated cardiometabolic risk.",
+      possible: "This finding aligns with patterns seen when 1-2 borderline criteria are present, warranting monitoring.",
+      unlikely: "This finding aligns with patterns seen when metabolic parameters are within normal ranges across all 5 criteria."
+    },
+    expected_lab_correlations: [
+      { test: "Waist Circumference", expected_range: "Men: <94cm (optimal), 94-102cm (elevated), >102cm (MetS criteria) | Women: <80cm (optimal), 80-88cm (elevated), >88cm (MetS criteria)", direction: "↑ central obesity is required for IDF criteria" },
+      { test: "Triglycerides", expected_range: "<100 mg/dL (optimal), 100-149 mg/dL (borderline), ≥150 mg/dL (MetS criteria)", direction: "↑ elevated meets MetS criterion" },
+      { test: "HDL Cholesterol", expected_range: "Men: >50 mg/dL (optimal), 40-50 (borderline), <40 (MetS criteria) | Women: >60 (optimal), 50-60 (borderline), <50 (MetS criteria)", direction: "↓ low meets MetS criterion" },
+      { test: "Blood Pressure", expected_range: "<120/80 (optimal), 120-129/<80 (elevated), ≥130/85 (MetS criteria)", direction: "↑ elevated meets MetS criterion" },
+      { test: "Fasting Glucose", expected_range: "<100 mg/dL (normal), ≥100 mg/dL (MetS criteria), ≥126 (diabetic)", direction: "↑ elevated meets MetS criterion" }
+    ],
+    clinical_insight: "Metabolic syndrome (≥3 of 5 criteria) increases heart disease risk 2x and diabetes risk 5x. Affects ~35% of US adults. Central obesity is the primary driver.",
+    recommended_confirmation: "Simple: waist measurement + standard lipid panel + glucose + BP. All components are routinely available.",
+    actionable_guidance: "5-10% weight loss can resolve MetS. Focus on waist circumference reduction through diet + exercise. Mediterranean diet most effective."
+  },
+
+  anemia_type_proxy: {
+    display_name: "Anemia Classification",
+    what_it_means: "Type and likely underlying cause of low red blood cell count",
+    if_this_proxy_is_accurate: "We would expect these traditional lab values to show specific patterns:",
+    expected_lab_correlations: [
+      { test: "Hemoglobin", direction: "↓ low", when: "anemia present", reference: { male_low: "<14 g/dL", female_low: "<12 g/dL" }},
+      { test: "MCV", direction: "Indicates anemia type", when: "classifying anemia", reference: { microcytic: "<80 fL", normocytic: "80-100 fL", macrocytic: ">100 fL" }},
+      { test: "Ferritin", direction: "↓ low in iron deficiency", when: "iron stores depleted", reference: { deficient: "<30 ng/mL" }},
+      { test: "Vitamin B12", direction: "↓ low in B12 deficiency", when: "macrocytic anemia", reference: { deficient: "<200 pg/mL" }},
+      { test: "Reticulocyte Count", direction: "↑ high with blood loss/hemolysis", when: "marrow responding", reference: { normal: "0.5-2.5%" }}
+    ],
+    clinical_insight: "MCV helps narrow the differential: microcytic suggests iron deficiency or thalassemia; macrocytic suggests B12/folate deficiency.",
+    recommended_confirmation: "CBC with indices, reticulocyte count, iron studies, B12/folate",
+    actionable_guidance: "Treatment depends on cause: iron supplementation, B12 injections, or addressing underlying condition"
+  },
+
+  iron_status_proxy: {
+    display_name: "Iron Status",
+    what_it_means: "Your body's iron stores and iron availability for red blood cell production",
+    if_this_proxy_is_accurate: "We would expect these traditional lab values to show specific patterns:",
+    expected_lab_correlations: [
+      { test: "Ferritin", direction: "Reflects iron stores", when: "assessing iron status", reference: { deficient: "<30 ng/mL", optimal: "50-150 ng/mL", elevated: ">300 ng/mL" }},
+      { test: "Serum Iron", direction: "↓ low when deficient", when: "iron deficiency", reference: { normal: "60-170 μg/dL" }},
+      { test: "TIBC", direction: "↑ elevated when deficient", when: "iron deficiency", reference: { normal: "250-400 μg/dL" }},
+      { test: "Transferrin Saturation", direction: "↓ low when deficient", when: "iron deficiency", reference: { normal: "20-50%", low: "<20%" }}
+    ],
+    clinical_insight: "Iron deficiency is the most common nutritional deficiency worldwide, affecting ~25% of the global population. Ferritin alone can be misleading with inflammation.",
+    recommended_confirmation: "Full iron panel: ferritin + serum iron + TIBC + transferrin saturation",
+    actionable_guidance: "Iron-rich foods (red meat, spinach, legumes) with vitamin C; avoid tea/coffee with meals"
+  }
+};
+
+/**
+ * Get comprehensive lab anchoring for a proxy output
+ */
+function getLabAnchoringForProxy(proxyName, proxyValue) {
+  const anchor = LAB_ANCHORING[proxyName];
+  if (!anchor) return null;
+  
+  const state = typeof proxyValue === 'object' ? (proxyValue.state || proxyValue.likelihood) : proxyValue;
+  
+  // Get the specific pattern statement for this state
+  let patternStatement = null;
+  if (anchor.pattern_statement) {
+    // Try exact match first, then normalized match
+    patternStatement = anchor.pattern_statement[state] || 
+                       anchor.pattern_statement[state?.toLowerCase()] ||
+                       anchor.pattern_statement[state?.replace(/_/g, '')] ||
+                       Object.values(anchor.pattern_statement)[0]; // fallback to first statement
+  }
+  
+  return {
+    proxy: anchor.display_name,
+    your_result: state,
+    interpretation: anchor.what_it_means,
+    // THE KEY VALUE: Specific pattern alignment statement
+    pattern_alignment: patternStatement || `This finding reflects patterns in ${anchor.display_name.toLowerCase()} based on your biomarker profile.`,
+    expected_traditional_labs: anchor.expected_lab_correlations.map(lab => ({
+      test_name: lab.test,
+      expected_ranges: lab.expected_range,
+      direction_when_abnormal: lab.direction
+    })),
+    clinical_context: anchor.clinical_insight,
+    to_confirm_this_finding: anchor.recommended_confirmation,
+    what_you_can_do: anchor.actionable_guidance,
+    important_note: "This is a physiological pattern inference based on your biomarkers. It is not a diagnosis. The traditional lab tests listed above would provide definitive confirmation."
+  };
+}
+
+/**
  * COMPLETE INFERENCE RULES - FULL BIOMARKER NETWORK
  * Organized by physiological system
  */
@@ -1429,7 +1686,7 @@ export default {
     }
     
     if (url.pathname === "/demo") {
-      const demoInputs = { total_cholesterol: 220, hdl: 42, triglycerides: 185, fasting_glucose: 108, fasting_insulin: 15, age: 45, creatinine: 1.1, weight_kg: 85, height_cm: 175, waist_cm: 98, sbp: 138, dbp: 88, hscrp: 2.8, alt: 35, ast: 28 };
+      const demoInputs = { total_cholesterol: 220, hdl: 42, triglycerides: 185, fasting_glucose: 108, fasting_insulin: 15, age: 45, creatinine: 1.1, weight_kg: 85, height_cm: 175, waist_cm: 98, sbp: 138, dbp: 88, hscrp: 2.8, alt: 35, ast: 28, ferritin: 180, hemoglobin: 14.5 };
       const result = runCascade(demoInputs);
       const mode = url.searchParams.get("mode") || "a2";
       
@@ -1440,10 +1697,28 @@ export default {
       const stateSummary = generateStateSummary(states);
       const prioritized = prioritizeOutputs(result.derived, result.values);
       
+      // Build comprehensive lab anchoring for ALL proxy outputs
+      const proxyOutputs = [
+        'insulin_sensitivity_proxy', 'metabolic_stress_state', 'inflammatory_burden_proxy',
+        'cv_resilience_proxy', 'arterial_health_proxy', 'hepatic_stress_proxy',
+        'fatty_liver_likelihood', 'kidney_stress_proxy', 'thyroid_function_proxy',
+        'mets_likelihood', 'anemia_type_proxy', 'iron_status_proxy'
+      ];
+      
+      const labAnchoringDetails = {};
+      for (const proxyName of proxyOutputs) {
+        if (result.values[proxyName]) {
+          const anchoring = getLabAnchoringForProxy(proxyName, result.values[proxyName]);
+          if (anchoring) {
+            labAnchoringDetails[proxyName] = anchoring;
+          }
+        }
+      }
+      
       return new Response(JSON.stringify({ 
         status: "success", 
         mode: "a2_experience",
-        version: "3.3.0",
+        version: "3.4.0",
         demo_note: `From ${result.inputs} inputs → ${result.calculated} calculated → ${result.total} total values`,
         ...a2Report,
         // PHYSIOLOGICAL STATES - The key differentiator
@@ -1451,6 +1726,11 @@ export default {
         state_summary: stateSummary,
         // PRIORITIZED OUTPUTS - What matters most
         priority_findings: prioritized,
+        // LAB ANCHORING - Critical for trust and understanding
+        lab_anchoring: {
+          explanation: "Every proxy output below explains what traditional lab tests would be expected to show if this inference is accurate. This establishes expected alignment, not diagnostic equivalence.",
+          detailed_correlations: labAnchoringDetails
+        },
         // Full data
         cascade_result: {
           inputs: result.inputs,
