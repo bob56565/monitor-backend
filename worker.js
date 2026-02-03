@@ -122,6 +122,24 @@ const LAB_ANCHORING = {
       { test: "Uric Acid", expected_range: "3.5-7.2 mg/dL (normal), >7.2 mg/dL (elevated)", direction: "↑ elevated with metabolic stress" },
       { test: "ALT", expected_range: "<35 U/L (normal), 35-80 U/L (mild elevation), >80 U/L (significant)", direction: "↑ mildly elevated with hepatic stress" }
     ],
+    anticipated_lab_values: {
+      elevated: [
+        { test: "hs-CRP", anticipated: ">3 mg/L", interpretation: "High inflammatory burden" },
+        { test: "Fasting Insulin", anticipated: ">15 μIU/mL", interpretation: "Insulin resistance signal" },
+        { test: "Cortisol (morning)", anticipated: ">25 μg/dL or flattened rhythm", interpretation: "Stress axis dysregulation" },
+        { test: "Uric Acid", anticipated: ">7 mg/dL", interpretation: "Metabolic stress marker" }
+      ],
+      moderate: [
+        { test: "hs-CRP", anticipated: "1-3 mg/L", interpretation: "Low-grade inflammation" },
+        { test: "Fasting Insulin", anticipated: "10-15 μIU/mL", interpretation: "Borderline elevation" },
+        { test: "ALT", anticipated: "35-50 U/L", interpretation: "Mild hepatic stress possible" }
+      ],
+      low: [
+        { test: "hs-CRP", anticipated: "<1 mg/L", interpretation: "Minimal inflammation" },
+        { test: "Fasting Insulin", anticipated: "2-10 μIU/mL", interpretation: "Optimal range" },
+        { test: "Cortisol (morning)", anticipated: "10-20 μg/dL", interpretation: "Healthy diurnal pattern" }
+      ]
+    },
     clinical_insight: "Metabolic stress reflects the combined burden of inflammation, insulin resistance, and cellular oxidative stress.",
     recommended_confirmation: "Comprehensive metabolic panel + fasting insulin + hs-CRP + morning cortisol",
     actionable_guidance: "Stress management, sleep optimization (7-9 hrs), anti-inflammatory diet, regular movement"
@@ -142,6 +160,23 @@ const LAB_ANCHORING = {
       { test: "Fibrinogen", expected_range: "200-400 mg/dL (normal), >400 mg/dL (elevated)", direction: "↑ elevated with inflammatory state" },
       { test: "Albumin", expected_range: "3.5-5.0 g/dL (normal), <3.5 g/dL (low)", direction: "↓ decreased with chronic inflammation" }
     ],
+    anticipated_lab_values: {
+      elevated: [
+        { test: "hs-CRP", anticipated: ">3 mg/L", interpretation: "High systemic inflammation" },
+        { test: "ESR", anticipated: ">30 mm/hr", interpretation: "Chronic inflammatory activity" },
+        { test: "Ferritin", anticipated: ">300 ng/mL", interpretation: "Acute phase reactant elevation" },
+        { test: "Fibrinogen", anticipated: ">400 mg/dL", interpretation: "Pro-inflammatory state" },
+        { test: "Albumin", anticipated: "<3.5 g/dL", interpretation: "Negative acute phase response" }
+      ],
+      moderate: [
+        { test: "hs-CRP", anticipated: "1-3 mg/L", interpretation: "Low-grade chronic inflammation" },
+        { test: "ESR", anticipated: "20-30 mm/hr", interpretation: "Mildly elevated" }
+      ],
+      low: [
+        { test: "hs-CRP", anticipated: "<1 mg/L", interpretation: "Minimal inflammation" },
+        { test: "ESR", anticipated: "<20 mm/hr (women) / <15 mm/hr (men)", interpretation: "Within normal limits" }
+      ]
+    },
     clinical_insight: "Chronic low-grade inflammation (hs-CRP 1-3 mg/L) is independently associated with 2-3x increased cardiovascular disease risk and accelerated biological aging.",
     recommended_confirmation: "hs-CRP (most accessible), add ESR + ferritin + fibrinogen for comprehensive picture",
     actionable_guidance: "Anti-inflammatory diet (omega-3s, colorful vegetables, turmeric), 150+ min/week exercise, stress reduction, 7-9 hours sleep"
@@ -162,6 +197,26 @@ const LAB_ANCHORING = {
       { test: "Lp(a)", expected_range: "<30 mg/dL (normal), 30-50 mg/dL (borderline), >50 mg/dL (high risk)", direction: "Genetically determined; elevated = independent CV risk" },
       { test: "Blood Pressure", expected_range: "<120/80 (optimal), 120-129/<80 (elevated), ≥130/80 (hypertension)", direction: "↑ elevated indicates cardiovascular strain" }
     ],
+    anticipated_lab_values: {
+      strained: [
+        { test: "Coronary Calcium Score", anticipated: ">100", interpretation: "Calcified plaque burden present" },
+        { test: "NT-proBNP", anticipated: ">125 pg/mL", interpretation: "Cardiac wall stress" },
+        { test: "ApoB", anticipated: ">100 mg/dL", interpretation: "High atherogenic particle burden" },
+        { test: "Blood Pressure", anticipated: "≥130/80 mmHg", interpretation: "Hypertensive range" },
+        { test: "Lp(a)", anticipated: ">50 mg/dL", interpretation: "Independent genetic risk" }
+      ],
+      moderate: [
+        { test: "Coronary Calcium Score", anticipated: "1-100", interpretation: "Early calcification" },
+        { test: "ApoB", anticipated: "90-100 mg/dL", interpretation: "Borderline high" },
+        { test: "Blood Pressure", anticipated: "120-129/<80 mmHg", interpretation: "Elevated" }
+      ],
+      robust: [
+        { test: "Coronary Calcium Score", anticipated: "0", interpretation: "Very low 10-year CV risk" },
+        { test: "NT-proBNP", anticipated: "<50 pg/mL", interpretation: "No cardiac strain" },
+        { test: "ApoB", anticipated: "<90 mg/dL", interpretation: "Optimal particle burden" },
+        { test: "Blood Pressure", anticipated: "<120/80 mmHg", interpretation: "Optimal blood pressure" }
+      ]
+    },
     clinical_insight: "Cardiovascular resilience reflects your heart's functional reserve. CAC score of 0 is associated with <1% 10-year CV event risk regardless of other factors.",
     recommended_confirmation: "Coronary calcium score (best risk stratification), ApoB (lipid particle burden), NT-proBNP if symptoms present",
     actionable_guidance: "150+ min/week cardio exercise, BP <130/80, LDL <100 (or ApoB <90), smoking cessation, Mediterranean diet"
@@ -182,6 +237,24 @@ const LAB_ANCHORING = {
       { test: "Pulse Pressure", expected_range: "<50 mmHg (optimal), 50-60 mmHg (borderline), >60 mmHg (widened)", direction: "↑ widened when arterial stiffness present" },
       { test: "Ankle-Brachial Index", expected_range: "1.0-1.4 (normal), <0.9 (PAD), >1.4 (noncompressible)", direction: "↓ decreased with peripheral artery disease" }
     ],
+    anticipated_lab_values: {
+      reduced: [
+        { test: "Pulse Wave Velocity", anticipated: ">10 m/s", interpretation: "Increased arterial stiffness" },
+        { test: "Pulse Pressure", anticipated: ">60 mmHg", interpretation: "Widened pulse pressure" },
+        { test: "Carotid IMT", anticipated: "≥0.9 mm", interpretation: "Arterial wall thickening" },
+        { test: "Ankle-Brachial Index", anticipated: "<0.9", interpretation: "Peripheral artery disease" }
+      ],
+      moderate: [
+        { test: "Pulse Wave Velocity", anticipated: "8-10 m/s", interpretation: "Borderline stiffness" },
+        { test: "Pulse Pressure", anticipated: "50-60 mmHg", interpretation: "Borderline widened" }
+      ],
+      good: [
+        { test: "Pulse Wave Velocity", anticipated: "<8 m/s", interpretation: "Flexible arteries" },
+        { test: "Pulse Pressure", anticipated: "<50 mmHg", interpretation: "Normal" },
+        { test: "Carotid IMT", anticipated: "<0.8-0.9 mm", interpretation: "Normal thickness" },
+        { test: "Ankle-Brachial Index", anticipated: "1.0-1.4", interpretation: "Normal limb perfusion" }
+      ]
+    },
     clinical_insight: "Arterial stiffness increases naturally with age but accelerates dramatically with hypertension, diabetes, and smoking.",
     recommended_confirmation: "Blood pressure (note pulse pressure); pulse wave velocity if available",
     actionable_guidance: "Blood pressure control, sodium reduction, regular aerobic exercise, smoking cessation"
@@ -203,6 +276,22 @@ const LAB_ANCHORING = {
       { test: "Alkaline Phosphatase", expected_range: "44-147 U/L (normal), >147 U/L (elevated)", direction: "↑ elevated with bile duct involvement" },
       { test: "Bilirubin", expected_range: "0.1-1.2 mg/dL (normal), >1.2 mg/dL (elevated)", direction: "↑ elevated when liver dysfunction significant" }
     ],
+    anticipated_lab_values: {
+      elevated: [
+        { test: "ALT", anticipated: ">80 U/L", interpretation: "Active hepatocellular injury" },
+        { test: "AST", anticipated: ">40 U/L", interpretation: "Liver or muscle injury" },
+        { test: "GGT", anticipated: ">50 U/L", interpretation: "Cholestasis/alcohol use signal" },
+        { test: "Bilirubin", anticipated: ">1.2 mg/dL", interpretation: "Impaired excretion" }
+      ],
+      mild: [
+        { test: "ALT", anticipated: "35-80 U/L", interpretation: "Mild liver stress" },
+        { test: "AST", anticipated: "35-40 U/L", interpretation: "Borderline elevation" }
+      ],
+      low: [
+        { test: "ALT", anticipated: "<35 U/L", interpretation: "No significant liver stress" },
+        { test: "AST", anticipated: "<35 U/L", interpretation: "Within normal range" }
+      ]
+    },
     clinical_insight: "Liver enzymes are sensitive markers of hepatocyte health. ALT is more liver-specific; AST can also indicate muscle damage.",
     recommended_confirmation: "Comprehensive hepatic panel; ultrasound if persistently elevated",
     actionable_guidance: "Limit alcohol, maintain healthy weight, avoid unnecessary medications, consider milk thistle"
@@ -224,6 +313,23 @@ const LAB_ANCHORING = {
       { test: "Triglycerides", expected_range: "<150 mg/dL (normal), ≥150 mg/dL (elevated)", direction: "↑ elevated when metabolic component present" },
       { test: "FIB-4 Score", expected_range: "<1.3 (low fibrosis risk), 1.3-2.67 (indeterminate), >2.67 (high risk)", direction: "Calculated from age, AST, ALT, platelets to assess fibrosis risk" }
     ],
+    anticipated_lab_values: {
+      likely: [
+        { test: "FibroScan CAP", anticipated: "≥260 dB/m", interpretation: "Steatosis likely" },
+        { test: "Liver Ultrasound", anticipated: "Increased echogenicity", interpretation: "Fat infiltration" },
+        { test: "ALT vs AST", anticipated: "ALT > AST (mildly elevated)", interpretation: "Typical NAFLD pattern" },
+        { test: "Triglycerides", anticipated: "≥150 mg/dL", interpretation: "Metabolic driver present" }
+      ],
+      possible: [
+        { test: "FibroScan CAP", anticipated: "238-260 dB/m", interpretation: "Borderline liver fat" },
+        { test: "ALT", anticipated: "35-50 U/L", interpretation: "Mild elevation" }
+      ],
+      unlikely: [
+        { test: "FibroScan CAP", anticipated: "<238 dB/m", interpretation: "Low likelihood of steatosis" },
+        { test: "Liver Ultrasound", anticipated: "Normal echotexture", interpretation: "No fatty infiltration" },
+        { test: "ALT", anticipated: "<35 U/L", interpretation: "Normal" }
+      ]
+    },
     clinical_insight: "NAFLD affects ~25% of adults globally and can progress silently to cirrhosis. Weight loss of 5-10% can reverse early steatosis.",
     recommended_confirmation: "Liver ultrasound is non-invasive and widely available; FibroScan adds fibrosis assessment",
     actionable_guidance: "Weight loss (even 5-10%), reduced sugar and refined carbs, regular exercise, limit alcohol"
@@ -245,6 +351,21 @@ const LAB_ANCHORING = {
       { test: "Urine Albumin/Creatinine", expected_range: "<30 mg/g (normal), 30-300 mg/g (microalbuminuria), >300 mg/g (macroalbuminuria)", direction: "↑ elevated when kidney damage present" },
       { test: "BUN", expected_range: "7-20 mg/dL (normal), >20 mg/dL (elevated)", direction: "↑ elevated when kidney function reduced or dehydration" }
     ],
+    anticipated_lab_values: {
+      elevated: [
+        { test: "eGFR", anticipated: "<60 mL/min/1.73m²", interpretation: "Chronic kidney disease range" },
+        { test: "Creatinine", anticipated: ">1.3 mg/dL", interpretation: "Reduced filtration" },
+        { test: "Urine Albumin/Creatinine", anticipated: "≥30 mg/g", interpretation: "Kidney damage (albuminuria)" }
+      ],
+      mild: [
+        { test: "eGFR", anticipated: "60-89 mL/min/1.73m²", interpretation: "Early reduction" },
+        { test: "Urine Albumin/Creatinine", anticipated: "30-300 mg/g", interpretation: "Microalbuminuria" }
+      ],
+      low: [
+        { test: "eGFR", anticipated: ">=90 mL/min/1.73m²", interpretation: "Normal filtration" },
+        { test: "Urine Albumin/Creatinine", anticipated: "<30 mg/g", interpretation: "No albuminuria" }
+      ]
+    },
     clinical_insight: "Kidney function naturally declines with age (~1 mL/min/year after 40), but accelerated loss suggests underlying disease requiring intervention.",
     recommended_confirmation: "eGFR with cystatin C for accuracy; urine albumin for early damage detection",
     actionable_guidance: "Blood pressure control, adequate hydration, avoid NSAIDs, manage diabetes if present"
@@ -267,6 +388,29 @@ const LAB_ANCHORING = {
       { test: "Free T3", expected_range: "2.3-4.2 pg/mL (normal)", direction: "Reflects active hormone level; can be low with conversion issues" },
       { test: "TPO Antibodies", expected_range: "<35 IU/mL (normal), elevated in Hashimoto's thyroiditis", direction: "↑ elevated with autoimmune thyroid disease" }
     ],
+    anticipated_lab_values: {
+      hypothyroid_pattern: [
+        { test: "TSH", anticipated: ">4.5-10 mIU/L", interpretation: "Elevated signaling low thyroid function" },
+        { test: "Free T4", anticipated: "<0.8 ng/dL", interpretation: "Low thyroid hormone" },
+        { test: "TPO Antibodies", anticipated: ">35 IU/mL (if autoimmune)", interpretation: "Suggests Hashimoto's" }
+      ],
+      hyperthyroid_pattern: [
+        { test: "TSH", anticipated: "<0.4 mIU/L (suppressed)", interpretation: "Overactive thyroid" },
+        { test: "Free T4/Free T3", anticipated: ">upper reference", interpretation: "Elevated thyroid hormones" }
+      ],
+      subclinical_hypo: [
+        { test: "TSH", anticipated: ">4.5 mIU/L", interpretation: "Elevated with normal FT4" },
+        { test: "Free T4", anticipated: "0.8-1.8 ng/dL", interpretation: "Within reference" }
+      ],
+      subclinical_hyper: [
+        { test: "TSH", anticipated: "<0.4 mIU/L", interpretation: "Low with normal FT4" },
+        { test: "Free T4", anticipated: "0.8-1.8 ng/dL", interpretation: "Within reference" }
+      ],
+      euthyroid: [
+        { test: "TSH", anticipated: "0.4-4.0 mIU/L (~1.0-2.5 optimal)", interpretation: "Normal pituitary-thyroid axis" },
+        { test: "Free T4", anticipated: "0.8-1.8 ng/dL", interpretation: "Normal thyroid hormone level" }
+      ]
+    },
     clinical_insight: "Thyroid dysfunction is extremely common (especially in women) and often missed because symptoms overlap with stress, depression, and aging.",
     recommended_confirmation: "Full thyroid panel: TSH, free T4, free T3, TPO antibodies",
     actionable_guidance: "Ensure adequate iodine and selenium; manage stress; work with endocrinologist if abnormal"
@@ -288,6 +432,27 @@ const LAB_ANCHORING = {
       { test: "Blood Pressure", expected_range: "<120/80 (optimal), 120-129/<80 (elevated), ≥130/85 (MetS criteria)", direction: "↑ elevated meets MetS criterion" },
       { test: "Fasting Glucose", expected_range: "<100 mg/dL (normal), ≥100 mg/dL (MetS criteria), ≥126 (diabetic)", direction: "↑ elevated meets MetS criterion" }
     ],
+    anticipated_lab_values: {
+      high: [
+        { test: "Waist Circumference", anticipated: ">102 cm (men) / >88 cm (women)", interpretation: "Meets MetS central obesity" },
+        { test: "Triglycerides", anticipated: "≥150 mg/dL", interpretation: "Meets MetS criterion" },
+        { test: "HDL Cholesterol", anticipated: "<40 mg/dL (men) / <50 mg/dL (women)", interpretation: "Meets MetS criterion" },
+        { test: "Blood Pressure", anticipated: "≥130/85 mmHg", interpretation: "Meets MetS criterion" },
+        { test: "Fasting Glucose", anticipated: "≥100 mg/dL", interpretation: "Meets MetS criterion" }
+      ],
+      moderate: [
+        { test: "Criteria Count", anticipated: "2 of 5", interpretation: "Borderline for diagnosis" }
+      ],
+      possible: [
+        { test: "Criteria Borderline", anticipated: "1-2 borderline components", interpretation: "Monitor progression" }
+      ],
+      unlikely: [
+        { test: "Criteria", anticipated: "<3 of 5 (none met)", interpretation: "Does not meet MetS" },
+        { test: "Fasting Glucose", anticipated: "<100 mg/dL", interpretation: "Normal" },
+        { test: "Triglycerides", anticipated: "<150 mg/dL", interpretation: "Normal" },
+        { test: "Blood Pressure", anticipated: "<130/85 mmHg", interpretation: "Not a criterion" }
+      ]
+    },
     clinical_insight: "Metabolic syndrome (≥3 of 5 criteria) increases heart disease risk 2x and diabetes risk 5x. Affects ~35% of US adults. Central obesity is the primary driver.",
     recommended_confirmation: "Simple: waist measurement + standard lipid panel + glucose + BP. All components are routinely available.",
     actionable_guidance: "5-10% weight loss can resolve MetS. Focus on waist circumference reduction through diet + exercise. Mediterranean diet most effective."
@@ -308,6 +473,18 @@ const LAB_ANCHORING = {
       { test: "Vitamin B12", expected_range: "<200 pg/mL (deficiency), 200-300 pg/mL (borderline), >300 pg/mL (adequate)", direction: "↓ low in B12 deficiency, often macrocytic" },
       { test: "Reticulocyte Count", expected_range: "0.5-2.5% (normal), >2.5% (elevated)", direction: "↑ high with blood loss/hemolysis when marrow responding" }
     ],
+    anticipated_lab_values: {
+      anemia_present: [
+        { test: "Hemoglobin", anticipated: "<12 g/dL (women) / <14 g/dL (men)", interpretation: "Low red cell mass" },
+        { test: "MCV", anticipated: "<80 fL or >100 fL", interpretation: "Microcytic or macrocytic pattern" },
+        { test: "Ferritin", anticipated: "<30 ng/mL (if iron deficiency)", interpretation: "Iron deficiency likely" },
+        { test: "Vitamin B12", anticipated: "<200 pg/mL (if macrocytosis)", interpretation: "B12 deficiency possible" }
+      ],
+      no_anemia: [
+        { test: "Hemoglobin", anticipated: "Sex-specific normal range", interpretation: "No anemia" },
+        { test: "MCV", anticipated: "80-100 fL", interpretation: "Normocytic" }
+      ]
+    },
     clinical_insight: "MCV helps narrow the differential: microcytic suggests iron deficiency or thalassemia; macrocytic suggests B12/folate deficiency.",
     recommended_confirmation: "CBC with indices, reticulocyte count, iron studies, B12/folate",
     actionable_guidance: "Treatment depends on cause: iron supplementation, B12 injections, or addressing underlying condition"
