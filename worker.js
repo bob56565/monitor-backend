@@ -147,12 +147,17 @@ const LAB_ANCHORING = {
   arterial_health_proxy: {
     display_name: "Arterial Health",
     what_it_means: "Flexibility and structural integrity of your blood vessel walls",
+    pattern_statement: {
+      reduced: "This finding aligns with physiological patterns often seen when pulse wave velocity measures >10 m/s, carotid IMT measures ≥0.9 mm, and pulse pressure measures >60 mmHg, consistent with increased arterial stiffness.",
+      moderate: "This finding aligns with physiological patterns often seen when pulse wave velocity measures 8-10 m/s, carotid IMT measures ~0.8-0.9 mm, and pulse pressure measures 50-60 mmHg, suggesting emerging stiffness.",
+      good: "This finding aligns with physiological patterns often seen when pulse wave velocity measures <8 m/s, carotid IMT measures <0.8-0.9 mm, pulse pressure measures <50 mmHg, and ankle-brachial index measures 1.0-1.4."
+    },
     if_this_proxy_is_accurate: "We would expect these traditional tests to show specific patterns:",
     expected_lab_correlations: [
-      { test: "Pulse Wave Velocity", direction: "↑ increased", when: "arteries are STIFF", reference: { note: "Gold standard for arterial stiffness" }},
-      { test: "Carotid IMT", direction: "↑ thickened", when: "early atherosclerosis", reference: { normal: "<0.9 mm" }},
-      { test: "Pulse Pressure", direction: "↑ widened", when: "arterial stiffness present", reference: { normal: "<50 mmHg", concerning: ">60 mmHg" }},
-      { test: "Ankle-Brachial Index", direction: "↓ decreased", when: "peripheral artery disease", reference: { normal: "1.0-1.4", abnormal: "<0.9" }}
+      { test: "Pulse Wave Velocity", expected_range: "<8 m/s (good), 8-10 m/s (moderate), >10 m/s (stiffness)", direction: "↑ increased when arteries are STIFF" },
+      { test: "Carotid IMT", expected_range: "<0.8-0.9 mm (normal), ≥0.9 mm (thickened)", direction: "↑ thickened with early atherosclerosis" },
+      { test: "Pulse Pressure", expected_range: "<50 mmHg (optimal), 50-60 mmHg (borderline), >60 mmHg (widened)", direction: "↑ widened when arterial stiffness present" },
+      { test: "Ankle-Brachial Index", expected_range: "1.0-1.4 (normal), <0.9 (PAD), >1.4 (noncompressible)", direction: "↓ decreased with peripheral artery disease" }
     ],
     clinical_insight: "Arterial stiffness increases naturally with age but accelerates dramatically with hypertension, diabetes, and smoking.",
     recommended_confirmation: "Blood pressure (note pulse pressure); pulse wave velocity if available",
@@ -162,13 +167,18 @@ const LAB_ANCHORING = {
   hepatic_stress_proxy: {
     display_name: "Liver Stress",
     what_it_means: "Level of stress or injury to your liver cells",
+    pattern_statement: {
+      elevated: "This finding aligns with physiological patterns often seen when ALT measures >80 U/L, AST measures >40 U/L, and GGT measures >50 U/L, consistent with active hepatocellular stress.",
+      mild: "This finding aligns with physiological patterns often seen when ALT measures 35-80 U/L and AST measures 35-40 U/L, suggesting mild hepatic stress.",
+      low: "This finding aligns with physiological patterns often seen when ALT measures <35 U/L and AST measures <35 U/L with normal GGT, indicating minimal liver stress."
+    },
     if_this_proxy_is_accurate: "We would expect these traditional lab values to show specific patterns:",
     expected_lab_correlations: [
-      { test: "ALT", direction: "↑ elevated", when: "liver cell injury present", reference: { normal: "<35 U/L", elevated: ">40 U/L", concerning: ">80 U/L" }},
-      { test: "AST", direction: "↑ elevated", when: "liver (or muscle) injury", reference: { normal: "<35 U/L" }},
-      { test: "GGT", direction: "↑ elevated", when: "liver stress/alcohol use", reference: { normal: "<50 U/L" }},
-      { test: "Alkaline Phosphatase", direction: "↑ elevated", when: "bile duct involvement", reference: { normal: "44-147 U/L" }},
-      { test: "Bilirubin", direction: "↑ elevated", when: "liver dysfunction significant", reference: { normal: "0.1-1.2 mg/dL" }}
+      { test: "ALT", expected_range: "<35 U/L (normal), 35-80 U/L (mild elevation), >80 U/L (significant)", direction: "↑ elevated when liver cell injury present" },
+      { test: "AST", expected_range: "<35 U/L (normal), >40 U/L (elevated)", direction: "↑ elevated with liver or muscle injury" },
+      { test: "GGT", expected_range: "<50 U/L (normal), >50 U/L (elevated)", direction: "↑ elevated with liver stress/alcohol use" },
+      { test: "Alkaline Phosphatase", expected_range: "44-147 U/L (normal), >147 U/L (elevated)", direction: "↑ elevated with bile duct involvement" },
+      { test: "Bilirubin", expected_range: "0.1-1.2 mg/dL (normal), >1.2 mg/dL (elevated)", direction: "↑ elevated when liver dysfunction significant" }
     ],
     clinical_insight: "Liver enzymes are sensitive markers of hepatocyte health. ALT is more liver-specific; AST can also indicate muscle damage.",
     recommended_confirmation: "Comprehensive hepatic panel; ultrasound if persistently elevated",
@@ -178,13 +188,18 @@ const LAB_ANCHORING = {
   fatty_liver_likelihood: {
     display_name: "Fatty Liver Likelihood",
     what_it_means: "Probability of excess fat accumulation in your liver (NAFLD/MASLD)",
+    pattern_statement: {
+      likely: "This finding aligns with physiological patterns often seen when liver ultrasound shows increased echogenicity and FibroScan CAP measures ≥260 dB/m, with ALT measuring higher than AST (mild elevation).",
+      possible: "This finding aligns with physiological patterns often seen when FibroScan CAP measures 238-260 dB/m or ALT measures mildly elevated with metabolic risk factors present.",
+      unlikely: "This finding aligns with physiological patterns often seen when liver ultrasound appears normal and FibroScan CAP measures <238 dB/m with normal liver enzymes."
+    },
     if_this_proxy_is_accurate: "We would expect these traditional tests to show specific patterns:",
     expected_lab_correlations: [
-      { test: "Liver Ultrasound", direction: "Shows increased echogenicity", when: "fatty liver present", reference: { note: "First-line imaging for hepatic steatosis" }},
-      { test: "FibroScan CAP", direction: "↑ elevated", when: "liver fat increased", reference: { normal: "<238 dB/m", steatosis: ">260 dB/m" }},
-      { test: "ALT", direction: "↑ mildly elevated (often ALT > AST)", when: "NAFLD pattern", reference: { note: "Typically 1.5-2x upper limit" }},
-      { test: "Triglycerides", direction: "↑ elevated", when: "metabolic component present", reference: { normal: "<150 mg/dL" }},
-      { test: "FIB-4 Score", direction: "Calculated from age, AST, ALT, platelets", when: "assessing fibrosis risk", reference: { low_risk: "<1.3", high_risk: ">2.67" }}
+      { test: "Liver Ultrasound", expected_range: "Increased echogenicity, vascular blurring (steatosis) vs normal echotexture", direction: "Shows increased echogenicity when fatty liver present" },
+      { test: "FibroScan CAP", expected_range: "<238 dB/m (normal), 238-260 dB/m (borderline), ≥260 dB/m (steatosis likely)", direction: "↑ elevated when liver fat increased" },
+      { test: "ALT", expected_range: "<35 U/L (normal), often ALT > AST, 35-80 U/L (mild elevation) in NAFLD", direction: "↑ mildly elevated (often ALT > AST)" },
+      { test: "Triglycerides", expected_range: "<150 mg/dL (normal), ≥150 mg/dL (elevated)", direction: "↑ elevated when metabolic component present" },
+      { test: "FIB-4 Score", expected_range: "<1.3 (low fibrosis risk), 1.3-2.67 (indeterminate), >2.67 (high risk)", direction: "Calculated from age, AST, ALT, platelets to assess fibrosis risk" }
     ],
     clinical_insight: "NAFLD affects ~25% of adults globally and can progress silently to cirrhosis. Weight loss of 5-10% can reverse early steatosis.",
     recommended_confirmation: "Liver ultrasound is non-invasive and widely available; FibroScan adds fibrosis assessment",
@@ -194,13 +209,18 @@ const LAB_ANCHORING = {
   kidney_stress_proxy: {
     display_name: "Kidney Stress",
     what_it_means: "Level of strain on your kidney filtration function",
+    pattern_statement: {
+      elevated: "This finding aligns with physiological patterns often seen when eGFR measures <60 mL/min/1.73m² and urine albumin/creatinine ratio measures ≥30 mg/g, consistent with renal stress.",
+      mild: "This finding aligns with physiological patterns often seen when eGFR measures 60-89 mL/min/1.73m² or urine albumin/creatinine ratio measures 30-300 mg/g, suggesting early kidney stress.",
+      low: "This finding aligns with physiological patterns often seen when eGFR measures ≥90 mL/min/1.73m² and urine albumin/creatinine ratio measures <30 mg/g, indicating minimal renal stress."
+    },
     if_this_proxy_is_accurate: "We would expect these traditional lab values to show specific patterns:",
     expected_lab_correlations: [
-      { test: "eGFR", direction: "↓ decreased", when: "kidney function reduced", reference: { normal: ">90", mild: "60-89", moderate: "30-59", severe: "<30" }},
-      { test: "Creatinine", direction: "↑ elevated", when: "filtration reduced", reference: { normal: "0.7-1.3 mg/dL" }},
-      { test: "Cystatin C", direction: "↑ elevated", when: "kidney function impaired", reference: { note: "More accurate than creatinine alone" }},
-      { test: "Urine Albumin/Creatinine", direction: "↑ elevated", when: "kidney damage present", reference: { normal: "<30 mg/g", microalbuminuria: "30-300", macroalbuminuria: ">300" }},
-      { test: "BUN", direction: "↑ elevated", when: "kidney function reduced or dehydration", reference: { normal: "7-20 mg/dL" }}
+      { test: "eGFR", expected_range: ">90 (normal), 60-89 (mild decrease), 30-59 (moderate), <30 (severe)", direction: "↓ decreased when kidney function reduced" },
+      { test: "Creatinine", expected_range: "0.7-1.3 mg/dL (normal), >1.3 mg/dL (elevated)", direction: "↑ elevated when filtration reduced" },
+      { test: "Cystatin C", expected_range: "Within lab reference (normal), elevated when kidney function impaired", direction: "↑ elevated when kidney function impaired" },
+      { test: "Urine Albumin/Creatinine", expected_range: "<30 mg/g (normal), 30-300 mg/g (microalbuminuria), >300 mg/g (macroalbuminuria)", direction: "↑ elevated when kidney damage present" },
+      { test: "BUN", expected_range: "7-20 mg/dL (normal), >20 mg/dL (elevated)", direction: "↑ elevated when kidney function reduced or dehydration" }
     ],
     clinical_insight: "Kidney function naturally declines with age (~1 mL/min/year after 40), but accelerated loss suggests underlying disease requiring intervention.",
     recommended_confirmation: "eGFR with cystatin C for accuracy; urine albumin for early damage detection",
@@ -210,12 +230,19 @@ const LAB_ANCHORING = {
   thyroid_function_proxy: {
     display_name: "Thyroid Function",
     what_it_means: "How well your thyroid gland regulates your metabolism",
+    pattern_statement: {
+      hypothyroid_pattern: "This finding aligns with physiological patterns often seen when TSH measures >4.5-10 mIU/L and free T4 measures low (below 0.8 ng/dL).",
+      hyperthyroid_pattern: "This finding aligns with physiological patterns often seen when TSH measures suppressed (<0.4 mIU/L) and free T4 and/or free T3 measure high.",
+      subclinical_hypo: "This finding aligns with physiological patterns often seen when TSH measures >4.5 mIU/L while free T4 measures within the normal range.",
+      subclinical_hyper: "This finding aligns with physiological patterns often seen when TSH measures <0.4 mIU/L while free T4 measures within the normal range.",
+      euthyroid: "This finding aligns with physiological patterns often seen when TSH measures 0.4-4.0 mIU/L (optimal ~1.0-2.5) and free T4 measures 0.8-1.8 ng/dL."
+    },
     if_this_proxy_is_accurate: "We would expect these traditional lab values to show specific patterns:",
     expected_lab_correlations: [
-      { test: "TSH", direction: "↑ elevated in hypothyroid, ↓ decreased in hyperthyroid", when: "thyroid dysfunction", reference: { normal: "0.4-4.0 mIU/L", optimal: "1.0-2.5 mIU/L" }},
-      { test: "Free T4", direction: "↓ low in hypothyroid, ↑ high in hyperthyroid", when: "overt dysfunction", reference: { normal: "0.8-1.8 ng/dL" }},
-      { test: "Free T3", direction: "Reflects active hormone level", when: "conversion issues suspected", reference: { normal: "2.3-4.2 pg/mL" }},
-      { test: "TPO Antibodies", direction: "↑ elevated", when: "Hashimoto's thyroiditis", reference: { normal: "<35 IU/mL" }}
+      { test: "TSH", expected_range: "0.4-4.0 mIU/L (normal), ~1.0-2.5 mIU/L (optimal), >4.5 (hypothyroid), <0.4 (hyperthyroid)", direction: "↑ elevated in hypothyroid, ↓ decreased in hyperthyroid" },
+      { test: "Free T4", expected_range: "0.8-1.8 ng/dL (normal), low in hypothyroid, high in hyperthyroid", direction: "↓ low in hypothyroid, ↑ high in hyperthyroid" },
+      { test: "Free T3", expected_range: "2.3-4.2 pg/mL (normal)", direction: "Reflects active hormone level; can be low with conversion issues" },
+      { test: "TPO Antibodies", expected_range: "<35 IU/mL (normal), elevated in Hashimoto's thyroiditis", direction: "↑ elevated with autoimmune thyroid disease" }
     ],
     clinical_insight: "Thyroid dysfunction is extremely common (especially in women) and often missed because symptoms overlap with stress, depression, and aging.",
     recommended_confirmation: "Full thyroid panel: TSH, free T4, free T3, TPO antibodies",
