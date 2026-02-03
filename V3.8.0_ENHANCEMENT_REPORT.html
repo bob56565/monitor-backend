@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HELIX Monitor Health - V3.8.0 Enhancement Report</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    :root {
+      --primary: #4A7C59;
+      --secondary: #E07A5F;
+      --dark: #2D3436;
+      --muted: #636e72;
+      --bg: #FAF9F7;
+      --card: #FFFFFF;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+      line-height: 1.7;
+      padding: 40px;
+    }
+    .container { max-width: 1000px; margin: 0 auto; }
+    h1 { font-size: 32px; color: var(--primary); margin-bottom: 10px; }
+    h2 { font-size: 24px; color: var(--dark); margin: 40px 0 20px; border-bottom: 3px solid var(--primary); padding-bottom: 10px; }
+    h3 { font-size: 18px; color: var(--secondary); margin: 25px 0 15px; }
+    h4 { font-size: 15px; color: var(--primary); margin: 20px 0 10px; }
+    p { margin-bottom: 15px; }
+    .subtitle { color: var(--muted); font-size: 16px; margin-bottom: 30px; }
+    .section { background: var(--card); border-radius: 16px; padding: 30px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+    .current { border-left: 4px solid #4A7C59; }
+    .enhancement { border-left: 4px solid #E07A5F; }
+    .critical { border-left: 4px solid #D63031; background: #FFF5F5; }
+    ul, ol { margin-left: 25px; margin-bottom: 15px; }
+    li { margin-bottom: 8px; }
+    .tag { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-right: 8px; }
+    .tag-current { background: rgba(74,124,89,0.15); color: #4A7C59; }
+    .tag-new { background: rgba(224,122,95,0.15); color: #E07A5F; }
+    .tag-critical { background: rgba(214,48,49,0.15); color: #D63031; }
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+    th { background: var(--bg); font-weight: 600; }
+    .code { background: #f4f4f4; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 13px; overflow-x: auto; }
+    .download-btn {
+      background: linear-gradient(135deg, var(--secondary), #D9694D);
+      color: white;
+      padding: 16px 32px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 16px rgba(224,122,95,0.3);
+      margin: 20px 0;
+    }
+    .download-btn:hover { transform: translateY(-2px); }
+    .workflow-step { display: flex; gap: 20px; margin: 15px 0; padding: 15px; background: #f8f9fa; border-radius: 10px; }
+    .step-num { width: 36px; height: 36px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0; }
+    .step-content { flex: 1; }
+    .comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 768px) { .comparison { grid-template-columns: 1fr; } }
+    .toc { background: #f8f9fa; padding: 25px; border-radius: 12px; margin-bottom: 40px; }
+    .toc h3 { margin-top: 0; }
+    .toc ol { margin-bottom: 0; }
+    .toc a { color: var(--primary); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    hr { border: none; border-top: 2px solid #eee; margin: 40px 0; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🧬 HELIX Monitor Health</h1>
+    <p class="subtitle">Comprehensive Enhancement Report: V3.7.0 → V3.8.0</p>
+    <p><strong>Date:</strong> February 3, 2026 | <strong>Author:</strong> HELIX Development Team</p>
+    
+    <button class="download-btn" onclick="generatePDF()">📄 Download PDF Report</button>
+    
+    <div class="toc">
+      <h3>📋 Table of Contents</h3>
+      <ol>
+        <li><a href="#executive">Executive Summary</a></li>
+        <li><a href="#current-state">Current V3.7.0 State Analysis</a></li>
+        <li><a href="#ui-enhancements">UI/UX Visual Enhancements</a></li>
+        <li><a href="#intake-expansion">Intake Form Expansion</a></li>
+        <li><a href="#coverage-section">Coverage Section Enhancements</a></li>
+        <li><a href="#unlock-section">Unlock Opportunities Section</a></li>
+        <li><a href="#physiological-section">Physiological States Section</a></li>
+        <li><a href="#tier-section">Derived Values by Tier Section</a></li>
+        <li><a href="#key-metrics">Key Metrics Section</a></li>
+        <li><a href="#implementation">Implementation Roadmap</a></li>
+      </ol>
+    </div>
+
+    <!-- EXECUTIVE SUMMARY -->
+    <section id="executive" class="section critical">
+      <h2>1. Executive Summary</h2>
+      <p>This document provides a comprehensive analysis of the current Monitor Health V3.7.0 product and details all specific enhancements required for V3.8.0. The changes span both frontend visual/UX improvements and backend data processing enhancements.</p>
+      
+      <h3>Key Objectives for V3.8.0</h3>
+      <ul>
+        <li><strong>Visual Excellence:</strong> Match premium healthtech brands (Hers, Function Health) with glassmorphism, animations, and refined aesthetics</li>
+        <li><strong>Comprehensive Data Collection:</strong> Expand intake to capture vitals, demographics, PMH, allergies, meds, FMH, social history, dietary/activity habits, mental health, and symptomology</li>
+        <li><strong>Enhanced User Understanding:</strong> Add explanatory flip cards for coverage categories, impact scores, tier explanations, and physiological state interpretations</li>
+        <li><strong>Actionable Recommendations:</strong> Provide specific provider recommendations, appointment scheduling, product suggestions, and partner integrations</li>
+      </ul>
+      
+      <h3>Scope of Changes</h3>
+      <table>
+        <tr><th>Category</th><th>Current (V3.7.0)</th><th>Target (V3.8.0)</th></tr>
+        <tr><td>Input Fields</td><td>22 biomarkers</td><td>80+ data points across 12 categories</td></tr>
+        <tr><td>UI Animations</td><td>Basic fade-in</td><td>Staggered reveals, scroll animations, micro-interactions</td></tr>
+        <tr><td>User Education</td><td>Minimal</td><td>Comprehensive flip cards, explanations, ranges</td></tr>
+        <tr><td>Recommendations</td><td>Generic actions</td><td>Specific providers, products, appointments, articles</td></tr>
+        <tr><td>Design System</td><td>Clean minimal</td><td>Glassmorphism, 3D depth, premium spa-like feel</td></tr>
+      </table>
+    </section>
+
+    <!-- CURRENT V3.7.0 STATE -->
+    <section id="current-state" class="section current">
+      <h2>2. Current V3.7.0 State Analysis</h2>
+      
+      <h3>2.1 Current User Workflow</h3>
+      <div class="workflow-step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Data Entry</strong>
+          <p>User enters biomarkers in sidebar form. Categories: Lipids (4), Metabolic (4), Kidney/Liver (5), Inflammatory (3), Body/Vitals (6), Advanced CBC/Thyroid/Vitamins (8)</p>
+        </div>
+      </div>
+      <div class="workflow-step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>API Processing</strong>
+          <p>POST to /analyze endpoint. Cascade inference engine processes inputs, calculates derived values, determines physiological proxies.</p>
+        </div>
+      </div>
+      <div class="workflow-step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <strong>Results Display</strong>
+          <p>Executive Summary → Coverage Dashboard → Unlock Opportunities → Priority Findings → Physiological States → Derived Values by Tier → Lab Correlation Guide → Key Metrics</p>
+        </div>
+      </div>
+      
+      <h3>2.2 Current Input Fields (22 total)</h3>
+      <table>
+        <tr><th>Category</th><th>Fields</th></tr>
+        <tr><td>Lipids</td><td>total_cholesterol, hdl, ldl, triglycerides</td></tr>
+        <tr><td>Metabolic</td><td>fasting_glucose, fasting_insulin, hba1c, uric_acid</td></tr>
+        <tr><td>Kidney/Liver</td><td>creatinine, bun, alt, ast, ggt</td></tr>
+        <tr><td>Inflammatory</td><td>hscrp, ferritin, homocysteine</td></tr>
+        <tr><td>Body/Vitals</td><td>sbp, dbp, weight_kg, height_cm, waist_cm, age, is_female</td></tr>
+        <tr><td>Advanced</td><td>hemoglobin, hematocrit, wbc, platelets, tsh, ft4, vitamin_d, b12</td></tr>
+      </table>
+      
+      <h3>2.3 Current Dashboard Sections</h3>
+      
+      <h4>A. Executive Summary</h4>
+      <ul>
+        <li>Headline text</li>
+        <li>Stats: Inputs Provided, Calculated Values, Total Insights</li>
+        <li>Key Findings with severity badges</li>
+        <li>Recommended Actions with priority levels</li>
+        <li>Trend Watchlist</li>
+      </ul>
+      
+      <h4>B. Coverage Dashboard</h4>
+      <ul>
+        <li>Grid of biomarker categories</li>
+        <li>Progress bars showing completion percentage</li>
+        <li>Lists provided vs missing markers</li>
+        <li><span class="tag tag-critical">ISSUE:</span> No explanation of what each category means or why it matters</li>
+      </ul>
+      
+      <h4>C. Unlock Opportunities</h4>
+      <ul>
+        <li>Lists tests that would unlock new insights</li>
+        <li>Shows unlocks count and outputs enabled</li>
+        <li>Displays "Impact Score" as a number</li>
+        <li><span class="tag tag-critical">ISSUE:</span> No explanation of what Impact Score means or how it benefits the user</li>
+      </ul>
+      
+      <h4>D. Physiological States</h4>
+      <ul>
+        <li>Cards showing state name, status, factors, score</li>
+        <li>Inputs used section</li>
+        <li>Calculated values section</li>
+        <li>Traditional lab correlation section</li>
+        <li><span class="tag tag-critical">ISSUE:</span> Users don't understand what calculated values represent or how they relate to traditional labs</li>
+        <li><span class="tag tag-critical">ISSUE:</span> No indication of where user falls in ranges (low/normal/high)</li>
+      </ul>
+      
+      <h4>E. Derived Values by Tier</h4>
+      <ul>
+        <li>Tier 1: Direct Measures</li>
+        <li>Tier 2: Derived Calculations</li>
+        <li>Tier 3: Physiological Proxies</li>
+        <li><span class="tag tag-critical">ISSUE:</span> No explanation of what each tier means or provides</li>
+        <li><span class="tag tag-critical">ISSUE:</span> No clickable explanations for individual measures</li>
+      </ul>
+      
+      <h4>F. Key Metrics</h4>
+      <ul>
+        <li>Grid of key metrics with values and tags</li>
+        <li><span class="tag tag-critical">ISSUE:</span> No recommendations for providers, appointments, or products</li>
+        <li><span class="tag tag-critical">ISSUE:</span> No links to educational resources</li>
+      </ul>
+      
+      <h3>2.4 Current Visual Design</h3>
+      <ul>
+        <li>Color palette: Sage green (#4A7C59), Coral (#E07A5F), Blue (#4A6FA5), Purple (#7B68EE)</li>
+        <li>Clean minimal cards with subtle shadows</li>
+        <li>Basic fade-in animations</li>
+        <li>Inter font family</li>
+        <li><span class="tag tag-critical">ISSUE:</span> Lacks premium feel, glassmorphism, depth, sophisticated animations</li>
+      </ul>
+    </section>
+
+    <!-- UI/UX ENHANCEMENTS -->
+    <section id="ui-enhancements" class="section enhancement">
+      <h2>3. UI/UX Visual Enhancements for V3.8.0</h2>
+      
+      <h3>3.1 Design Philosophy</h3>
+      <p>Emulate premium healthtech brands like ForHers.com and FunctionHealth.com with:</p>
+      <ul>
+        <li><strong>Modern Airy Feel:</strong> More whitespace, breathing room between elements</li>
+        <li><strong>Premium Spa-Like Tones:</strong> Earthy, refined, relaxing color palette</li>
+        <li><strong>Futuristic Elements:</strong> Subtle tech feel without being cold</li>
+        <li><strong>Glassmorphism:</strong> Frosted glass effects, blur backgrounds</li>
+        <li><strong>3D Depth:</strong> Layered shadows, floating elements, perspective</li>
+      </ul>
+      
+      <h3>3.2 Color Palette Enhancement</h3>
+      <table>
+        <tr><th>Element</th><th>Current</th><th>V3.8.0</th></tr>
+        <tr><td>Primary</td><td>#4A7C59 (Sage)</td><td>Keep + add gradient</td></tr>
+        <tr><td>Background</td><td>#FAF9F7 (Off-white)</td><td>Subtle gradient: #FDFBF9 → #F5F3F0</td></tr>
+        <tr><td>Cards</td><td>Solid white</td><td>rgba(255,255,255,0.7) with backdrop-blur</td></tr>
+        <tr><td>Accents</td><td>Flat colors</td><td>Linear gradients with 135deg angles</td></tr>
+        <tr><td>Shadows</td><td>0 4px 24px rgba(0,0,0,0.06)</td><td>Layered: base + glow + ambient</td></tr>
+      </table>
+      
+      <h3>3.3 Animation Specifications</h3>
+      <h4>A. Page Load Animations</h4>
+      <ul>
+        <li>Header slides down with slight bounce (300ms, cubic-bezier(0.34, 1.56, 0.64, 1))</li>
+        <li>Hero content fades up staggered: eyebrow → h1 → p → buttons (100ms intervals)</li>
+        <li>Sidebar fades in from left (400ms delay)</li>
+      </ul>
+      
+      <h4>B. Scroll Animations</h4>
+      <ul>
+        <li>Intersection Observer for section reveals</li>
+        <li>Elements slide up 30px while fading in</li>
+        <li>Staggered children within sections (50ms intervals)</li>
+        <li>Parallax subtle background movement</li>
+      </ul>
+      
+      <h4>C. Micro-Interactions</h4>
+      <ul>
+        <li>Button hover: scale(1.02), shadow increase, subtle glow</li>
+        <li>Card hover: translateY(-4px), shadow expand, border color shift</li>
+        <li>Input focus: border glow animation, label float</li>
+        <li>Progress bars: width animation on load (1s ease-out)</li>
+      </ul>
+      
+      <h4>D. Loading States</h4>
+      <ul>
+        <li>Skeleton loaders with shimmer effect</li>
+        <li>Pulsing dots for processing state</li>
+        <li>Success checkmark with draw animation</li>
+      </ul>
+      
+      <h3>3.4 Component Redesigns</h3>
+      
+      <h4>A. Buttons</h4>
+      <div class="code">
+.btn-primary {
+  background: linear-gradient(135deg, #4A7C59 0%, #5D9A6F 100%);
+  border-radius: 50px; /* Pill shape */
+  padding: 16px 32px;
+  box-shadow: 0 4px 15px rgba(74,124,89,0.3),
+              0 1px 3px rgba(0,0,0,0.1);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.btn-primary:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(74,124,89,0.4),
+              0 2px 6px rgba(0,0,0,0.1);
+}
+      </div>
+      
+      <h4>B. Cards</h4>
+      <div class="code">
+.card {
+  background: rgba(255,255,255,0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.08),
+              0 2px 8px rgba(0,0,0,0.04),
+              inset 0 1px 1px rgba(255,255,255,0.6);
+}
+      </div>
+      
+      <h4>C. Input Fields</h4>
+      <div class="code">
+.field input {
+  background: rgba(255,255,255,0.9);
+  border: 2px solid rgba(74,124,89,0.15);
+  border-radius: 16px;
+  padding: 18px 20px;
+  transition: all 0.3s ease;
+}
+.field input:focus {
+  border-color: rgba(74,124,89,0.5);
+  box-shadow: 0 0 0 4px rgba(74,124,89,0.1),
+              0 4px 12px rgba(74,124,89,0.15);
+}
+      </div>
+      
+      <h3>3.5 Hero Section Optimization</h3>
+      <ul>
+        <li>Full-width gradient background with subtle pattern overlay</li>
+        <li>Floating abstract health visualization (DNA helix, pulse waves)</li>
+        <li>Animated statistics counters</li>
+        <li>Trust badges with smooth hover effects</li>
+        <li>Video background option for premium feel</li>
+      </ul>
+    </section>
+
+    <!-- INTAKE EXPANSION -->
+    <section id="intake-expansion" class="section enhancement">
+      <h2>4. Intake Form Expansion for V3.8.0</h2>
+      
+      <h3>4.1 New Input Categories</h3>
+      <p><span class="tag tag-critical">CRITICAL</span> Expand from 22 to 80+ data points across 12 categories</p>
+      
+      <h4>A. Extended Vitals (NEW)</h4>
+      <table>
+        <tr><th>Field</th><th>Type</th><th>Unit</th><th>Purpose</th></tr>
+        <tr><td>resting_heart_rate</td><td>number</td><td>bpm</td><td>Cardiovascular health indicator</td></tr>
+        <tr><td>heart_rate_variability</td><td>number</td><td>ms</td><td>Autonomic nervous system health</td></tr>
+        <tr><td>respiratory_rate</td><td>number</td><td>breaths/min</td><td>Respiratory health</td></tr>
+        <tr><td>body_temperature</td><td>number</td><td>°F</td><td>Metabolic/thyroid indicator</td></tr>
+        <tr><td>spo2</td><td>number</td><td>%</td><td>Blood oxygen saturation</td></tr>
+        <tr><td>vo2_max</td><td>number</td><td>mL/kg/min</td><td>Cardiorespiratory fitness</td></tr>
+        <tr><td>grip_strength</td><td>number</td><td>kg</td><td>Sarcopenia/frailty marker</td></tr>
+      </table>
+      
+      <h4>B. Expanded Demographics (NEW)</h4>
+      <table>
+        <tr><th>Field</th><th>Type</th><th>Options/Format</th><th>Purpose</th></tr>
+        <tr><td>race_ethnicity</td><td>select</td><td>White, Black/African American, Hispanic/Latino, Asian, Native American, Pacific Islander, Mixed, Other</td><td>Influences reference ranges, disease risk</td></tr>
+        <tr><td>country_of_residence</td><td>select</td><td>Country list</td><td>Geographic health patterns</td></tr>
+        <tr><td>zip_code</td><td>text</td><td>5-digit</td><td>Environmental factors, provider matching</td></tr>
+        <tr><td>recent_travel</td><td>multiselect</td><td>Countries visited (past 6 months)</td><td>Infectious disease risk</td></tr>
+        <tr><td>altitude_residence</td><td>select</td><td>Sea level, Low, Moderate, High (>8000ft)</td><td>Affects hemoglobin, oxygen levels</td></tr>
+      </table>
+      
+      <h4>C. Past Medical History (PMH) (NEW)</h4>
+      <table>
+        <tr><th>Field</th><th>Type</th><th>Options</th></tr>
+        <tr><td>diagnosed_conditions</td><td>multiselect</td><td>Diabetes T1/T2, Hypertension, Heart Disease, Stroke, Cancer (types), Autoimmune (types), Thyroid disorders, Kidney disease, Liver disease, COPD/Asthma, Mental health conditions, etc.</td></tr>
+        <tr><td>surgeries</td><td>multiselect + text</td><td>Major surgeries with years</td></tr>
+        <tr><td>hospitalizations</td><td>number + text</td><td>Count and reasons (past 5 years)</td></tr>
+      </table>
+      
+      <h4>D. Allergies (NEW)</h4>
+      <table>
+        <tr><th>Field</th><th>Type</th><th>Details</th></tr>
+        <tr><td>drug_allergies</td><td>multiselect + text</td><td>Common drugs + free text, reaction type</td></tr>
+        <tr><td>food_allergies</td><td>multiselect</td><td>Common allergens (nuts, dairy, gluten, shellfish, etc.)</td></tr>
+        <tr><td>environmental_allergies</td><td>multiselect</td><td>Pollen, dust, mold, pet dander, etc.</td></tr>
+      </table>
+      
+      <h4>E. Medications & Supplements (NEW)</h4>
+      <table>
+        <tr><th>Field</th><th>Type</th><th>Subfields</th></tr>
+        <tr><td>current_medications</td><td>array</td><td>Name, Dose, Frequency, Duration, Prescribing reason</td></tr>
+        <tr><td>current_supplements</td><td>array</td><td>Name, Dose, Frequency, Brand (optional)</td></tr>
+        <tr><td>otc_medications</td><td>array</td><td>Name, Frequency (NSAIDs, antacids, etc.)</td></tr>
+      </table>
+      
+      <h4>F. Family Medical History (FMH) (NEW)</h4>
+      <table>
+        <tr><th>Condition</th><th>Relations to Check</th></tr>
+        <tr><td>Heart disease</td><td>Mother, Father, Siblings, Grandparents</td></tr>
+        <tr><td>Stroke</td><td>Mother, Father, Siblings, Grandparents</td></tr>
+        <tr><td>Diabetes</td><td>Mother, Father, Siblings, Grandparents</td></tr>
+        <tr><td>Cancer (specify type)</td><td>Mother, Father, Siblings, Grandparents</td></tr>
+        <tr><td>Hypertension</td><td>Mother, Father, Siblings, Grandparents</td></tr>
+        <tr><td>Autoimmune diseases</td><td>Mother, Father, Siblings, Grandparents</td></tr>
+        <tr><td>Mental health conditions</td><td>Mother, Father, Siblings, Grandparents</td></tr>
+        <tr><td>Kidney disease</td><td>Mother, Father, Siblings, Grandparents</td></tr>
+        <tr><td>Alzheimer's/Dementia</td><td>Mother, Father, Siblings, Grandparents</td></tr>
+      </table>
+      
+      <h4>G. Social History (NEW)</h4>
+      <table>
+        <tr><th>Field</th><th>Type</th><th>Options</th></tr>
+        <tr><td>smoking_status</td><td>select</td><td>Never, Former (quit year), Current (packs/day)</td></tr>
+        <tr><td>alcohol_use</td><td>select</td><td>None, Occasional (<4/week), Moderate (4-14/week), Heavy (>14/week)</td></tr>
+        <tr><td>cannabis_use</td><td>select</td><td>Never, Occasional, Regular, Daily</td></tr>
+        <tr><td>recreational_drug_use</td><td>select</td><td>None, Past, Current (specify)</td></tr>
+        <tr><td>occupation_type</td><td>select</td><td>Sedentary, Light active, Moderate active, Heavy labor</td></tr>
+        <tr><td>stress_level</td><td>slider</td><td>1-10 scale</td></tr>
+        <tr><td>sleep_hours</td><td>number</td><td>Average hours/night</td></tr>
+        <tr><td>sleep_quality</td><td>select</td><td>Poor, Fair, Good, Excellent</td></tr>
+      </table>
+      
+      <h4>H. Dietary Habits (NEW)</h4>
+      <table>
+        <tr><th>Field</th><th>Type</th><th>Options</th></tr>
+        <tr><td>diet_type</td><td>select</td><td>Omnivore, Vegetarian, Vegan, Pescatarian, Keto, Paleo, Mediterranean, Other</td></tr>
+        <tr><td>meals_per_day</td><td>number</td><td>1-6+</td></tr>
+        <tr><td>water_intake</td><td>select</td><td><4 cups, 4-6 cups, 6-8 cups, 8+ cups daily</td></tr>
+        <tr><td>processed_food_frequency</td><td>select</td><td>Rarely, Sometimes, Often, Daily</td></tr>
+        <tr><td>sugar_intake</td><td>select</td><td>Low, Moderate, High</td></tr>
+        <tr><td>caffeine_intake</td><td>select</td><td>None, 1-2 cups, 3-4 cups, 5+ cups daily</td></tr>
+        <tr><td>fasting_practice</td><td>select</td><td>None, Intermittent (16:8, etc.), Extended, Religious</td></tr>
+      </table>
+      
+      <h4>I. Activity Habits (NEW)</h4>
+      <table>
+        <tr><th>Field</th><th>Type</th><th>Options</th></tr>
+        <tr><td>exercise_frequency</td><td>select</td><td>None, 1-2x/week, 3-4x/week, 5+/week, Daily</td></tr>
+        <tr><td>exercise_types</td><td>multiselect</td><td>Walking, Running, Cycling, Swimming, Weights, HIIT, Yoga, Sports, Other</td></tr>
+        <tr><td>exercise_duration</td><td>select</td><td><15 min, 15-30 min, 30-60 min, 60+ min per session</td></tr>
+        <tr><td>daily_steps</td><td>number</td><td>Average steps/day</td></tr>
+        <tr><td>sitting_hours</td><td>number</td><td>Hours sitting per day</td></tr>
+      </table>
+      
+      <h4>J. Mental Health Questionnaire (NEW)</h4>
+      <p>PHQ-4 Ultra-Brief Screening (validated instrument):</p>
+      <table>
+        <tr><th>Question</th><th>Type</th><th>Scale</th></tr>
+        <tr><td>Over the past 2 weeks, how often have you been bothered by feeling nervous, anxious, or on edge?</td><td>select</td><td>0=Not at all, 1=Several days, 2=More than half, 3=Nearly every day</td></tr>
+        <tr><td>Over the past 2 weeks, how often have you been bothered by not being able to stop or control worrying?</td><td>select</td><td>0-3 scale</td></tr>
+        <tr><td>Over the past 2 weeks, how often have you been bothered by little interest or pleasure in doing things?</td><td>select</td><td>0-3 scale</td></tr>
+        <tr><td>Over the past 2 weeks, how often have you been bothered by feeling down, depressed, or hopeless?</td><td>select</td><td>0-3 scale</td></tr>
+      </table>
+      <p>Additional: Sleep quality, energy levels, cognitive function self-assessment</p>
+      
+      <h4>K. Symptomology Section (NEW)</h4>
+      <p><span class="tag tag-critical">CRITICAL</span> Comprehensive symptom checker by organ system</p>
+      
+      <table>
+        <tr><th>System</th><th>Symptoms (multiselect)</th><th>Duration Options</th></tr>
+        <tr><td>Cardiovascular</td><td>Chest pain, Palpitations, Shortness of breath, Leg swelling, Dizziness</td><td>Past day, week, month</td></tr>
+        <tr><td>Respiratory</td><td>Cough, Wheezing, Difficulty breathing, Sputum production</td><td>Past day, week, month</td></tr>
+        <tr><td>Gastrointestinal</td><td>Nausea, Vomiting, Abdominal pain, Diarrhea, Constipation, Bloating, Heartburn</td><td>Past day, week, month</td></tr>
+        <tr><td>Neurological</td><td>Headaches, Numbness/tingling, Weakness, Memory issues, Vision changes</td><td>Past day, week, month</td></tr>
+        <tr><td>Musculoskeletal</td><td>Joint pain, Back pain, Muscle aches, Stiffness, Swelling</td><td>Past day, week, month</td></tr>
+        <tr><td>Dermatological</td><td>Rash, Itching, Hair loss, Nail changes, Bruising</td><td>Past day, week, month</td></tr>
+        <tr><td>Endocrine</td><td>Fatigue, Weight changes, Temperature sensitivity, Excessive thirst/urination</td><td>Past day, week, month</td></tr>
+        <tr><td>Genitourinary</td><td>Urinary frequency, Painful urination, Blood in urine</td><td>Past day, week, month</td></tr>
+        <tr><td>Psychological</td><td>Anxiety, Depression, Insomnia, Mood swings, Irritability</td><td>Past day, week, month</td></tr>
+        <tr><td>General</td><td>Fever, Chills, Night sweats, Unexplained weight loss, Loss of appetite</td><td>Past day, week, month</td></tr>
+      </table>
+      <p><strong>Other field:</strong> Free text for symptoms not listed (brief description)</p>
+      
+      <h3>4.2 Data Integration for Output Enhancement</h3>
+      <p>All new inputs will be encoded and weighted to:</p>
+      <ul>
+        <li>Refine risk calculations (e.g., FMH of diabetes increases diabetes risk weighting)</li>
+        <li>Adjust reference ranges (e.g., race/ethnicity affects eGFR calculation)</li>
+        <li>Enhance physiological state assessments (e.g., symptoms validate or contradict proxies)</li>
+        <li>Personalize recommendations (e.g., medication interactions, dietary restrictions)</li>
+        <li>Improve unlock opportunities (e.g., suggest tests based on symptoms)</li>
+      </ul>
+    </section>
+
+    <!-- COVERAGE SECTION -->
+    <section id="coverage-section" class="section enhancement">
+      <h2>5. Coverage Section Enhancements</h2>
+      
+      <h3>5.1 Current State</h3>
+      <ul>
+        <li>Shows category name with icon</li>
+        <li>Progress bar with completion percentage</li>
+        <li>Lists provided and missing markers</li>
+        <li><span class="tag tag-critical">MISSING:</span> No explanation of what each category means</li>
+      </ul>
+      
+      <h3>5.2 V3.8.0 Enhancement: Flip Card Explanations</h3>
+      <p>Each category card becomes a flip card. Front shows current info, back shows:</p>
+      
+      <h4>A. Category Explanation Structure</h4>
+      <div class="code">
+{
+  "category": "lipid",
+  "display_name": "Lipid Panel",
+  "icon": "💉",
+  "what_it_is": "Blood fats that affect cardiovascular health",
+  "why_it_matters": "Lipids are the building blocks of cell membranes and hormones. Imbalanced levels significantly increase heart disease and stroke risk.",
+  "clinical_monitoring": [
+    "Total cholesterol - overall lipid burden",
+    "LDL ('bad' cholesterol) - arterial plaque formation",
+    "HDL ('good' cholesterol) - reverse cholesterol transport",
+    "Triglycerides - energy storage and metabolic health"
+  ],
+  "health_impact": "Abnormal lipids contribute to atherosclerosis (hardening of arteries), which is the leading cause of heart attacks and strokes. Optimal lipid levels reduce cardiovascular events by 25-35%.",
+  "red_flags": ["LDL > 160 mg/dL", "HDL < 40 mg/dL", "Triglycerides > 200 mg/dL"],
+  "lifestyle_factors": ["Diet high in saturated fats", "Physical inactivity", "Genetics", "Obesity"]
+}
+      </div>
+      
+      <h4>B. All Category Explanations Required</h4>
+      <table>
+        <tr><th>Category</th><th>What It Is</th><th>Why It Matters</th></tr>
+        <tr><td>Lipid</td><td>Blood fats affecting cardiovascular health</td><td>Heart disease risk, arterial health</td></tr>
+        <tr><td>Glycemic</td><td>Blood sugar regulation markers</td><td>Diabetes risk, metabolic health</td></tr>
+        <tr><td>Kidney</td><td>Kidney filtration function markers</td><td>Waste removal, electrolyte balance</td></tr>
+        <tr><td>Liver</td><td>Liver enzyme and function tests</td><td>Detoxification, protein synthesis</td></tr>
+        <tr><td>Inflammatory</td><td>Systemic inflammation markers</td><td>Chronic disease risk, immune function</td></tr>
+        <tr><td>Thyroid</td><td>Thyroid hormone levels</td><td>Metabolism, energy, weight regulation</td></tr>
+        <tr><td>Anemia/Hematology</td><td>Red blood cell health markers</td><td>Oxygen delivery, energy, fatigue</td></tr>
+        <tr><td>Metabolic/Body Composition</td><td>Weight, BMI, waist measurements</td><td>Obesity risk, visceral fat, cardiometabolic health</td></tr>
+        <tr><td>Cardiac/Blood Pressure</td><td>Heart function and BP markers</td><td>Hypertension, heart strain, stroke risk</td></tr>
+        <tr><td>Nutritional</td><td>Vitamin and mineral levels</td><td>Cellular function, bone health, energy</td></tr>
+        <tr><td>Demographics</td><td>Age, sex, race, geography</td><td>Reference range adjustment, risk stratification</td></tr>
+      </table>
+      
+      <h4>C. UI Implementation</h4>
+      <ul>
+        <li>CSS 3D flip animation on click (perspective: 1000px, rotateY: 180deg)</li>
+        <li>Front: Current coverage info</li>
+        <li>Back: Explanation card with all info above</li>
+        <li>Click anywhere on back to flip back</li>
+        <li>Mobile: Bottom sheet modal instead of flip</li>
+      </ul>
+    </section>
+
+    <!-- UNLOCK SECTION -->
+    <section id="unlock-section" class="section enhancement">
+      <h2>6. Unlock Opportunities Section Enhancements</h2>
+      
+      <h3>6.1 Current State</h3>
+      <ul>
+        <li>Shows test name to add</li>
+        <li>Lists outputs that would be unlocked</li>
+        <li>Displays "Impact Score: X.X"</li>
+        <li><span class="tag tag-critical">MISSING:</span> No explanation of what Impact Score means</li>
+        <li><span class="tag tag-critical">MISSING:</span> No explanation of specific value to user</li>
+      </ul>
+      
+      <h3>6.2 V3.8.0 Enhancement: Impact Score Explanation</h3>
+      
+      <h4>A. Impact Score Definition (to be displayed)</h4>
+      <div class="code">
+Impact Score Explanation:
+"The Impact Score (0-10) measures how much adding this test improves your health insights:
+
+🎯 Calculation Factors:
+• Number of new calculations enabled (40% weight)
+• Clinical significance of unlocked outputs (30% weight)
+• Confidence improvement in existing assessments (20% weight)
+• Interconnections with other biomarkers (10% weight)
+
+📊 Score Interpretation:
+• 8-10: High Impact - Major insight improvements, strongly recommended
+• 5-7: Moderate Impact - Valuable additions for deeper understanding
+• 3-4: Low-Moderate Impact - Nice to have for completeness
+• 1-2: Low Impact - Minor improvements
+
+💡 What This Means For You:
+Higher impact tests provide more actionable health information per dollar spent."
+      </div>
+      
+      <h4>B. Per-Test Value Explanation</h4>
+      <p>Each unlock opportunity shows specific value:</p>
+      <div class="code">
+{
+  "input": "fasting_insulin",
+  "impact_score": 8.5,
+  "unlocks_count": 6,
+  "value_explanation": {
+    "headline": "Unlock Insulin Resistance Assessment",
+    "specific_insights": [
+      "Calculate HOMA-IR - gold standard insulin resistance marker",
+      "Calculate HOMA-Beta - beta cell function assessment",
+      "Enhance metabolic syndrome evaluation",
+      "Improve diabetes risk prediction accuracy by 40%",
+      "Enable early prediabetes detection",
+      "Refine cardiovascular risk stratification"
+    ],
+    "clinical_relevance": "Insulin resistance often precedes diabetes by 10-15 years. Early detection enables lifestyle intervention before disease onset.",
+    "cost_value": "Test cost: ~$15-30 | Value: Early diabetes prevention (avg savings: $13,000/year in diabetes management costs)"
+  }
+}
+      </div>
+    </section>
+
+    <!-- PHYSIOLOGICAL STATES -->
+    <section id="physiological-section" class="section enhancement">
+      <h2>7. Physiological States Section Enhancements</h2>
+      
+      <h3>7.1 Current Issues</h3>
+      <ul>
+        <li>Users don't understand what calculated values actually represent</li>
+        <li>No link between calculated values and traditional lab correlations</li>
+        <li>No indication of where user falls in ranges (low/normal/high)</li>
+        <li>No combined interpretation of all values together</li>
+      </ul>
+      
+      <h3>7.2 V3.8.0 Enhancements</h3>
+      
+      <h4>A. Calculated Value Explanations</h4>
+      <p>Each calculated value displays:</p>
+      <div class="code">
+{
+  "name": "homa_ir",
+  "display_name": "HOMA-IR",
+  "value": 3.2,
+  "what_it_represents": "Homeostatic Model Assessment for Insulin Resistance - measures how effectively your cells respond to insulin",
+  "how_calculated": "Calculated from your fasting glucose (108 mg/dL) × fasting insulin (12 μIU/mL) ÷ 405",
+  "your_range_position": {
+    "range_low": 0,
+    "range_optimal": 1.0,
+    "range_borderline": 2.0,
+    "range_high": 3.0,
+    "your_value": 3.2,
+    "interpretation": "HIGH - Above optimal range"
+  },
+  "range_meanings": {
+    "low": "<1.0: Excellent insulin sensitivity",
+    "optimal": "1.0-2.0: Normal insulin sensitivity",
+    "borderline": "2.0-3.0: Borderline insulin resistance",
+    "high": ">3.0: Insulin resistance present"
+  },
+  "traditional_lab_link": "This value correlates with what a fasting insulin test would show. Your calculated HOMA-IR of 3.2 suggests your fasting insulin would likely measure in the 12-20 μIU/mL range (elevated)."
+}
+      </div>
+      
+      <h4>B. Traditional Lab Correlation Display</h4>
+      <p>For each traditional lab correlation, show:</p>
+      <ul>
+        <li>Lab test name</li>
+        <li>Expected numeric range based on our calculations</li>
+        <li>Visual position indicator (low/normal/high)</li>
+        <li>What that position means clinically</li>
+      </ul>
+      
+      <div class="code">
+// Example display for Insulin Sensitivity Proxy
+Traditional Lab Correlations:
+
+┌─────────────────┬──────────────────────────┬───────────────┐
+│ Lab Test        │ Your Estimated Range     │ Interpretation│
+├─────────────────┼──────────────────────────┼───────────────┤
+│ HOMA-IR         │ 2.5-4.0 (ELEVATED)       │ ████████░░    │
+│ Fasting Insulin │ 15-25 μIU/mL (HIGH)      │ ████████░░    │
+│ Fasting Glucose │ 100-125 mg/dL (PREDIAB)  │ ██████░░░░    │
+│ HbA1c           │ 5.7-6.4% (PREDIABETIC)   │ ██████░░░░    │
+│ Triglycerides   │ ≥150 mg/dL (ELEVATED)    │ ████████░░    │
+│ HDL Cholesterol │ <40 mg/dL (LOW)          │ ███░░░░░░░    │
+└─────────────────┴──────────────────────────┴───────────────┘
+      </div>
+      
+      <h4>C. Combined Interpretation</h4>
+      <p>After listing individual values, provide combined assessment:</p>
+      <div class="code">
+Combined Assessment for Insulin Sensitivity:
+
+Based on your values analyzed together:
+
+• Your HOMA-IR (3.2 - elevated) combined with TG/HDL ratio (4.4 - elevated) 
+  and TyG index (9.1 - elevated) creates a CONSISTENT PATTERN of insulin resistance.
+
+• When these three markers align in the elevated direction, the likelihood of 
+  true insulin resistance is HIGH (>85% confidence).
+
+• Individual interpretation: Each marker individually suggests insulin resistance, 
+  but together they provide strong confirmation.
+
+Likely Implications:
+• Your cells are requiring more insulin to regulate blood sugar
+• This often precedes type 2 diabetes by 10-15 years
+• Early intervention through diet and exercise can reverse this pattern
+
+Recommendation: Discuss OGTT (oral glucose tolerance test) with your provider 
+to confirm and establish a monitoring baseline.
+      </div>
+    </section>
+
+    <!-- TIER SECTION -->
+    <section id="tier-section" class="section enhancement">
+      <h2>8. Derived Values by Tier Section Enhancements</h2>
+      
+      <h3>8.1 Current Issues</h3>
+      <ul>
+        <li>No clear explanation of what each tier means</li>
+        <li>No explanation of what insights each tier provides</li>
+        <li>Values shown but not clickable for explanation</li>
+        <li>No combined tier-level interpretation</li>
+      </ul>
+      
+      <h3>8.2 V3.8.0 Enhancements</h3>
+      
+      <h4>A. Tier Explanation Headers</h4>
+      <div class="code">
+TIER 1: DIRECT MEASURES
+━━━━━━━━━━━━━━━━━━━━━━━━
+What These Are: Values directly entered or calculated from single inputs (BMI from height/weight)
+
+What They Provide: Baseline health metrics that form the foundation of all analysis
+
+Insight Level: Individual markers - each tells its own story but gains power when combined
+
+Your Tier 1 Values: [X values]
+
+
+TIER 2: DERIVED CALCULATIONS  
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+What These Are: Ratios, indices, and scores calculated from multiple Tier 1 values
+
+What They Provide: Deeper insight through combined analysis (e.g., HOMA-IR combines glucose + insulin)
+
+Insight Level: Pattern recognition - reveals relationships between biomarkers that single values can't show
+
+Your Tier 2 Values: [X values]
+
+
+TIER 3: PHYSIOLOGICAL PROXIES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+What These Are: Inferred physiological states based on patterns across multiple derived values
+
+What They Provide: Whole-system assessments (insulin sensitivity, inflammatory burden, CV resilience)
+
+Insight Level: Predictive - these proxies correlate with what specialized lab tests would show
+
+Your Tier 3 Values: [X values]
+      </div>
+      
+      <h4>B. Clickable Value Explanations</h4>
+      <p>Each value in each tier is clickable. On click, card flips to show:</p>
+      <div class="code">
+{
+  "name": "atherogenic_index",
+  "display_name": "Atherogenic Index of Plasma",
+  "tier": 2,
+  "your_value": 0.42,
+  "what_it_represents": "Logarithmic ratio of triglycerides to HDL that predicts LDL particle size and cardiovascular risk",
+  "calculation": "log10(Triglycerides / HDL) = log10(185 / 42) = 0.64",
+  "range_interpretation": {
+    "low_risk": "<0.1: Low cardiovascular risk, large LDL particles",
+    "moderate_risk": "0.1-0.24: Moderate risk, mixed particle sizes", 
+    "high_risk": ">0.24: High cardiovascular risk, small dense LDL particles"
+  },
+  "your_interpretation": "At 0.42, you're in the HIGH RISK category, suggesting small dense LDL particles which penetrate arterial walls more easily",
+  "clinical_significance": "AIP is one of the strongest predictors of coronary artery disease, often outperforming traditional LDL measurements",
+  "what_you_can_do": "Reduce refined carbohydrates, increase omega-3 fatty acids, regular aerobic exercise"
+}
+      </div>
+      
+      <h4>C. Tier-Level Combined Interpretation</h4>
+      <p>At the bottom of each tier, provide bulleted interpretation:</p>
+      <div class="code">
+Based on your Tier 2 Derived Calculations:
+
+• Your lipid ratios (AIP: 0.42, Castelli I: 5.2, TG/HDL: 4.4) collectively suggest an 
+  ATHEROGENIC LIPID PATTERN with small dense LDL particles
+
+• Your glycemic indices (HOMA-IR: 3.2, TyG: 9.1, QUICKI: 0.31) consistently indicate 
+  INSULIN RESISTANCE requiring attention
+
+• Your inflammatory markers (NLR: not calculated due to missing inputs) could provide 
+  additional context - consider adding CBC with differential
+
+• LIKELY/UNLIKELY STATEMENTS:
+  ✓ LIKELY: Small dense LDL particles present (based on AIP + TG/HDL alignment)
+  ✓ LIKELY: Insulin resistance present (based on HOMA-IR + TyG alignment)
+  ✓ LIKELY: Increased cardiovascular risk (based on Castelli + AIP alignment)
+  ? UNCERTAIN: Inflammatory status (insufficient data)
+      </div>
+    </section>
+
+    <!-- KEY METRICS -->
+    <section id="key-metrics" class="section enhancement">
+      <h2>9. Key Metrics Section Enhancements</h2>
+      
+      <h3>9.1 Current State</h3>
+      <ul>
+        <li>Grid of key metrics with values and basic tags</li>
+        <li><span class="tag tag-critical">MISSING:</span> No provider recommendations</li>
+        <li><span class="tag tag-critical">MISSING:</span> No appointment scheduling</li>
+        <li><span class="tag tag-critical">MISSING:</span> No educational resources</li>
+        <li><span class="tag tag-critical">MISSING:</span> No product recommendations</li>
+      </ul>
+      
+      <h3>9.2 V3.8.0 Enhancements</h3>
+      
+      <h4>A. Key Findings Highlight Structure</h4>
+      <div class="code">
+Key Metric Card (expanded on click):
+
+┌────────────────────────────────────────────────────────────┐
+│ 🎯 HOMA-IR: 3.2                              [ELEVATED]    │
+│━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━│
+│                                                            │
+│ WHY THIS MATTERS:                                          │
+│ Indicates insulin resistance - your cells need more        │
+│ insulin to regulate blood sugar. This often precedes       │
+│ type 2 diabetes by 10-15 years.                           │
+│                                                            │
+│ ⚡ RECOMMENDED ACTIONS:                                    │
+│ • Discuss with provider about OGTT for confirmation        │
+│ • Consider CGM monitoring for glucose patterns             │
+│ • Implement Mediterranean diet principles                  │
+│ • Target 150+ minutes moderate exercise weekly             │
+│                                                            │
+│ 🏥 PROVIDER RECOMMENDATIONS:                               │
+│ Based on your location (ZIP: 60601):                       │
+│ • Dr. Sarah Chen, Endocrinology - Northwestern (4.8★)     │
+│ • Midwest Diabetes Center - 2.3 mi away (4.6★)            │
+│ • Rush Metabolic Health Clinic (4.7★)                      │
+│ [📅 Schedule Appointment]                                  │
+│                                                            │
+│ 💻 TELEHEALTH OPTIONS:                                     │
+│ • Hers/Hims Metabolic Health Program                       │
+│ • Virta Health - Diabetes Reversal Program                 │
+│ • Levels Health - CGM + Coaching                           │
+│                                                            │
+│ 🛒 PRODUCT RECOMMENDATIONS:                                │
+│ • Dexcom G7 CGM - Monitor glucose patterns ($89/mo)        │
+│   [Partner discount: 15% off with code HELIX15]            │
+│ • Berberine supplement - Natural insulin sensitizer        │
+│ • Oura Ring - Track sleep & HRV (affects insulin sens)     │
+│                                                            │
+│ 📚 LEARN MORE:                                             │
+│ • "Understanding Insulin Resistance" - Our Blog            │
+│ • PMID:3899825 - Original HOMA-IR Study                    │
+│ • ADA Clinical Guidelines 2026                             │
+│                                                            │
+│ 🧪 ADDITIONAL TESTS TO CONSIDER:                           │
+│ • Oral Glucose Tolerance Test (OGTT)                       │
+│ • C-Peptide - Beta cell function                           │
+│ • GAD65 Antibodies - Rule out Type 1                       │
+└────────────────────────────────────────────────────────────┘
+      </div>
+      
+      <h4>B. Provider Recommendation System</h4>
+      <p>For each key finding, provide relevant specialists:</p>
+      <table>
+        <tr><th>Finding Category</th><th>Specialist Types</th><th>Facility Types</th></tr>
+        <tr><td>Insulin Resistance/Diabetes</td><td>Endocrinologist, Diabetologist, Metabolic Medicine</td><td>Diabetes centers, Metabolic health clinics</td></tr>
+        <tr><td>Cardiovascular</td><td>Cardiologist, Preventive Cardiology</td><td>Heart centers, Lipid clinics</td></tr>
+        <tr><td>Liver (NAFLD)</td><td>Hepatologist, Gastroenterologist</td><td>Liver clinics, GI centers</td></tr>
+        <tr><td>Kidney</td><td>Nephrologist</td><td>Kidney centers</td></tr>
+        <tr><td>Thyroid</td><td>Endocrinologist</td><td>Endocrine centers</td></tr>
+        <tr><td>Inflammatory</td><td>Rheumatologist, Internal Medicine</td><td>Autoimmune clinics</td></tr>
+        <tr><td>Anemia</td><td>Hematologist</td><td>Blood disorder clinics</td></tr>
+      </table>
+      
+      <h4>C. Appointment Scheduling Integration</h4>
+      <p>Integration options (API partnerships):</p>
+      <ul>
+        <li>Zocdoc API - Direct booking within app</li>
+        <li>Healthgrades - Provider info + booking links</li>
+        <li>OpenTable-style embedded scheduling</li>
+        <li>Calendar integration (Google, Apple) for reminders</li>
+      </ul>
+      
+      <h4>D. Educational Resource Links</h4>
+      <p>For each finding, provide:</p>
+      <ul>
+        <li>Internal blog article (written for patients)</li>
+        <li>PubMed citation for original research</li>
+        <li>Clinical guideline reference (ADA, ACC, etc.)</li>
+        <li>Video explainer (YouTube or embedded)</li>
+        <li>Support community links</li>
+      </ul>
+      
+      <h4>E. Product Recommendations & Partnerships</h4>
+      <p>Categorized recommendations:</p>
+      <table>
+        <tr><th>Category</th><th>Product Types</th><th>Example Partners</th></tr>
+        <tr><td>Monitoring Devices</td><td>CGMs, BP monitors, Scales, Wearables</td><td>Dexcom, Withings, Oura, Whoop, Apple</td></tr>
+        <tr><td>At-Home Test Kits</td><td>Blood panels, Genetic tests, Microbiome</td><td>Everlywell, InsideTracker, Viome</td></tr>
+        <tr><td>Supplements</td><td>Condition-specific supplements</td><td>Thorne, Pure Encapsulations</td></tr>
+        <tr><td>Telehealth</td><td>Virtual care programs</td><td>Hers/Hims, Virta, Levels</td></tr>
+        <tr><td>Nutrition</td><td>Meal delivery, Apps</td><td>Factor, Noom, MyFitnessPal Premium</td></tr>
+      </table>
+      
+      <p><strong>Partner Revenue Model:</strong></p>
+      <ul>
+        <li>Affiliate commission on purchases (10-20%)</li>
+        <li>Sponsored placement (clearly labeled)</li>
+        <li>Exclusive discount codes for users</li>
+        <li>White-label integration partnerships</li>
+      </ul>
+    </section>
+
+    <!-- IMPLEMENTATION -->
+    <section id="implementation" class="section">
+      <h2>10. Implementation Roadmap</h2>
+      
+      <h3>10.1 Frontend Changes</h3>
+      <ol>
+        <li><strong>Design System Update</strong> - Implement new glassmorphism, gradients, animations</li>
+        <li><strong>Intake Form Expansion</strong> - Add all new input categories with multi-step wizard</li>
+        <li><strong>Flip Card Components</strong> - Build reusable flip card for coverage, tiers, metrics</li>
+        <li><strong>Scroll Animations</strong> - Implement Intersection Observer + GSAP/Framer Motion</li>
+        <li><strong>Provider Search UI</strong> - Location-based provider cards with booking CTAs</li>
+        <li><strong>Product Recommendations UI</strong> - Cards with images, pricing, partner badges</li>
+      </ol>
+      
+      <h3>10.2 Backend Changes</h3>
+      <ol>
+        <li><strong>Schema Expansion</strong> - Add all new input fields to API schema</li>
+        <li><strong>Encoding Engine</strong> - Implement encoding/weighting for new inputs</li>
+        <li><strong>Category Explanations</strong> - Add static explanations for all coverage categories</li>
+        <li><strong>Impact Score Logic</strong> - Document and expose calculation methodology</li>
+        <li><strong>Range Interpretations</strong> - Add low/normal/high ranges for all values</li>
+        <li><strong>Combined Interpretation Engine</strong> - Multi-marker pattern analysis</li>
+        <li><strong>Provider API Integration</strong> - Connect to provider/booking APIs</li>
+        <li><strong>Product Catalog</strong> - Build product recommendation database</li>
+      </ol>
+      
+      <h3>10.3 Deployment Checklist</h3>
+      <ul>
+        <li>☐ Update worker.js with all backend changes</li>
+        <li>☐ Update frontend/index.html with all UI changes</li>
+        <li>☐ Test all new input fields process correctly</li>
+        <li>☐ Verify flip card animations work on mobile</li>
+        <li>☐ Test PDF generation includes new sections</li>
+        <li>☐ Deploy backend: npx wrangler deploy</li>
+        <li>☐ Deploy frontend: push to gh-pages</li>
+        <li>☐ Update version to 3.8.0 in all files</li>
+        <li>☐ Verify with curl after deploy</li>
+        <li>☐ Update documentation</li>
+      </ul>
+    </section>
+
+    <hr>
+    
+    <p style="text-align: center; color: #888; font-size: 14px;">
+      HELIX Monitor Health - V3.8.0 Enhancement Report<br>
+      Generated: February 3, 2026<br>
+      Document Version: 1.0
+    </p>
+  </div>
+
+  <script>
+    function generatePDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      let y = 20;
+      const margin = 20;
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const contentWidth = pageWidth - 2 * margin;
+      
+      function addPage() { doc.addPage(); y = 20; }
+      function checkPage(needed = 30) { if (y + needed > 270) addPage(); }
+      
+      function addTitle(text, size = 16) {
+        checkPage(20);
+        doc.setFontSize(size);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(74, 124, 89);
+        doc.text(text, margin, y);
+        y += size * 0.7;
+      }
+      
+      function addSubtitle(text) {
+        checkPage(15);
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(224, 122, 95);
+        doc.text(text, margin, y);
+        y += 8;
+      }
+      
+      function addText(text, indent = 0) {
+        checkPage(10);
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(45, 52, 54);
+        const lines = doc.splitTextToSize(text, contentWidth - indent);
+        doc.text(lines, margin + indent, y);
+        y += lines.length * 5;
+      }
+      
+      function addBullet(text, indent = 5) {
+        checkPage(10);
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(45, 52, 54);
+        doc.text('•', margin + indent, y);
+        const lines = doc.splitTextToSize(text, contentWidth - indent - 8);
+        doc.text(lines, margin + indent + 8, y);
+        y += lines.length * 5 + 2;
+      }
+      
+      function addLine() {
+        checkPage(10);
+        doc.setDrawColor(200, 200, 200);
+        doc.line(margin, y, pageWidth - margin, y);
+        y += 8;
+      }
+      
+      // HEADER
+      doc.setFillColor(74, 124, 89);
+      doc.rect(0, 0, pageWidth, 40, 'F');
+      doc.setFontSize(20);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(255, 255, 255);
+      doc.text('HELIX Monitor Health', margin, 20);
+      doc.setFontSize(14);
+      doc.text('V3.8.0 Enhancement Report', margin, 30);
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'normal');
+      doc.text('February 3, 2026', margin, 37);
+      y = 50;
+      
+      // EXECUTIVE SUMMARY
+      addTitle('1. Executive Summary');
+      addLine();
+      addText('This document details all enhancements required for Monitor Health V3.8.0, covering both visual/UX improvements and backend data processing enhancements.');
+      y += 5;
+      
+      addSubtitle('Key Objectives');
+      addBullet('Visual Excellence: Match premium healthtech brands with glassmorphism, animations, and refined aesthetics');
+      addBullet('Comprehensive Data Collection: Expand intake to 80+ data points across 12 categories');
+      addBullet('Enhanced User Understanding: Add explanatory flip cards for all sections');
+      addBullet('Actionable Recommendations: Provide specific providers, appointments, products, and partner integrations');
+      
+      // CURRENT STATE
+      addPage();
+      addTitle('2. Current V3.7.0 State Analysis');
+      addLine();
+      
+      addSubtitle('Current Input Fields (22 total)');
+      addBullet('Lipids: total_cholesterol, hdl, ldl, triglycerides');
+      addBullet('Metabolic: fasting_glucose, fasting_insulin, hba1c, uric_acid');
+      addBullet('Kidney/Liver: creatinine, bun, alt, ast, ggt');
+      addBullet('Inflammatory: hscrp, ferritin, homocysteine');
+      addBullet('Body/Vitals: sbp, dbp, weight_kg, height_cm, waist_cm, age');
+      addBullet('Advanced: hemoglobin, hematocrit, wbc, platelets, tsh, ft4, vitamin_d, b12');
+      
+      addSubtitle('Current Issues Identified');
+      addBullet('Coverage: No explanation of what each category means');
+      addBullet('Unlock Opportunities: No explanation of Impact Score value');
+      addBullet('Physiological States: No understanding of calculated values or ranges');
+      addBullet('Derived Values by Tier: No tier explanations or clickable measures');
+      addBullet('Key Metrics: No provider, appointment, or product recommendations');
+      
+      // UI ENHANCEMENTS
+      addPage();
+      addTitle('3. UI/UX Visual Enhancements');
+      addLine();
+      
+      addSubtitle('Design Philosophy');
+      addBullet('Modern Airy Feel: More whitespace, breathing room');
+      addBullet('Premium Spa-Like Tones: Earthy, refined, relaxing color palette');
+      addBullet('Glassmorphism: Frosted glass effects, blur backgrounds');
+      addBullet('3D Depth: Layered shadows, floating elements');
+      addBullet('Smooth Animations: Staggered reveals, scroll animations, micro-interactions');
+      
+      addSubtitle('Animation Specifications');
+      addBullet('Page Load: Header slides down, hero content fades up staggered');
+      addBullet('Scroll: Intersection Observer reveals, elements slide up 30px while fading');
+      addBullet('Micro-interactions: Button scale(1.02), card translateY(-4px), input glow');
+      addBullet('Loading: Skeleton loaders with shimmer, pulsing dots, success checkmark draw');
+      
+      // INTAKE EXPANSION
+      addPage();
+      addTitle('4. Intake Form Expansion');
+      addLine();
+      addText('Expand from 22 to 80+ data points across 12 categories:');
+      y += 5;
+      
+      addSubtitle('A. Extended Vitals (NEW)');
+      addBullet('resting_heart_rate, heart_rate_variability, respiratory_rate');
+      addBullet('body_temperature, spo2, vo2_max, grip_strength');
+      
+      addSubtitle('B. Expanded Demographics (NEW)');
+      addBullet('race_ethnicity, country_of_residence, zip_code');
+      addBullet('recent_travel, altitude_residence');
+      
+      addSubtitle('C. Past Medical History (PMH)');
+      addBullet('diagnosed_conditions (multiselect), surgeries, hospitalizations');
+      
+      addSubtitle('D. Allergies');
+      addBullet('drug_allergies, food_allergies, environmental_allergies');
+      
+      addSubtitle('E. Medications & Supplements');
+      addBullet('current_medications (name, dose, frequency)');
+      addBullet('current_supplements (name, dose, frequency)');
+      addBullet('otc_medications');
+      
+      addPage();
+      addSubtitle('F. Family Medical History');
+      addBullet('Heart disease, Stroke, Diabetes, Cancer, Hypertension');
+      addBullet('Autoimmune, Mental health, Kidney disease, Alzheimer\'s');
+      addBullet('For each: Mother, Father, Siblings, Grandparents');
+      
+      addSubtitle('G. Social History');
+      addBullet('smoking_status, alcohol_use, cannabis_use, recreational_drug_use');
+      addBullet('occupation_type, stress_level, sleep_hours, sleep_quality');
+      
+      addSubtitle('H. Dietary Habits');
+      addBullet('diet_type, meals_per_day, water_intake');
+      addBullet('processed_food_frequency, sugar_intake, caffeine_intake');
+      
+      addSubtitle('I. Activity Habits');
+      addBullet('exercise_frequency, exercise_types, exercise_duration');
+      addBullet('daily_steps, sitting_hours');
+      
+      addSubtitle('J. Mental Health (PHQ-4)');
+      addBullet('Anxiety screening (2 questions, 0-3 scale)');
+      addBullet('Depression screening (2 questions, 0-3 scale)');
+      
+      addSubtitle('K. Symptomology');
+      addBullet('Cardiovascular, Respiratory, Gastrointestinal, Neurological');
+      addBullet('Musculoskeletal, Dermatological, Endocrine, Genitourinary');
+      addBullet('Psychological, General - each with duration (day/week/month)');
+      addBullet('Other field for free text symptoms');
+      
+      // COVERAGE SECTION
+      addPage();
+      addTitle('5. Coverage Section Enhancements');
+      addLine();
+      
+      addSubtitle('Flip Card Explanations');
+      addText('Each category card becomes a flip card. Front shows coverage info, back shows:');
+      y += 5;
+      addBullet('what_it_is: Brief description of the category');
+      addBullet('why_it_matters: Health impact explanation');
+      addBullet('clinical_monitoring: What clinicians look for');
+      addBullet('health_impact: Specific health consequences');
+      addBullet('red_flags: Values that indicate concern');
+      addBullet('lifestyle_factors: Modifiable risk factors');
+      
+      // UNLOCK SECTION
+      addTitle('6. Unlock Opportunities Enhancements');
+      addLine();
+      
+      addSubtitle('Impact Score Explanation');
+      addText('Display clear explanation of Impact Score calculation (0-10 scale):');
+      y += 3;
+      addBullet('8-10: High Impact - Major insight improvements, strongly recommended');
+      addBullet('5-7: Moderate Impact - Valuable for deeper understanding');
+      addBullet('3-4: Low-Moderate Impact - Nice for completeness');
+      addBullet('1-2: Low Impact - Minor improvements');
+      y += 3;
+      addText('Each unlock shows specific value: what insights it enables, clinical relevance, cost-value analysis');
+      
+      // PHYSIOLOGICAL STATES
+      addPage();
+      addTitle('7. Physiological States Enhancements');
+      addLine();
+      
+      addSubtitle('Calculated Value Explanations');
+      addBullet('what_it_represents: Plain language description');
+      addBullet('how_calculated: Show actual calculation with user values');
+      addBullet('your_range_position: Visual position (low/normal/high)');
+      addBullet('range_meanings: What each range means clinically');
+      addBullet('traditional_lab_link: What traditional test it correlates with');
+      
+      addSubtitle('Combined Interpretation');
+      addText('After individual values, provide combined assessment:');
+      y += 3;
+      addBullet('Pattern analysis across multiple markers');
+      addBullet('Confidence level when markers align');
+      addBullet('LIKELY/UNLIKELY statements based on combined values');
+      addBullet('Specific recommendations based on pattern');
+      
+      // TIER SECTION
+      addTitle('8. Derived Values by Tier Enhancements');
+      addLine();
+      
+      addSubtitle('Tier Explanation Headers');
+      addBullet('Tier 1 (Direct): Values from inputs, baseline health metrics');
+      addBullet('Tier 2 (Derived): Ratios/indices from multiple Tier 1 values');
+      addBullet('Tier 3 (Proxies): Inferred physiological states');
+      
+      addSubtitle('Clickable Value Explanations');
+      addText('Each value clickable to show: what it represents, calculation, range interpretation, clinical significance, actionable guidance');
+      y += 5;
+      
+      addSubtitle('Tier-Level Combined Interpretation');
+      addText('Bulleted summary at bottom of each tier: pattern analysis, LIKELY/UNLIKELY statements');
+      
+      // KEY METRICS
+      addPage();
+      addTitle('9. Key Metrics Section Enhancements');
+      addLine();
+      
+      addSubtitle('Expanded Key Finding Cards');
+      addBullet('WHY THIS MATTERS: Explanation of finding significance');
+      addBullet('RECOMMENDED ACTIONS: Specific steps to take');
+      addBullet('PROVIDER RECOMMENDATIONS: Location-based specialists');
+      addBullet('TELEHEALTH OPTIONS: Virtual care programs');
+      addBullet('PRODUCT RECOMMENDATIONS: Devices, test kits, supplements');
+      addBullet('LEARN MORE: Blog articles, PubMed citations, guidelines');
+      addBullet('ADDITIONAL TESTS: Follow-up testing suggestions');
+      
+      addSubtitle('Provider Recommendation System');
+      addText('For each finding category, suggest relevant specialists and facilities based on user ZIP code');
+      y += 5;
+      
+      addSubtitle('Appointment Scheduling');
+      addBullet('Zocdoc API integration for direct booking');
+      addBullet('Calendar integration for reminders');
+      
+      addSubtitle('Product Partnerships');
+      addBullet('Monitoring devices: CGMs, BP monitors, wearables');
+      addBullet('At-home test kits: Everlywell, InsideTracker');
+      addBullet('Partner discounts with codes (affiliate revenue)');
+      
+      // IMPLEMENTATION
+      addPage();
+      addTitle('10. Implementation Roadmap');
+      addLine();
+      
+      addSubtitle('Frontend Changes');
+      addBullet('Design system update (glassmorphism, gradients, animations)');
+      addBullet('Intake form expansion (multi-step wizard)');
+      addBullet('Flip card components');
+      addBullet('Scroll animations (Intersection Observer)');
+      addBullet('Provider search UI');
+      addBullet('Product recommendations UI');
+      
+      addSubtitle('Backend Changes');
+      addBullet('Schema expansion for all new input fields');
+      addBullet('Encoding engine for new inputs');
+      addBullet('Category explanations database');
+      addBullet('Impact score documentation');
+      addBullet('Range interpretations for all values');
+      addBullet('Combined interpretation engine');
+      addBullet('Provider API integration');
+      addBullet('Product catalog');
+      
+      addSubtitle('Deployment Checklist');
+      addBullet('Update worker.js and frontend/index.html');
+      addBullet('Test all new input fields');
+      addBullet('Verify flip card animations on mobile');
+      addBullet('Deploy: npx wrangler deploy + push to gh-pages');
+      addBullet('Update version to 3.8.0');
+      addBullet('Verify with curl');
+      
+      // FOOTER
+      addPage();
+      doc.setFillColor(245, 245, 245);
+      doc.rect(0, 0, pageWidth, 297, 'F');
+      
+      doc.setFontSize(14);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(74, 124, 89);
+      doc.text('Document Complete', pageWidth / 2, 100, { align: 'center' });
+      
+      doc.setFontSize(11);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(100, 100, 100);
+      doc.text('HELIX Monitor Health - V3.8.0 Enhancement Report', pageWidth / 2, 120, { align: 'center' });
+      doc.text('All changes detailed above must be implemented for V3.8.0', pageWidth / 2, 130, { align: 'center' });
+      doc.text('', pageWidth / 2, 140, { align: 'center' });
+      doc.text('Generated: February 3, 2026', pageWidth / 2, 150, { align: 'center' });
+      doc.text('Document Version: 1.0', pageWidth / 2, 160, { align: 'center' });
+      
+      doc.save('HELIX_V3.8.0_Enhancement_Report.pdf');
+    }
+  </script>
+</body>
+</html>
