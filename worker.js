@@ -890,7 +890,7 @@ function runCascade(inputs) {
 }
 
 /**
- * SUGGESTIONS
+ * SUGGESTIONS (unlock map)
  */
 function getSuggestions(values) {
   const sugg = [];
@@ -906,6 +906,263 @@ function getSuggestions(values) {
   return sugg.sort((a, b) => b.confidence - a.confidence).slice(0, 10);
 }
 
+// ═══════════════════════════════════════════════════════════════
+// PRIORITY 2: A2-FIRST EXPERIENCE
+// Coverage maps, unlock maps, executive summary, output taxonomy
+// ═══════════════════════════════════════════════════════════════
+
+// Output taxonomy tiers
+const OUTPUT_TIERS = {
+  tier1_direct: ["bmi", "map", "pulse_pressure", "anion_gap", "non_hdl", "vldl"],
+  tier2_derived: ["ldl", "homa_ir", "homa_beta", "egfr", "fib4", "nlr", "plr", "castelli_1", "castelli_2", "atherogenic_index", "tg_hdl_ratio", "tyg_index", "quicki"],
+  tier3_proxy: ["insulin_sensitivity_proxy", "metabolic_stress_state", "inflammatory_burden_proxy", "cv_resilience_proxy", "hepatic_stress_proxy", "thyroid_function_proxy", "kidney_stress_proxy", "mets_likelihood", "anemia_type_proxy", "iron_status_proxy"]
+};
+
+/**
+ * Generate coverage map - what inputs provided vs what's possible
+ */
+function getCoverageMap(providedInputs) {
+  const allInputs = new Set();
+  for (const rules of Object.values(INFERENCE_RULES)) {
+    rules.forEach(r => r.req.forEach(i => allInputs.add(i)));
+  }
+  
+  const provided = Object.keys(providedInputs);
+  const missing = [...allInputs].filter(i => !provided.includes(i));
+  
+  // Group by category
+  const categories = {
+    lipid: ["total_cholesterol", "hdl", "ldl", "triglycerides", "apob"],
+    glycemic: ["fasting_glucose", "fasting_insulin", "hba1c", "mean_glucose"],
+    kidney: ["creatinine", "bun", "cystatin_c", "urine_albumin", "urine_creatinine"],
+    liver: ["ast", "alt", "ggt", "albumin", "bilirubin", "inr", "platelets"],
+    inflammatory: ["hscrp", "ferritin", "wbc", "neutrophils", "lymphocytes", "monocytes"],
+    thyroid: ["tsh", "ft4", "ft3", "t4", "t3"],
+    anemia: ["hemoglobin", "hematocrit", "rbc", "mcv", "rdw", "serum_iron", "tibc", "reticulocytes"],
+    metabolic: ["weight_kg", "height_cm", "waist_cm", "hip_cm", "bmi"],
+    cardiac: ["sbp", "dbp"],
+    nutritional: ["vitamin_d", "b12", "folate", "homocysteine", "mma"],
+    demographics: ["age", "is_female"]
+  };
+  
+  const coverage = {};
+  for (const [cat, fields] of Object.entries(categories)) {
+    const catProvided = fields.filter(f => provided.includes(f));
+    const catMissing = fields.filter(f => missing.includes(f) && allInputs.has(f));
+    coverage[cat] = {
+      provided: catProvided,
+      missing: catMissing,
+      completeness: catProvided.length / (catProvided.length + catMissing.length) || 0
+    };
+  }
+  
+  return {
+    total_possible: allInputs.size,
+    total_provided: provided.length,
+    completeness: Math.round((provided.length / allInputs.size) * 100),
+    by_category: coverage
+  };
+}
+
+/**
+ * Generate unlock map - what adding one input would enable
+ */
+function getUnlockMap(values) {
+  const unlocks = {};
+  
+  for (const [target, rules] of Object.entries(INFERENCE_RULES)) {
+    if (values[target] !== undefined) continue;
+    
+    for (const rule of rules) {
+      const missing = rule.req.filter(r => values[r] === undefined);
+      if (missing.length === 1) {
+        const input = missing[0];
+        if (!unlocks[input]) unlocks[input] = [];
+        unlocks[input].push({
+          output: target,
+          confidence: rule.conf,
+          is_proxy: OUTPUT_TIERS.tier3_proxy.includes(target)
+        });
+      }
+    }
+  }
+  
+  // Sort by impact (number of outputs unlocked * average confidence)
+  const ranked = Object.entries(unlocks).map(([input, outputs]) => ({
+    input,
+    unlocks_count: outputs.length,
+    outputs: outputs.sort((a, b) => b.confidence - a.confidence).slice(0, 5),
+    impact_score: outputs.reduce((sum, o) => sum + o.confidence, 0)
+  })).sort((a, b) => b.impact_score - a.impact_score);
+  
+  return ranked.slice(0, 10);
+}
+
+/**
+ * Generate executive summary - 3 things that matter most
+ */
+function getExecutiveSummary(derived, values, constraints) {
+  const summary = {
+    headline: "",
+    key_findings: [],
+    action_items: [],
+    trend_watchlist: []
+  };
+  
+  // Find most significant findings
+  const significant = derived.filter(d => {
+    if (d.interpretation?.risk === "high" || d.interpretation?.risk === "elevated") return true;
+    if (typeof d.value === 'object' && d.value.state && ["elevated", "likely_resistant", "deficient", "chronic_pattern"].includes(d.value.state)) return true;
+    return false;
+  }).slice(0, 3);
+  
+  if (significant.length === 0) {
+    summary.headline = "No significant concerns identified";
+    summary.key_findings.push({ finding: "All assessed markers within expected ranges", severity: "normal" });
+  } else {
+    summary.headline = `${significant.length} area(s) may warrant attention`;
+    significant.forEach(s => {
+      const finding = typeof s.value === 'object' ? 
+        `${s.name}: ${s.value.state || s.value.likelihood || 'flagged'}` :
+        `${s.name}: ${s.interpretation?.risk || 'elevated'}`;
+      summary.key_findings.push({
+        finding,
+        severity: s.interpretation?.risk || "review",
+        confidence: s.confidence?.score || s.confidence
+      });
+    });
+  }
+  
+  // Action items based on findings
+  if (values.homa_ir > 2.5 || (values.insulin_sensitivity_proxy?.state === "likely_resistant")) {
+    summary.action_items.push({ action: "Consider fasting insulin and glucose tolerance testing", priority: "moderate" });
+  }
+  if (values.hscrp > 3 || values.inflammatory_burden_proxy?.state === "elevated") {
+    summary.action_items.push({ action: "Evaluate inflammatory markers trend; consider lifestyle factors", priority: "moderate" });
+  }
+  if (values.egfr && values.egfr < 60) {
+    summary.action_items.push({ action: "Nephrology consultation recommended", priority: "high" });
+  }
+  if (values.fib4 > 2.67) {
+    summary.action_items.push({ action: "Consider FibroScan or hepatology referral", priority: "moderate" });
+  }
+  
+  // Constraint warnings
+  if (constraints?.error_count > 0) {
+    summary.key_findings.unshift({ finding: "Some input values may be inconsistent - verify data", severity: "warning" });
+  }
+  
+  // Trend watchlist (things to monitor over time)
+  const watchlist = ["hba1c", "egfr", "ldl", "hscrp", "fib4", "tsh"];
+  watchlist.forEach(w => {
+    if (values[w] !== undefined) {
+      summary.trend_watchlist.push({ marker: w, current: values[w], note: "Track longitudinally" });
+    }
+  });
+  
+  return summary;
+}
+
+/**
+ * Tier and categorize outputs
+ */
+function categorizeOutputs(derived) {
+  const categorized = {
+    tier1_direct: [],
+    tier2_derived: [],
+    tier3_proxy: [],
+    other: []
+  };
+  
+  derived.forEach(d => {
+    if (OUTPUT_TIERS.tier1_direct.includes(d.name)) categorized.tier1_direct.push(d);
+    else if (OUTPUT_TIERS.tier2_derived.includes(d.name)) categorized.tier2_derived.push(d);
+    else if (OUTPUT_TIERS.tier3_proxy.includes(d.name)) categorized.tier3_proxy.push(d);
+    else categorized.other.push(d);
+  });
+  
+  // Add tier labels
+  categorized.tier1_direct.forEach(d => d.tier = "direct_measure");
+  categorized.tier2_derived.forEach(d => d.tier = "derived_calculation");
+  categorized.tier3_proxy.forEach(d => d.tier = "physiological_proxy");
+  categorized.other.forEach(d => d.tier = "derived_calculation");
+  
+  return categorized;
+}
+
+/**
+ * Consumer-friendly metric name formatting
+ */
+function formatMetricName(name) {
+  const friendly = {
+    bmi: "Body Mass Index",
+    bmi_class: "Weight Category",
+    health_score: "Overall Health Score",
+    insulin_sensitivity_proxy: "Insulin Sensitivity",
+    inflammatory_burden_proxy: "Inflammation Level",
+    cv_resilience_proxy: "Heart Health",
+    ldl: "LDL Cholesterol",
+    hdl: "HDL Cholesterol",
+    homa_ir: "Insulin Resistance",
+    egfr: "Kidney Function",
+    fib4: "Liver Health Score"
+  };
+  return friendly[name] || name.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+}
+
+/**
+ * Consumer-friendly explanations
+ */
+function getConsumerExplanation(finding) {
+  const explanations = {
+    "elevated": "This marker is higher than optimal. Consider discussing with your healthcare provider.",
+    "likely_resistant": "Your body may be having difficulty using insulin efficiently. Lifestyle changes can help.",
+    "deficient": "This nutrient level is low. Dietary changes or supplementation may be beneficial.",
+    "normal": "This marker is within the healthy range.",
+    "optimal": "Excellent! This marker is in the optimal range."
+  };
+  
+  for (const [key, explanation] of Object.entries(explanations)) {
+    if (finding.toLowerCase().includes(key)) return explanation;
+  }
+  return "Discuss this result with your healthcare provider for personalized guidance.";
+}
+
+/**
+ * Generate full A2-first report
+ */
+function generateA2Report(inputs, result) {
+  const coverage = getCoverageMap(inputs);
+  const unlocks = getUnlockMap(result.values);
+  const categorized = categorizeOutputs(result.derived);
+  const summary = getExecutiveSummary(result.derived, result.values, result.constraints);
+  
+  return {
+    // Executive summary first
+    executive_summary: summary,
+    
+    // Coverage map
+    coverage: coverage,
+    
+    // Unlock map (what to add next)
+    unlock_opportunities: unlocks,
+    
+    // Tiered outputs
+    outputs_by_tier: {
+      direct_measures: categorized.tier1_direct.length,
+      derived_calculations: categorized.tier2_derived.length + categorized.other.length,
+      physiological_proxies: categorized.tier3_proxy.length
+    },
+    
+    // Constraints summary
+    data_quality: {
+      status: result.constraints?.status || "valid",
+      issues: result.constraints?.violations?.length || 0,
+      flags: result.constraints?.flags?.length || 0
+    }
+  };
+}
+
 /**
  * CLOUDFLARE HANDLER
  */
@@ -918,7 +1175,7 @@ export default {
     if (url.pathname === "/" || url.pathname === "") {
       return new Response(JSON.stringify({
         name: "Monitor Health API",
-        version: "3.1.0 - CONSTRAINT ENGINE + STRUCTURED CONFIDENCE",
+        version: "3.2.0 - A2 EXPERIENCE + DUAL MODES",
         differentiator: "CASCADE INFERENCE: Partial data → Comprehensive insights. EVERY formula has PMID citation.",
         total_formulas: Object.values(INFERENCE_RULES).reduce((a, r) => a + r.length, 0),
         total_citations: Object.keys(CITATIONS).length,
@@ -944,8 +1201,78 @@ export default {
     if (url.pathname === "/analyze" && request.method === "POST") {
       try {
         const body = await request.json();
+        const mode = url.searchParams.get("mode") || "standard"; // standard, a2, clinician, consumer
         const result = runCascade(body);
-        return new Response(JSON.stringify({ status: "success", ...result, suggestions: getSuggestions(result.values) }), { headers: cors });
+        
+        // A2-first mode: full coverage maps, unlocks, executive summary
+        if (mode === "a2" || mode === "full") {
+          const a2Report = generateA2Report(body, result);
+          const categorized = categorizeOutputs(result.derived);
+          return new Response(JSON.stringify({
+            status: "success",
+            mode: "a2_experience",
+            ...a2Report,
+            cascade_result: {
+              inputs: result.inputs,
+              calculated: result.calculated,
+              total: result.total
+            },
+            derived_by_tier: categorized,
+            constraints: result.constraints,
+            values: result.values
+          }), { headers: cors });
+        }
+        
+        // Clinician mode: compact, focus on actionable items
+        if (mode === "clinician") {
+          const summary = getExecutiveSummary(result.derived, result.values, result.constraints);
+          const highPriority = result.derived.filter(d => 
+            d.interpretation?.risk === "high" || 
+            d.interpretation?.risk === "elevated" ||
+            (typeof d.value === 'object' && d.value.state === "elevated")
+          );
+          return new Response(JSON.stringify({
+            status: "success",
+            mode: "clinician",
+            executive_summary: summary,
+            priority_findings: highPriority,
+            constraints: result.constraints,
+            suggestions: getSuggestions(result.values).slice(0, 5),
+            full_values: result.values
+          }), { headers: cors });
+        }
+        
+        // Consumer mode: simplified, educational
+        if (mode === "consumer") {
+          const summary = getExecutiveSummary(result.derived, result.values, result.constraints);
+          // Filter to user-friendly outputs only
+          const consumerFriendly = result.derived.filter(d => 
+            ["bmi", "bmi_class", "health_score", "insulin_sensitivity_proxy", "inflammatory_burden_proxy", "cv_resilience_proxy"].includes(d.name)
+          );
+          return new Response(JSON.stringify({
+            status: "success",
+            mode: "consumer",
+            headline: summary.headline,
+            key_findings: summary.key_findings.map(f => ({
+              ...f,
+              explanation: getConsumerExplanation(f.finding)
+            })),
+            your_metrics: consumerFriendly.map(d => ({
+              name: formatMetricName(d.name),
+              value: typeof d.value === 'object' ? d.value.state : d.value,
+              status: d.interpretation?.risk || "normal"
+            })),
+            next_steps: summary.action_items
+          }), { headers: cors });
+        }
+        
+        // Standard mode (default)
+        return new Response(JSON.stringify({ 
+          status: "success", 
+          ...result, 
+          suggestions: getSuggestions(result.values),
+          coverage: getCoverageMap(body)
+        }), { headers: cors });
       } catch (e) {
         return new Response(JSON.stringify({ error: e.message }), { status: 400, headers: cors });
       }
