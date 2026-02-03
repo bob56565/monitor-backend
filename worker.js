@@ -202,7 +202,101 @@ const INFERENCE_RULES = {
   metabolic_syndrome_atp3: [{ req: ["waist_cm", "triglycerides", "hdl", "sbp", "fasting_glucose"], formula: "mets_atp3", conf: 0.95, cite: "atp3" }],
   metabolic_syndrome_idf: [{ req: ["waist_cm", "triglycerides", "hdl", "sbp", "fasting_glucose"], formula: "mets_idf", conf: 0.95, cite: "idf" }],
   cardiometabolic_risk: [{ req: ["ldl", "hdl", "triglycerides", "sbp", "fasting_glucose", "bmi"], formula: "cm_risk", conf: 0.85 }],
-  overall_health_score: [{ req: ["bmi", "sbp", "fasting_glucose", "hdl", "triglycerides"], formula: "health_score", conf: 0.75 }]
+  overall_health_score: [{ req: ["bmi", "sbp", "fasting_glucose", "hdl", "triglycerides"], formula: "health_score", conf: 0.75 }],
+  
+  // ═══════════════════════════════════════════════════════════════
+  // PROXY INFERENCE LAYER - "THE MAGIC"
+  // Physiological state inference from multiple weak signals
+  // These are PROXIES, not direct measurements
+  // ═══════════════════════════════════════════════════════════════
+  
+  // METABOLIC PROXIES
+  insulin_sensitivity_proxy: [
+    { req: ["homa_ir", "tg_hdl_ratio", "tyg_index"], formula: "insulin_sens_proxy", conf: 0.78, 
+      meta: { type: "proxy", lab_anchor: "HOMA-IR, fasting insulin", framing: "likelihood" } },
+    { req: ["tg_hdl_ratio", "fasting_glucose", "bmi"], formula: "insulin_sens_simple", conf: 0.65,
+      meta: { type: "proxy", lab_anchor: "HOMA-IR", framing: "likelihood" } }
+  ],
+  metabolic_stress_state: [
+    { req: ["tyg_index", "hscrp", "bmi"], formula: "met_stress_state", conf: 0.72,
+      meta: { type: "proxy", lab_anchor: "Fasting insulin, cortisol", framing: "pattern" } }
+  ],
+  
+  // INFLAMMATORY PROXIES
+  inflammatory_burden_proxy: [
+    { req: ["hscrp", "nlr", "ferritin"], formula: "inflam_burden", conf: 0.75,
+      meta: { type: "proxy", lab_anchor: "hs-CRP, ESR, IL-6", framing: "state" } },
+    { req: ["hscrp", "nlr"], formula: "inflam_burden_simple", conf: 0.68,
+      meta: { type: "proxy", lab_anchor: "hs-CRP", framing: "state" } }
+  ],
+  chronic_inflammation_state: [
+    { req: ["hscrp", "ferritin", "albumin"], formula: "chronic_inflam", conf: 0.70,
+      meta: { type: "proxy", lab_anchor: "hs-CRP, ESR", framing: "pattern" } }
+  ],
+  
+  // CARDIOVASCULAR PROXIES  
+  cv_resilience_proxy: [
+    { req: ["hdl", "triglycerides", "sbp", "pulse_pressure"], formula: "cv_resilience", conf: 0.72,
+      meta: { type: "proxy", lab_anchor: "Coronary calcium score, carotid IMT", framing: "state" } }
+  ],
+  arterial_health_proxy: [
+    { req: ["pulse_pressure", "age", "sbp"], formula: "arterial_health", conf: 0.70,
+      meta: { type: "proxy", lab_anchor: "Pulse wave velocity", framing: "state" } }
+  ],
+  
+  // LIVER HEALTH PROXIES
+  hepatic_stress_proxy: [
+    { req: ["alt", "ast", "ggt", "triglycerides"], formula: "hepatic_stress", conf: 0.73,
+      meta: { type: "proxy", lab_anchor: "Liver ultrasound, FibroScan", framing: "state" } },
+    { req: ["fib4", "nafld_fibrosis"], formula: "liver_fibrosis_proxy", conf: 0.75,
+      meta: { type: "proxy", lab_anchor: "FibroScan, liver biopsy", framing: "likelihood" } }
+  ],
+  fatty_liver_likelihood: [
+    { req: ["alt", "triglycerides", "bmi", "fasting_glucose"], formula: "nafld_likelihood", conf: 0.70,
+      meta: { type: "proxy", lab_anchor: "Liver ultrasound", framing: "likelihood" } }
+  ],
+  
+  // KIDNEY HEALTH PROXIES
+  kidney_stress_proxy: [
+    { req: ["egfr", "albumin", "creatinine"], formula: "kidney_stress", conf: 0.75,
+      meta: { type: "proxy", lab_anchor: "Cystatin C, urine albumin/creatinine", framing: "state" } }
+  ],
+  
+  // THYROID PROXIES
+  thyroid_function_proxy: [
+    { req: ["tsh", "ft4"], formula: "thyroid_func_proxy", conf: 0.80,
+      meta: { type: "proxy", lab_anchor: "Full thyroid panel (T3, T4, antibodies)", framing: "state" } }
+  ],
+  thyroid_stress_pattern: [
+    { req: ["tsh", "ft4", "hscrp"], formula: "thyroid_stress", conf: 0.65,
+      meta: { type: "proxy", lab_anchor: "rT3, cortisol", framing: "pattern" } }
+  ],
+  
+  // NUTRITIONAL PROXIES
+  micronutrient_status_proxy: [
+    { req: ["ferritin", "vitamin_d", "b12"], formula: "micronut_proxy", conf: 0.72,
+      meta: { type: "proxy", lab_anchor: "Full micronutrient panel", framing: "state" } }
+  ],
+  vitamin_d_sufficiency_likelihood: [
+    { req: ["vitamin_d"], formula: "vit_d_likelihood", conf: 0.85,
+      meta: { type: "proxy", lab_anchor: "25-hydroxyvitamin D", framing: "likelihood" } }
+  ],
+  
+  // ANEMIA PROXIES
+  anemia_type_proxy: [
+    { req: ["hemoglobin", "mcv", "ferritin", "tsat"], formula: "anemia_type_proxy", conf: 0.75,
+      meta: { type: "proxy", lab_anchor: "Iron studies, B12, folate", framing: "classification" } }
+  ],
+  iron_status_proxy: [
+    { req: ["ferritin", "tsat", "hemoglobin"], formula: "iron_status_proxy", conf: 0.78,
+      meta: { type: "proxy", lab_anchor: "Serum iron, TIBC, ferritin", framing: "state" } }
+  ],
+  
+  // METABOLIC SYNDROME PROXY
+  mets_likelihood: [
+    { req: ["metabolic_syndrome_atp3", "metabolic_syndrome_idf"], formula: "mets_likelihood", conf: 0.88,
+      meta: { type: "proxy", lab_anchor: "Full metabolic panel", framing: "likelihood" } }
+  ]
 };
 
 /**
@@ -370,6 +464,232 @@ function calculate(formula, v) {
         if (v.triglycerides > 200) score -= 10; else if (v.triglycerides > 150) score -= 5;
         return Math.max(0, score);
       }
+      
+      // ═══════════════════════════════════════════════════════════════
+      // PROXY INFERENCE CALCULATIONS
+      // Returns structured objects with state, confidence, and lab anchoring
+      // ═══════════════════════════════════════════════════════════════
+      
+      // INSULIN SENSITIVITY PROXY
+      case "insulin_sens_proxy": {
+        // Multi-signal fusion: HOMA-IR + TG/HDL + TyG
+        const signals = [
+          { name: "homa_ir", weight: 0.4, threshold: 2.5, direction: "lower_better" },
+          { name: "tg_hdl", weight: 0.3, threshold: 3.0, direction: "lower_better" },
+          { name: "tyg", weight: 0.3, threshold: 8.5, direction: "lower_better" }
+        ];
+        let score = 100;
+        if (v.homa_ir > 4) score -= 40; else if (v.homa_ir > 2.5) score -= 20;
+        if (v.tg_hdl_ratio > 4) score -= 30; else if (v.tg_hdl_ratio > 3) score -= 15;
+        if (v.tyg_index > 9) score -= 30; else if (v.tyg_index > 8.5) score -= 15;
+        const state = score > 70 ? "likely_sensitive" : score > 40 ? "possibly_resistant" : "likely_resistant";
+        return {
+          state,
+          score: Math.max(0, score),
+          framing: "physiological_pattern",
+          note: state === "likely_resistant" ? "Pattern consistent with insulin resistance" : "Pattern suggests adequate insulin sensitivity",
+          lab_anchor: { test: "HOMA-IR", expected: state === "likely_resistant" ? ">2.5" : "<2.0" }
+        };
+      }
+      case "insulin_sens_simple": {
+        let score = 100;
+        if (v.tg_hdl_ratio > 3.5) score -= 35;
+        if (v.fasting_glucose > 100) score -= 25;
+        if (v.bmi > 30) score -= 25;
+        const state = score > 60 ? "likely_sensitive" : score > 30 ? "indeterminate" : "possibly_resistant";
+        return { state, score: Math.max(0, score), framing: "proxy_signal" };
+      }
+      
+      // METABOLIC STRESS
+      case "met_stress_state": {
+        let stress = 0;
+        if (v.tyg_index > 9) stress += 35;
+        if (v.hscrp > 3) stress += 35;
+        if (v.bmi > 30) stress += 30;
+        const state = stress > 60 ? "elevated" : stress > 30 ? "moderate" : "low";
+        return {
+          state,
+          level: stress,
+          framing: "pattern",
+          note: `Metabolic stress signals ${state}`,
+          lab_anchor: { tests: ["Fasting insulin", "Cortisol"], expected: state === "elevated" ? "likely elevated" : "likely normal" }
+        };
+      }
+      
+      // INFLAMMATORY BURDEN
+      case "inflam_burden": {
+        let burden = 0;
+        if (v.hscrp > 3) burden += 40; else if (v.hscrp > 1) burden += 20;
+        if (v.nlr > 4) burden += 30; else if (v.nlr > 3) burden += 15;
+        if (v.ferritin > 300) burden += 30; else if (v.ferritin > 200) burden += 15;
+        const state = burden > 60 ? "elevated" : burden > 30 ? "moderate" : "low";
+        return {
+          state,
+          level: burden,
+          framing: "state",
+          note: `Inflammatory burden ${state}`,
+          lab_anchor: { test: "hs-CRP", expected: state === "elevated" ? ">3 mg/L" : "<1 mg/L" }
+        };
+      }
+      case "inflam_burden_simple": {
+        let burden = 0;
+        if (v.hscrp > 3) burden += 50; else if (v.hscrp > 1) burden += 25;
+        if (v.nlr > 4) burden += 50; else if (v.nlr > 3) burden += 25;
+        const state = burden > 60 ? "elevated" : burden > 30 ? "moderate" : "low";
+        return { state, level: burden, framing: "state" };
+      }
+      case "chronic_inflam": {
+        const elevated_crp = v.hscrp > 3;
+        const elevated_ferritin = v.ferritin > 300;
+        const low_albumin = v.albumin < 3.5;
+        const count = [elevated_crp, elevated_ferritin, low_albumin].filter(Boolean).length;
+        const state = count >= 2 ? "chronic_pattern" : count === 1 ? "possible" : "unlikely";
+        return { state, markers_elevated: count, framing: "pattern" };
+      }
+      
+      // CARDIOVASCULAR PROXIES
+      case "cv_resilience": {
+        let score = 100;
+        if (v.hdl < 40) score -= 25; else if (v.hdl > 60) score += 10;
+        if (v.triglycerides > 200) score -= 20;
+        if (v.sbp > 140) score -= 25; else if (v.sbp > 130) score -= 15;
+        if (v.pulse_pressure > 60) score -= 20;
+        const state = score > 70 ? "robust" : score > 40 ? "moderate" : "strained";
+        return {
+          state,
+          score: Math.min(100, Math.max(0, score)),
+          framing: "state",
+          lab_anchor: { tests: ["Coronary calcium score", "NT-proBNP"], expected: state === "strained" ? "may be elevated" : "likely normal" }
+        };
+      }
+      case "arterial_health": {
+        // Pulse pressure increases with arterial stiffness
+        const pp_risk = v.pulse_pressure > 60 ? 40 : v.pulse_pressure > 50 ? 20 : 0;
+        const age_factor = (v.age - 40) * 0.5;
+        const bp_factor = (v.sbp - 120) * 0.3;
+        const stiffness = pp_risk + age_factor + bp_factor;
+        const state = stiffness > 50 ? "reduced" : stiffness > 25 ? "moderate" : "good";
+        return { state, index: Math.round(stiffness), framing: "state" };
+      }
+      
+      // LIVER PROXIES
+      case "hepatic_stress": {
+        let stress = 0;
+        if (v.alt > 40) stress += 25; else if (v.alt > 30) stress += 10;
+        if (v.ast > 40) stress += 20;
+        if (v.ggt > 50) stress += 25;
+        if (v.triglycerides > 200) stress += 20;
+        const state = stress > 50 ? "elevated" : stress > 25 ? "mild" : "low";
+        return { state, level: stress, framing: "state" };
+      }
+      case "liver_fibrosis_proxy": {
+        const fib4_risk = v.fib4 > 2.67 ? "high" : v.fib4 > 1.3 ? "indeterminate" : "low";
+        const nafld_risk = v.nafld_fibrosis > 0.676 ? "high" : v.nafld_fibrosis > -1.455 ? "indeterminate" : "low";
+        const combined = fib4_risk === "high" || nafld_risk === "high" ? "elevated_likelihood" : 
+                        fib4_risk === "low" && nafld_risk === "low" ? "low_likelihood" : "indeterminate";
+        return { state: combined, fib4_risk, nafld_risk, framing: "likelihood" };
+      }
+      case "nafld_likelihood": {
+        let risk = 0;
+        if (v.alt > v.ast && v.alt > 30) risk += 30;
+        if (v.triglycerides > 150) risk += 25;
+        if (v.bmi > 30) risk += 25;
+        if (v.fasting_glucose > 100) risk += 20;
+        const likelihood = risk > 60 ? "likely" : risk > 30 ? "possible" : "unlikely";
+        return { likelihood, score: risk, framing: "likelihood" };
+      }
+      
+      // KIDNEY PROXY
+      case "kidney_stress": {
+        let stress = 0;
+        if (v.egfr < 60) stress += 40; else if (v.egfr < 90) stress += 20;
+        if (v.albumin < 3.5) stress += 30;
+        if (v.creatinine > 1.3) stress += 30;
+        const state = stress > 50 ? "elevated" : stress > 20 ? "mild" : "low";
+        return { state, level: stress, framing: "state" };
+      }
+      
+      // THYROID PROXIES
+      case "thyroid_func_proxy": {
+        const tsh_low = v.tsh < 0.4;
+        const tsh_high = v.tsh > 4.5;
+        const ft4_low = v.ft4 < 0.8;
+        const ft4_high = v.ft4 > 1.8;
+        let state = "euthyroid";
+        if (tsh_high && ft4_low) state = "hypothyroid_pattern";
+        else if (tsh_low && ft4_high) state = "hyperthyroid_pattern";
+        else if (tsh_high && !ft4_low) state = "subclinical_hypo";
+        else if (tsh_low && !ft4_high) state = "subclinical_hyper";
+        return { state, tsh: v.tsh, ft4: v.ft4, framing: "state" };
+      }
+      case "thyroid_stress": {
+        // Non-thyroidal illness pattern: low T3/T4 with low-normal TSH + inflammation
+        const inflammation = v.hscrp > 3;
+        const tsh_suppressed = v.tsh < 1.0;
+        if (inflammation && tsh_suppressed) {
+          return { state: "possible_nti", note: "Pattern may suggest non-thyroidal illness", framing: "pattern" };
+        }
+        return { state: "no_pattern", framing: "pattern" };
+      }
+      
+      // NUTRITIONAL PROXIES
+      case "micronut_proxy": {
+        let deficiencies = [];
+        if (v.ferritin < 30) deficiencies.push("iron");
+        if (v.vitamin_d < 30) deficiencies.push("vitamin_d");
+        if (v.b12 < 300) deficiencies.push("b12");
+        const state = deficiencies.length > 1 ? "multiple_deficiencies" : 
+                     deficiencies.length === 1 ? "single_deficiency" : "adequate";
+        return { state, deficiencies, framing: "state" };
+      }
+      case "vit_d_likelihood": {
+        const level = v.vitamin_d;
+        const state = level < 20 ? "deficient" : level < 30 ? "insufficient" : level < 50 ? "adequate" : "optimal";
+        return {
+          state,
+          level,
+          framing: "likelihood",
+          lab_anchor: { test: "25-hydroxyvitamin D", value: `${level} ng/mL` }
+        };
+      }
+      
+      // ANEMIA PROXIES
+      case "anemia_type_proxy": {
+        const low_hgb = v.hemoglobin < (v.is_female ? 12 : 14);
+        if (!low_hgb) return { state: "no_anemia", framing: "classification" };
+        const low_mcv = v.mcv < 80;
+        const high_mcv = v.mcv > 100;
+        const low_ferritin = v.ferritin < 30;
+        const low_tsat = v.tsat < 20;
+        let type = "normocytic";
+        if (low_mcv && (low_ferritin || low_tsat)) type = "iron_deficiency_likely";
+        else if (low_mcv) type = "microcytic_other";
+        else if (high_mcv) type = "macrocytic";
+        return { state: "anemia_present", type, framing: "classification" };
+      }
+      case "iron_status_proxy": {
+        const low_ferritin = v.ferritin < 30;
+        const low_tsat = v.tsat < 20;
+        const low_hgb = v.hemoglobin < 12;
+        let state = "adequate";
+        if (low_ferritin && low_tsat && low_hgb) state = "deficient";
+        else if (low_ferritin || low_tsat) state = "depleted";
+        else if (v.ferritin > 300) state = "elevated";
+        return { state, ferritin: v.ferritin, tsat: v.tsat, framing: "state" };
+      }
+      
+      // METABOLIC SYNDROME LIKELIHOOD
+      case "mets_likelihood": {
+        const atp3 = v.metabolic_syndrome_atp3;
+        const idf = v.metabolic_syndrome_idf;
+        const atp3_yes = atp3?.diagnosis === "metabolic_syndrome";
+        const idf_yes = idf?.diagnosis === "metabolic_syndrome";
+        let likelihood = "unlikely";
+        if (atp3_yes && idf_yes) likelihood = "high";
+        else if (atp3_yes || idf_yes) likelihood = "moderate";
+        else if (atp3?.criteria_met >= 2 || idf?.criteria_met >= 2) likelihood = "possible";
+        return { likelihood, atp3_criteria: atp3?.criteria_met, idf_criteria: idf?.criteria_met, framing: "likelihood" };
+      }
     }
   } catch (e) {}
   return null;
@@ -397,9 +717,105 @@ function interpretRisk(metric, value) {
   return null;
 }
 
-/**
- * CASCADE ENGINE
- */
+// ═══════════════════════════════════════════════════════════════
+// CONSTRAINT ENGINE v1.0
+// Cross-panel physiological consistency validation
+// ═══════════════════════════════════════════════════════════════
+
+const PHYSIOLOGICAL_BOUNDS = {
+  age: { min: 0, max: 120 }, bmi: { min: 10, max: 80 },
+  total_cholesterol: { min: 50, max: 500 }, hdl: { min: 5, max: 150 }, ldl: { min: 10, max: 400 },
+  triglycerides: { min: 20, max: 5000 }, fasting_glucose: { min: 20, max: 600 },
+  fasting_insulin: { min: 0.5, max: 300 }, creatinine: { min: 0.1, max: 20 },
+  egfr: { min: 0, max: 150 }, hemoglobin: { min: 3, max: 22 }, hematocrit: { min: 10, max: 70 },
+  tsh: { min: 0.01, max: 100 }, ft4: { min: 0.1, max: 10 }, hba1c: { min: 3, max: 18 }
+};
+
+const DIRECTIONAL_RULES = [
+  { id: "ir_consistency", check: (v) => (v.homa_ir > 4 && v.tyg_index < 8.2) ? { flag: "inconsistent", note: "HOMA-IR/TyG mismatch" } : null },
+  { id: "kidney_check", check: (v) => (v.egfr > 90 && v.creatinine > 1.5) ? { flag: "error", note: "eGFR/Cr impossible" } : null },
+  { id: "anemia_check", check: (v) => (v.hemoglobin && v.hematocrit && Math.abs(v.hematocrit - v.hemoglobin * 3) > 5) ? { flag: "review", note: "Hgb/Hct ratio unusual" } : null },
+  { id: "thyroid_check", check: (v) => (v.tsh > 10 && v.ft4 > 1.8) ? { flag: "unusual", note: "TSH+FT4 both high" } : null },
+  { id: "glucose_a1c", check: (v) => (v.hba1c > 9 && v.fasting_glucose < 100) ? { flag: "inconsistent", note: "HbA1c/glucose mismatch" } : null }
+];
+
+function validateConstraints(inputs, calculated) {
+  const all = { ...inputs, ...calculated };
+  const violations = [], flags = [];
+  
+  // Bound violations
+  for (const [k, v] of Object.entries(inputs)) {
+    const b = PHYSIOLOGICAL_BOUNDS[k];
+    if (b && typeof v === 'number' && (v < b.min || v > b.max)) {
+      violations.push({ field: k, value: v, bounds: b, severity: "error" });
+    }
+  }
+  
+  // Directional consistency
+  for (const r of DIRECTIONAL_RULES) {
+    const result = r.check(all);
+    if (result) flags.push({ rule: r.id, ...result });
+  }
+  
+  const errors = violations.length + flags.filter(f => f.flag === 'error').length;
+  const warnings = flags.filter(f => f.flag !== 'error').length;
+  
+  return {
+    status: errors > 0 ? "invalid" : warnings > 0 ? "review" : "valid",
+    violations, flags, error_count: errors, warning_count: warnings
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════
+// UNCERTAINTY & CONFIDENCE v1.0
+// Structured confidence objects
+// ═══════════════════════════════════════════════════════════════
+
+const RELIABILITY = {
+  lab: { class: "A", var: 0.05 }, device: { class: "B", var: 0.08 },
+  self: { class: "C", var: 0.15 }, derived: { class: "B", var: 0.10 }
+};
+
+function buildConfidence(params) {
+  const { baseConf, formula, reqInputs, iteration, citation, constraintStatus } = params;
+  
+  // Evidence grade
+  let grade = "derived";
+  if (citation) grade = "peer_reviewed";
+  else if (iteration === 1) grade = "direct";
+  else if (iteration > 2) grade = "cascade";
+  
+  // Sensitivity
+  const fragile = ['ratio', 'homa_ir', 'quicki', 'castelli_1', 'castelli_2'].includes(formula);
+  const sensitivity = fragile ? "moderate" : "stable";
+  
+  // Cross-panel
+  let consistency = "consistent";
+  if (constraintStatus?.error_count > 0) consistency = "invalid";
+  else if (constraintStatus?.warning_count > 0) consistency = "flagged";
+  
+  // Compute final score
+  let score = baseConf;
+  if (iteration > 1) score *= 0.95;
+  if (iteration > 2) score *= 0.90;
+  if (sensitivity === "moderate") score *= 0.95;
+  if (consistency === "flagged") score *= 0.90;
+  if (consistency === "invalid") score *= 0.70;
+  
+  return {
+    score: Math.round(score * 100) / 100,
+    evidence_grade: grade,
+    sensitivity,
+    cross_panel: consistency,
+    cascade_depth: iteration,
+    citation_backed: !!citation
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CASCADE ENGINE v3.1 (Enhanced)
+// ═══════════════════════════════════════════════════════════════
+
 function runCascade(inputs) {
   const values = { ...inputs };
   const calculated = [];
@@ -414,7 +830,25 @@ function runCascade(inputs) {
         const val = calculate(rule.formula, values);
         if (val !== null && val !== undefined && (typeof val !== 'number' || (!isNaN(val) && isFinite(val)))) {
           values[target] = val;
-          const entry = { name: target, value: typeof val === 'number' ? Math.round(val * 1000) / 1000 : val, method: rule.formula, confidence: rule.conf, iteration: i + 1 };
+          
+          // Build structured confidence
+          const confidence = buildConfidence({
+            baseConf: rule.conf,
+            formula: rule.formula,
+            reqInputs: rule.req,
+            iteration: i + 1,
+            citation: rule.cite ? CITATIONS[rule.cite] : null,
+            constraintStatus: null // Will be added at end
+          });
+          
+          const entry = { 
+            name: target, 
+            value: typeof val === 'number' ? Math.round(val * 1000) / 1000 : val, 
+            method: rule.formula, 
+            confidence,  // Now structured object
+            iteration: i + 1 
+          };
+          
           if (rule.cite && CITATIONS[rule.cite]) entry.citation = CITATIONS[rule.cite];
           const interp = interpretRisk(target, val);
           if (interp) entry.interpretation = interp;
@@ -427,7 +861,32 @@ function runCascade(inputs) {
     if (!found) break;
   }
   
-  return { inputs: Object.keys(inputs).length, calculated: calculated.length, total: Object.keys(values).length, cascade_iterations: calculated.length > 0 ? calculated[calculated.length - 1].iteration : 0, values, derived: calculated };
+  // Run constraint validation
+  const calcValues = {};
+  calculated.forEach(c => { calcValues[c.name] = c.value; });
+  const constraints = validateConstraints(inputs, calcValues);
+  
+  // Update confidence with constraint status
+  calculated.forEach(c => {
+    c.confidence = buildConfidence({
+      baseConf: c.confidence.score,
+      formula: c.method,
+      reqInputs: [],
+      iteration: c.iteration,
+      citation: c.citation,
+      constraintStatus: constraints
+    });
+  });
+  
+  return { 
+    inputs: Object.keys(inputs).length, 
+    calculated: calculated.length, 
+    total: Object.keys(values).length, 
+    cascade_iterations: calculated.length > 0 ? calculated[calculated.length - 1].iteration : 0, 
+    constraints,  // NEW: constraint validation results
+    values, 
+    derived: calculated 
+  };
 }
 
 /**
@@ -459,7 +918,7 @@ export default {
     if (url.pathname === "/" || url.pathname === "") {
       return new Response(JSON.stringify({
         name: "Monitor Health API",
-        version: "3.0.0 - FULL COVERAGE",
+        version: "3.1.0 - CONSTRAINT ENGINE + STRUCTURED CONFIDENCE",
         differentiator: "CASCADE INFERENCE: Partial data → Comprehensive insights. EVERY formula has PMID citation.",
         total_formulas: Object.values(INFERENCE_RULES).reduce((a, r) => a + r.length, 0),
         total_citations: Object.keys(CITATIONS).length,
