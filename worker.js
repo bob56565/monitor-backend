@@ -79,6 +79,29 @@ const LAB_ANCHORING = {
       { test: "Triglycerides", expected_range: "<100 mg/dL (optimal), <150 mg/dL (normal), ≥150 mg/dL (elevated)", direction: "↑ often elevated with resistance" },
       { test: "HDL Cholesterol", expected_range: ">60 mg/dL (optimal), 40-60 mg/dL (acceptable), <40 mg/dL (low)", direction: "↓ often low with resistance" }
     ],
+    anticipated_lab_values: {
+      likely_resistant: [
+        { test: "HOMA-IR", anticipated: "2.5-4.0+ (elevated)", interpretation: "Indicates insulin resistance" },
+        { test: "Fasting Insulin", anticipated: "15-25+ μIU/mL", interpretation: "Above optimal range" },
+        { test: "Fasting Glucose", anticipated: "100-125 mg/dL", interpretation: "Prediabetic range" },
+        { test: "HbA1c", anticipated: "5.7-6.4%", interpretation: "Prediabetic range" },
+        { test: "Triglycerides", anticipated: "≥150 mg/dL", interpretation: "Often elevated with resistance" },
+        { test: "HDL Cholesterol", anticipated: "<40 mg/dL", interpretation: "Often low with resistance" }
+      ],
+      possibly_resistant: [
+        { test: "HOMA-IR", anticipated: "1.5-2.9 (borderline)", interpretation: "Early insulin resistance possible" },
+        { test: "Fasting Insulin", anticipated: "10-15 μIU/mL", interpretation: "Upper-normal to borderline" },
+        { test: "Fasting Glucose", anticipated: "95-105 mg/dL", interpretation: "High-normal" }
+      ],
+      likely_sensitive: [
+        { test: "HOMA-IR", anticipated: "<1.5 (optimal)", interpretation: "Healthy insulin sensitivity" },
+        { test: "Fasting Insulin", anticipated: "2-10 μIU/mL", interpretation: "Optimal range" },
+        { test: "Fasting Glucose", anticipated: "70-99 mg/dL", interpretation: "Normal range" },
+        { test: "HbA1c", anticipated: "<5.7%", interpretation: "Normal glycemic control" },
+        { test: "Triglycerides", anticipated: "<100-150 mg/dL", interpretation: "Within normal range" },
+        { test: "HDL Cholesterol", anticipated: ">60 mg/dL", interpretation: "Cardioprotective" }
+      ]
+    },
     clinical_insight: "Insulin resistance often precedes type 2 diabetes by 10-15 years. Early detection through these patterns allows lifestyle intervention before disease onset.",
     recommended_confirmation: "Fasting insulin + HOMA-IR calculation, or oral glucose tolerance test (OGTT)",
     actionable_guidance: "Mediterranean diet, 150+ min/week exercise, 7-8 hours sleep can significantly improve sensitivity"
@@ -320,15 +343,30 @@ function getLabAnchoringForProxy(proxyName, proxyValue) {
   if (!anchor) return null;
   
   const state = typeof proxyValue === 'object' ? (proxyValue.state || proxyValue.likelihood) : proxyValue;
+  const normalizedState = typeof state === 'string' ? state.toLowerCase() : state;
   
   // Get the specific pattern statement for this state
   let patternStatement = null;
   if (anchor.pattern_statement) {
     // Try exact match first, then normalized match
     patternStatement = anchor.pattern_statement[state] || 
-                       anchor.pattern_statement[state?.toLowerCase()] ||
+                       anchor.pattern_statement[normalizedState] ||
                        anchor.pattern_statement[state?.replace(/_/g, '')] ||
                        Object.values(anchor.pattern_statement)[0]; // fallback to first statement
+  }
+
+  // Build anticipated findings in plain, direct language
+  let anticipatedFindings = [];
+  if (anchor.anticipated_lab_values) {
+    let anticipatedSet = anchor.anticipated_lab_values[state] ||
+                         anchor.anticipated_lab_values[normalizedState] ||
+                         anchor.anticipated_lab_values[state?.replace(/_/g, ' ')] ||
+                         null;
+    if (!anticipatedSet) {
+      // Fallback: flatten all categories if specific state not found
+      anticipatedSet = Object.values(anchor.anticipated_lab_values).flat();
+    }
+    anticipatedFindings = (anticipatedSet || []).map(item => `If confirmed by traditional testing, we would anticipate: ${item.test} measuring ${item.anticipated} (${item.interpretation})`);
   }
   
   return {
@@ -342,6 +380,7 @@ function getLabAnchoringForProxy(proxyName, proxyValue) {
       expected_ranges: lab.expected_range,
       direction_when_abnormal: lab.direction
     })),
+    anticipated_findings: anticipatedFindings,
     clinical_context: anchor.clinical_insight,
     to_confirm_this_finding: anchor.recommended_confirmation,
     what_you_can_do: anchor.actionable_guidance,
