@@ -273,13 +273,17 @@ const LAB_ANCHORING = {
   anemia_type_proxy: {
     display_name: "Anemia Classification",
     what_it_means: "Type and likely underlying cause of low red blood cell count",
+    pattern_statement: {
+      anemia_present: "This finding aligns with physiological patterns often seen when hemoglobin measures <12 g/dL in women or <14 g/dL in men, with MCV measuring <80 fL (microcytosis) or >100 fL (macrocytosis) depending on cause.",
+      no_anemia: "This finding aligns with physiological patterns often seen when hemoglobin measures within sex-specific normal ranges and MCV measures 80-100 fL."
+    },
     if_this_proxy_is_accurate: "We would expect these traditional lab values to show specific patterns:",
     expected_lab_correlations: [
-      { test: "Hemoglobin", direction: "↓ low", when: "anemia present", reference: { male_low: "<14 g/dL", female_low: "<12 g/dL" }},
-      { test: "MCV", direction: "Indicates anemia type", when: "classifying anemia", reference: { microcytic: "<80 fL", normocytic: "80-100 fL", macrocytic: ">100 fL" }},
-      { test: "Ferritin", direction: "↓ low in iron deficiency", when: "iron stores depleted", reference: { deficient: "<30 ng/mL" }},
-      { test: "Vitamin B12", direction: "↓ low in B12 deficiency", when: "macrocytic anemia", reference: { deficient: "<200 pg/mL" }},
-      { test: "Reticulocyte Count", direction: "↑ high with blood loss/hemolysis", when: "marrow responding", reference: { normal: "0.5-2.5%" }}
+      { test: "Hemoglobin", expected_range: "Men: 14-18 g/dL (normal), <14 g/dL (low) | Women: 12-16 g/dL (normal), <12 g/dL (low)", direction: "↓ low when anemia present" },
+      { test: "MCV", expected_range: "<80 fL (microcytic), 80-100 fL (normocytic), >100 fL (macrocytic)", direction: "Indicates anemia type for classification" },
+      { test: "Ferritin", expected_range: "<30 ng/mL (iron deficiency), 30-100 ng/mL (possible deficiency with inflammation), >100-300 ng/mL (adequate)", direction: "↓ low in iron deficiency" },
+      { test: "Vitamin B12", expected_range: "<200 pg/mL (deficiency), 200-300 pg/mL (borderline), >300 pg/mL (adequate)", direction: "↓ low in B12 deficiency, often macrocytic" },
+      { test: "Reticulocyte Count", expected_range: "0.5-2.5% (normal), >2.5% (elevated)", direction: "↑ high with blood loss/hemolysis when marrow responding" }
     ],
     clinical_insight: "MCV helps narrow the differential: microcytic suggests iron deficiency or thalassemia; macrocytic suggests B12/folate deficiency.",
     recommended_confirmation: "CBC with indices, reticulocyte count, iron studies, B12/folate",
@@ -289,12 +293,18 @@ const LAB_ANCHORING = {
   iron_status_proxy: {
     display_name: "Iron Status",
     what_it_means: "Your body's iron stores and iron availability for red blood cell production",
+    pattern_statement: {
+      deficient: "This finding aligns with physiological patterns often seen when ferritin measures <30 ng/mL and transferrin saturation measures <20%, consistent with iron deficiency.",
+      depleted: "This finding aligns with physiological patterns often seen when ferritin measures 30-50 ng/mL or transferrin saturation measures 15-20%, suggesting low iron availability.",
+      adequate: "This finding aligns with physiological patterns often seen when ferritin measures 50-150 ng/mL and transferrin saturation measures 20-50%.",
+      elevated: "This finding aligns with physiological patterns often seen when ferritin measures >300 ng/mL, which can reflect iron overload or inflammation."
+    },
     if_this_proxy_is_accurate: "We would expect these traditional lab values to show specific patterns:",
     expected_lab_correlations: [
-      { test: "Ferritin", direction: "Reflects iron stores", when: "assessing iron status", reference: { deficient: "<30 ng/mL", optimal: "50-150 ng/mL", elevated: ">300 ng/mL" }},
-      { test: "Serum Iron", direction: "↓ low when deficient", when: "iron deficiency", reference: { normal: "60-170 μg/dL" }},
-      { test: "TIBC", direction: "↑ elevated when deficient", when: "iron deficiency", reference: { normal: "250-400 μg/dL" }},
-      { test: "Transferrin Saturation", direction: "↓ low when deficient", when: "iron deficiency", reference: { normal: "20-50%", low: "<20%" }}
+      { test: "Ferritin", expected_range: "<30 ng/mL (deficient), 50-150 ng/mL (adequate), >300 ng/mL (elevated)", direction: "Reflects iron stores" },
+      { test: "Serum Iron", expected_range: "60-170 μg/dL (normal), <60 μg/dL (low)", direction: "↓ low when deficient" },
+      { test: "TIBC", expected_range: "250-400 μg/dL (normal), >400 μg/dL (elevated in deficiency)", direction: "↑ elevated when deficient" },
+      { test: "Transferrin Saturation", expected_range: "20-50% (normal), <20% (low)", direction: "↓ low when deficient" }
     ],
     clinical_insight: "Iron deficiency is the most common nutritional deficiency worldwide, affecting ~25% of the global population. Ferritin alone can be misleading with inflammation.",
     recommended_confirmation: "Full iron panel: ferritin + serum iron + TIBC + transferrin saturation",
